@@ -587,6 +587,30 @@
             z-index: 100;
         }
 
+        .fullscreen-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 24px;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            border: none;
+            background: var(--card-bg);
+            color: var(--subtext);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+            transition: all 0.3s ease;
+        }
+
+        .fullscreen-btn:hover {
+            background: var(--hema-red);
+            color: white;
+            transform: scale(1.1);
+        }
+
         /* ==================== RESPONSIVE ==================== */
         @media (max-width: 768px) {
             .cards-container { grid-template-columns: 1fr; }
@@ -1079,6 +1103,13 @@
         &rarr; of Spatie
     </div>
 
+    <button class="fullscreen-btn" id="fs-btn" onclick="toggleFullscreen()" title="Fullscreen">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path id="fs-icon-enter" d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+            <path id="fs-icon-exit" style="display:none" d="M4 14h3a2 2 0 0 1 2 2v3m4-5h3a2 2 0 0 0 2-2V5m-9 0v3a2 2 0 0 1-2 2H4m16 4v3a2 2 0 0 1-2 2h-3"/>
+        </svg>
+    </button>
+
     <script>
         let currentSlide = 0;
         let isTransitioning = false;
@@ -1189,6 +1220,32 @@
             const diff = touchStartX - e.changedTouches[0].screenX;
             if (diff > 50) nextSlide();
             else if (diff < -50) prevSlide();
+        });
+
+        // Fullscreen toggle
+        function toggleFullscreen() {
+            if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+                const el = document.documentElement;
+                if (el.requestFullscreen) el.requestFullscreen();
+                else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+            } else {
+                if (document.exitFullscreen) document.exitFullscreen();
+                else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+            }
+        }
+
+        document.addEventListener('fullscreenchange', updateFsIcon);
+        document.addEventListener('webkitfullscreenchange', updateFsIcon);
+
+        function updateFsIcon() {
+            const isFs = document.fullscreenElement || document.webkitFullscreenElement;
+            document.getElementById('fs-icon-enter').style.display = isFs ? 'none' : '';
+            document.getElementById('fs-icon-exit').style.display = isFs ? '' : 'none';
+        }
+
+        // Also toggle with F key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'f' || e.key === 'F') toggleFullscreen();
         });
     </script>
 </body>
