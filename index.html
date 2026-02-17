@@ -751,6 +751,28 @@
             transform: scale(1.1);
         }
 
+        /* ==================== FULLSCREEN FIX ==================== */
+        body:fullscreen,
+        body:-webkit-full-screen,
+        body:-moz-full-screen,
+        body:-ms-fullscreen {
+            background: #FFFFFF !important;
+            color: var(--text) !important;
+        }
+
+        ::backdrop {
+            background: #FFFFFF !important;
+        }
+
+        ::-webkit-backdrop {
+            background: #FFFFFF !important;
+        }
+
+        html:fullscreen,
+        html:-webkit-full-screen {
+            background: #FFFFFF !important;
+        }
+
         /* ==================== RESPONSIVE ==================== */
         @media (max-width: 768px) {
             .cards-container { grid-template-columns: 1fr; }
@@ -1467,7 +1489,7 @@
 
         // Fullscreen toggle
         function toggleFullscreen() {
-            const el = document.body;
+            const el = document.documentElement;
             const isFs = document.fullscreenElement || document.webkitFullscreenElement || document.webkitIsFullScreen;
 
             if (!isFs) {
