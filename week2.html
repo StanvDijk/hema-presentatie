@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weekopdracht 2 — HEMA</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --hema-red: #E4002B;
+            --hema-dark: #C50025;
+            --text: #1d1d1f;
+            --subtext: #86868b;
+            --card-bg: #f5f5f7;
+            --card-hover: #ededf0;
+            --accent: #E4002B;
+            --white: #FFFFFF;
+            --transition-duration: 0.9s;
+            --transition-ease: cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+            background: var(--white);
+            color: var(--text);
+            line-height: 1.1;
+            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
+            perspective: 1200px;
+        }
+
+        .presentation {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            transform-style: preserve-3d;
+        }
+
+        /* ==================== SLIDES ==================== */
+        .slide {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: 0; left: 0;
+            padding: clamp(40px, 6vh, 80px) clamp(30px, 5vw, 80px);
+            text-align: center;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateX(100%) rotateY(8deg) scale(0.85);
+            filter: blur(8px);
+            transition: opacity var(--transition-duration) var(--transition-ease),
+                        transform var(--transition-duration) var(--transition-ease),
+                        filter var(--transition-duration) var(--transition-ease);
+            will-change: opacity, transform, filter;
+            transform-style: preserve-3d;
+        }
+
+        .slide.active {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateX(0) rotateY(0deg) scale(1);
+            filter: blur(0px);
+        }
+
+        .slide.exit-left {
+            opacity: 0;
+            pointer-events: none;
+            transform: translateX(-100%) rotateY(-8deg) scale(0.85);
+            filter: blur(8px);
+        }
+
+        .slide.exit-right {
+            opacity: 0;
+            pointer-events: none;
+            transform: translateX(100%) rotateY(8deg) scale(0.85);
+            filter: blur(8px);
+        }
+
+        /* ==================== SLIDE CONTENT REVEAL ==================== */
+        .slide-content {
+            max-width: 1100px;
+            width: 100%;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slide.active .slide-content > * {
+            animation: elementReveal 0.8s var(--transition-ease) both;
+        }
+
+        .slide.active .slide-content > *:nth-child(1) { animation-delay: 0.15s; }
+        .slide.active .slide-content > *:nth-child(2) { animation-delay: 0.3s; }
+        .slide.active .slide-content > *:nth-child(3) { animation-delay: 0.45s; }
+        .slide.active .slide-content > *:nth-child(4) { animation-delay: 0.6s; }
+
+        @keyframes elementReveal {
+            from {
+                opacity: 0;
+                transform: translateY(40px) scale(0.92);
+                filter: blur(6px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+                filter: blur(0px);
+            }
+        }
+
+        /* ==================== HEMA LOGO ==================== */
+        .hema-logo {
+            font-size: clamp(60px, 10vw, 120px);
+            font-weight: 900;
+            color: var(--white);
+            background: var(--hema-red);
+            padding: 12px clamp(24px, 4vw, 50px);
+            letter-spacing: 0.08em;
+            line-height: 1;
+            margin-bottom: clamp(20px, 3vh, 40px);
+            position: relative;
+            display: inline-block;
+        }
+
+        .slide.active .hema-logo {
+            animation: logoReveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+        }
+
+        @keyframes logoReveal {
+            0% { opacity: 0; transform: scale(0.3) rotateX(20deg); filter: blur(20px); }
+            50% { opacity: 1; filter: blur(0px); }
+            70% { transform: scale(1.05) rotateX(0deg); }
+            100% { opacity: 1; transform: scale(1) rotateX(0deg); filter: blur(0px); }
+        }
+
+        .hema-logo-small {
+            font-size: clamp(18px, 2.5vw, 28px);
+            font-weight: 900;
+            color: var(--white);
+            background: var(--hema-red);
+            padding: 5px clamp(10px, 1.5vw, 18px);
+            letter-spacing: 0.08em;
+            line-height: 1;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        /* ==================== TYPOGRAPHY ==================== */
+        h1 {
+            font-size: clamp(36px, 5vw, 60px);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            line-height: 1.05;
+            margin-bottom: clamp(12px, 2vh, 24px);
+            color: var(--text);
+        }
+
+        h1.hero {
+            font-size: clamp(38px, 5.5vw, 68px);
+            font-weight: 800;
+            line-height: 1.0;
+        }
+
+        .subtitle {
+            font-size: clamp(16px, 2vw, 24px);
+            font-weight: 400;
+            color: var(--subtext);
+            margin-bottom: clamp(16px, 3vh, 32px);
+            line-height: 1.3;
+            max-width: 700px;
+        }
+
+        .meta-info {
+            font-size: clamp(13px, 1.4vw, 16px);
+            color: var(--subtext);
+            font-weight: 400;
+            line-height: 1.5;
+            margin-top: 8px;
+        }
+
+        .highlight { color: var(--accent); font-weight: 600; }
+
+        /* ==================== BADGES ==================== */
+        .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--card-bg);
+            color: var(--subtext);
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: clamp(11px, 1.2vw, 14px);
+            font-weight: 500;
+            letter-spacing: 0.02em;
+            margin-bottom: 20px;
+        }
+
+        .section-label .dot {
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: var(--hema-red);
+        }
+
+        /* ==================== CARDS ==================== */
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: clamp(12px, 2vw, 24px);
+            margin-top: clamp(16px, 2.5vh, 28px);
+            max-width: 1100px;
+            width: 100%;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: clamp(16px, 2.2vw, 28px);
+            text-align: left;
+            opacity: 0;
+            transform: translateY(60px) scale(0.9) rotateX(8deg);
+            filter: blur(4px);
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .slide.active .card {
+            animation: cardDrop 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        .slide.active .card:nth-child(1) { animation-delay: 0.4s; }
+        .slide.active .card:nth-child(2) { animation-delay: 0.5s; }
+        .slide.active .card:nth-child(3) { animation-delay: 0.6s; }
+        .slide.active .card:nth-child(4) { animation-delay: 0.7s; }
+        .slide.active .card:nth-child(5) { animation-delay: 0.8s; }
+        .slide.active .card:nth-child(6) { animation-delay: 0.9s; }
+        .slide.active .card:nth-child(7) { animation-delay: 1.0s; }
+        .slide.active .card:nth-child(8) { animation-delay: 1.1s; }
+        .slide.active .card:nth-child(9) { animation-delay: 1.2s; }
+
+        @keyframes cardDrop {
+            0% { opacity: 0; transform: translateY(60px) scale(0.9) rotateX(8deg); filter: blur(4px); }
+            60% { opacity: 1; filter: blur(0px); }
+            80% { transform: translateY(-8px) scale(1.02) rotateX(0deg); }
+            100% { opacity: 1; transform: translateY(0) scale(1) rotateX(0deg); filter: blur(0px); }
+        }
+
+        .card:hover {
+            background: var(--card-hover);
+            box-shadow: 0 12px 40px rgba(228, 0, 43, 0.08), 0 4px 12px rgba(0,0,0,0.04);
+        }
+
+        .card h3 {
+            font-size: clamp(13px, 1.5vw, 17px);
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--text);
+        }
+
+        .card p, .card li {
+            font-size: clamp(11px, 1.2vw, 14px);
+            color: var(--subtext);
+            line-height: 1.4;
+        }
+
+        .card ul { list-style: none; padding: 0; }
+
+        .card ul li {
+            padding: 2px 0;
+            padding-left: 14px;
+            position: relative;
+        }
+
+        .card ul li::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 9px;
+            width: 5px; height: 5px;
+            border-radius: 50%;
+            background: var(--hema-red);
+        }
+
+        .card .stat {
+            font-size: clamp(24px, 3.5vw, 38px);
+            font-weight: 800;
+            color: var(--hema-red);
+            margin-bottom: 4px;
+            letter-spacing: -0.02em;
+        }
+
+        .card .icon {
+            font-size: clamp(22px, 2.5vw, 32px);
+            margin-bottom: 6px;
+        }
+
+        /* ==================== PILLARS ==================== */
+        .pillars {
+            display: flex;
+            gap: clamp(12px, 2vw, 24px);
+            max-width: 1100px;
+            margin: clamp(16px, 2vh, 28px) auto 0;
+            width: 100%;
+        }
+
+        .pillar {
+            flex: 1;
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: clamp(14px, 1.8vw, 24px);
+            text-align: left;
+            opacity: 0;
+            transform: translateX(-80px) scale(0.85);
+            filter: blur(6px);
+        }
+
+        .slide.active .pillar {
+            animation: pillarSlide 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        .slide.active .pillar:nth-child(1) { animation-delay: 0.4s; --pillar-x: -80px; }
+        .slide.active .pillar:nth-child(2) { animation-delay: 0.55s; --pillar-x: 0px; transform: translateY(60px) scale(0.85); }
+        .slide.active .pillar:nth-child(3) { animation-delay: 0.7s; --pillar-x: 80px; transform: translateX(80px) scale(0.85); }
+        .slide.active .pillar:nth-child(4) { animation-delay: 0.85s; --pillar-x: 80px; transform: translateX(80px) scale(0.85); }
+
+        @keyframes pillarSlide {
+            0% { opacity: 0; filter: blur(6px); }
+            100% { opacity: 1; transform: translateX(0) translateY(0) scale(1); filter: blur(0px); }
+        }
+
+        .pillar .icon {
+            font-size: clamp(24px, 3vw, 34px);
+            margin-bottom: 8px;
+        }
+
+        .pillar h3 {
+            font-size: clamp(13px, 1.4vw, 16px);
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+
+        .pillar p {
+            font-size: clamp(11px, 1.2vw, 14px);
+            color: var(--subtext);
+            line-height: 1.4;
+        }
+
+        .pillar .micro-type {
+            display: inline-block;
+            background: #fce8ec;
+            color: var(--hema-red);
+            padding: 3px 10px;
+            border-radius: 50px;
+            font-size: clamp(9px, 0.9vw, 11px);
+            font-weight: 600;
+            margin-bottom: 6px;
+            letter-spacing: 0.03em;
+        }
+
+        /* ==================== CONCLUSION POINTS ==================== */
+        .conclusion-points {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-width: 800px;
+            margin: clamp(12px, 2vh, 24px) auto 0;
+            width: 100%;
+        }
+
+        .conclusion-point {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            text-align: left;
+            padding: 12px 18px;
+            background: var(--card-bg);
+            border-radius: 12px;
+            opacity: 0;
+            transform: translateX(-100px) scale(0.9);
+            filter: blur(4px);
+        }
+
+        .slide.active .conclusion-point {
+            animation: pointReveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        .slide.active .conclusion-point:nth-child(1) { animation-delay: 0.35s; }
+        .slide.active .conclusion-point:nth-child(2) { animation-delay: 0.5s; }
+        .slide.active .conclusion-point:nth-child(3) { animation-delay: 0.65s; }
+        .slide.active .conclusion-point:nth-child(4) { animation-delay: 0.8s; }
+        .slide.active .conclusion-point:nth-child(5) { animation-delay: 0.95s; }
+        .slide.active .conclusion-point:nth-child(6) { animation-delay: 1.1s; }
+
+        @keyframes pointReveal {
+            0% { opacity: 0; transform: translateX(-100px) scale(0.9); filter: blur(4px); }
+            70% { transform: translateX(6px) scale(1.01); }
+            100% { opacity: 1; transform: translateX(0) scale(1); filter: blur(0px); }
+        }
+
+        .conclusion-point .number {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--hema-red);
+            min-width: 28px;
+            padding-top: 1px;
+        }
+
+        .conclusion-point .text {
+            font-size: clamp(13px, 1.5vw, 17px);
+            color: var(--text);
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
+        .conclusion-point .text span {
+            display: block;
+            font-size: clamp(11px, 1.2vw, 14px);
+            color: var(--subtext);
+            font-weight: 400;
+            margin-top: 2px;
+        }
+
+        /* ==================== BMC GRID ==================== */
+        .bmc-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            grid-template-rows: auto auto;
+            gap: 10px;
+            max-width: 1100px;
+            width: 100%;
+            margin-top: clamp(12px, 2vh, 24px);
+        }
+
+        .bmc-cell {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: clamp(10px, 1.2vw, 16px);
+            text-align: left;
+            opacity: 0;
+            transform: translateY(40px) scale(0.9);
+            filter: blur(4px);
+        }
+
+        .slide.active .bmc-cell {
+            animation: cardDrop 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        .slide.active .bmc-cell:nth-child(1) { animation-delay: 0.3s; }
+        .slide.active .bmc-cell:nth-child(2) { animation-delay: 0.4s; }
+        .slide.active .bmc-cell:nth-child(3) { animation-delay: 0.5s; }
+        .slide.active .bmc-cell:nth-child(4) { animation-delay: 0.6s; }
+        .slide.active .bmc-cell:nth-child(5) { animation-delay: 0.7s; }
+        .slide.active .bmc-cell:nth-child(6) { animation-delay: 0.8s; }
+        .slide.active .bmc-cell:nth-child(7) { animation-delay: 0.9s; }
+        .slide.active .bmc-cell:nth-child(8) { animation-delay: 1.0s; }
+        .slide.active .bmc-cell:nth-child(9) { animation-delay: 1.1s; }
+
+        .bmc-cell.span-2 { grid-column: span 2; }
+        .bmc-cell.span-3 { grid-column: span 3; }
+        .bmc-cell.span-5 { grid-column: span 5; }
+        .bmc-cell.row-2 { grid-row: span 2; }
+        .bmc-cell.highlight-cell { border-left: 3px solid var(--hema-red); }
+
+        .bmc-cell h3 {
+            font-size: clamp(11px, 1.2vw, 14px);
+            font-weight: 700;
+            color: var(--hema-red);
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .bmc-cell p, .bmc-cell li {
+            font-size: clamp(10px, 1.1vw, 13px);
+            color: var(--subtext);
+            line-height: 1.35;
+        }
+
+        .bmc-cell ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .bmc-cell ul li {
+            padding: 1px 0;
+            padding-left: 12px;
+            position: relative;
+        }
+
+        .bmc-cell ul li::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 8px;
+            width: 4px; height: 4px;
+            border-radius: 50%;
+            background: var(--hema-red);
+        }
+
+        /* ==================== REFERENCES ==================== */
+        .references-list {
+            text-align: left;
+            max-width: 900px;
+            margin: clamp(16px, 2vh, 24px) auto 0;
+            width: 100%;
+        }
+
+        .reference-item {
+            font-size: clamp(11px, 1.2vw, 13px);
+            color: #6e6e73;
+            line-height: 1.6;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f2;
+            padding-left: 28px;
+            text-indent: -28px;
+            opacity: 0;
+        }
+
+        .slide.active .reference-item {
+            animation: elementReveal 0.6s var(--transition-ease) both;
+        }
+
+        .slide.active .reference-item:nth-child(1) { animation-delay: 0.4s; }
+        .slide.active .reference-item:nth-child(2) { animation-delay: 0.5s; }
+        .slide.active .reference-item:nth-child(3) { animation-delay: 0.6s; }
+        .slide.active .reference-item:nth-child(4) { animation-delay: 0.7s; }
+        .slide.active .reference-item:nth-child(5) { animation-delay: 0.8s; }
+        .slide.active .reference-item:nth-child(6) { animation-delay: 0.9s; }
+
+        .reference-item:last-child { border-bottom: none; }
+
+        /* ==================== PROGRESS BAR ==================== */
+        .progress-bar {
+            position: fixed;
+            top: 0; left: 0;
+            height: 3px;
+            background: var(--hema-red);
+            transition: width 0.7s var(--transition-ease);
+            z-index: 200;
+            box-shadow: 0 0 10px rgba(228, 0, 43, 0.4);
+        }
+
+        .slide-indicator {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 13px;
+            color: #c7c7cc;
+            font-weight: 400;
+            z-index: 100;
+            letter-spacing: 0.02em;
+        }
+
+        .nav-hint {
+            position: fixed;
+            bottom: 48px;
+            right: 24px;
+            font-size: 11px;
+            color: #d1d1d6;
+            font-weight: 400;
+            text-align: right;
+            z-index: 100;
+        }
+
+        .fullscreen-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 24px;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            border: none;
+            background: var(--card-bg);
+            color: var(--subtext);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+            transition: all 0.3s ease;
+        }
+
+        .fullscreen-btn:hover {
+            background: var(--hema-red);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        /* ==================== FULLSCREEN FIX ==================== */
+        body:fullscreen,
+        body:-webkit-full-screen,
+        body:-moz-full-screen,
+        body:-ms-fullscreen {
+            background: #FFFFFF !important;
+            color: var(--text) !important;
+        }
+
+        ::backdrop { background: #FFFFFF !important; }
+        ::-webkit-backdrop { background: #FFFFFF !important; }
+
+        html:fullscreen,
+        html:-webkit-full-screen {
+            background: #FFFFFF !important;
+        }
+
+        /* ==================== RESPONSIVE ==================== */
+        @media (max-width: 768px) {
+            .cards-container { grid-template-columns: 1fr !important; }
+            .pillars { flex-direction: column; }
+            .bmc-grid { grid-template-columns: 1fr; }
+            .bmc-cell.span-2, .bmc-cell.span-3, .bmc-cell.span-5 { grid-column: span 1; }
+        }
+
+        @media (max-height: 700px) {
+            .slide { padding: clamp(20px, 3vh, 40px) clamp(20px, 3vw, 50px); }
+            h1 { font-size: clamp(28px, 4vw, 48px); margin-bottom: 10px; }
+            .subtitle { font-size: clamp(14px, 1.6vw, 20px); margin-bottom: 12px; }
+            .cards-container { margin-top: 12px; gap: 10px; }
+            .card { padding: 14px; }
+            .hema-logo { font-size: clamp(40px, 8vw, 80px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar" id="progress-bar"></div>
+    <div class="presentation">
+
+        <!-- ========== SLIDE 1: TITLE ========== -->
+        <div class="slide active">
+            <div class="slide-content">
+                <div class="hema-logo">HEMA</div>
+                <h1 class="hero">Weekopdracht 2</h1>
+                <p class="subtitle">8 C&rsquo;s, Business Model Canvas, Prijsbepaling, Webshopkwaliteit &amp; Cialdini</p>
+                <p class="meta-info">Stan van Dijk &bull; Niels Gunst &bull; Mees Egberts &bull; Levi de Jong &bull; Tom Koenraads<br>Online Marketing &mdash; Blok 3 &mdash; 2026</p>
+            </div>
+        </div>
+
+        <!-- ========== SLIDE 2: 8 C's OVERVIEW ========== -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="section-label"><span class="dot"></span>8C-model</div>
+                <h1>De 8 C&rsquo;s van e-loyaliteit</h1>
+                <p class="subtitle">Hoe HEMA klantloyaliteit online stimuleert en behoudt</p>
+
+                <div class="cards-container" style="grid-template-columns: repeat(4, 1fr);">
+                    <div class="card">
+                        <div class="icon">&#x2699;</div>
+                        <h3>Customization</h3>
+                        <p>Persoonlijke aanbevelingen, verlanglijstjes en opgeslagen sessies via HEMA-account</p>
+                    </div>
+                    <div class="card">
+                        <div class="icon">&#x1F4AC;</div>
+                        <h3>Contact interactivity</h3>
+                        <p>Live chat, telefoon, e-mail, contactformulier en social media klantenservice</p>
+                    </div>
+                    <div class="card">
+                        <div class="icon">&#x1F331;</div>
+                        <h3>Cultivation</h3>
+                        <p>HEMA Pas met spaarpunten, nieuwsbrief met 10% welkomstkorting, gratis tompouce op je verjaardag</p>
+                    </div>
+                    <div class="card">
+                        <div class="icon">&#x1F49C;</div>
+                        <h3>Care</h3>
+                        <p>30 dagen retourrecht, exacte voorraadinformatie, bestelstatus tracking en garantie</p>
+                    </div>
+                    <div class="card">
+                        <div class="icon">&#x1F465;</div>
+                        <h3>Community</h3>
+                        <p>Actief op 8 social media platformen, productbeoordelingen en 100-jarig jubileumcampagne</p>
+                    </div>
+                    <div class="card">
+                        <div class="icon">&#x1F50D;</div>
+                        <h3>Choice</h3>
+                        <p>13+ categorie&euml;n, uitgebreide filters (maat, kleur, prijs), sorteeropties en &ldquo;shop de set&rdquo;</p>
+                    </div>
+                    <div class="card">
+                        <div class="icon">&#x26A1;</div>
+                        <h3>Convenience</h3>
+                        <p>Intuïtieve navigatie, Click &amp; Collect, gratis verzending vanaf &euro;25, meerdere betaalopties</p>
+                    </div>
+                    <div class="card">
+                        <div class="icon">&#x2764;</div>
+                        <h3>Character</h3>
+                        <p>&ldquo;Met liefde gemaakt&rdquo; &mdash; warm, toegankelijk, typisch Nederlands merkkarakter sinds 1926</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== SLIDE 3: 8 C's DETAIL 1 ========== -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="section-label"><span class="dot"></span>8C-model &mdash; Deel 1</div>
+                <h1>Personalisatie &amp; Interactie</h1>
+
+                <div class="pillars" style="flex-wrap: wrap;">
+                    <div class="pillar" style="flex: 1 1 45%;">
+                        <div class="micro-type">Customization</div>
+                        <h3>Gepersonaliseerde ervaring</h3>
+                        <p>HEMA onthoudt je sessie, bekeken producten en zoekresultaten. Via je HEMA-account zie je bestelhistorie en opgeslagen adressen. Productpagina&rsquo;s tonen aanbevelingen op basis van eerder bekeken items via CQuotient analytics.</p>
+                    </div>
+                    <div class="pillar" style="flex: 1 1 45%;">
+                        <div class="micro-type">Contact interactivity</div>
+                        <h3>Makkelijk contact leggen</h3>
+                        <p>Live chat beschikbaar tot 21:00 uur. Telefonisch bereikbaar op 020 224 2424. Contactformulier met reactie binnen 2 werkdagen. Bereikbaar via Facebook, Instagram en Twitter voor snelle vragen.</p>
+                    </div>
+                    <div class="pillar" style="flex: 1 1 45%;">
+                        <div class="micro-type">Cultivation</div>
+                        <h3>Klantrelatie opbouwen</h3>
+                        <p>HEMA Pas: elke euro = 1 punt. Welkomstaanbod: 10% korting + 25 bonuspunten. Gratis tompouce op je verjaardag. Seizoensgebonden campagnes (Paas-, zomer- en Sinterklaasakties) houden klanten betrokken.</p>
+                    </div>
+                    <div class="pillar" style="flex: 1 1 45%;">
+                        <div class="micro-type">Care</div>
+                        <h3>Zorg voor de klant</h3>
+                        <p>30 dagen retourrecht (winkel &eacute;n post). Exacte voorraadinfo per product (&ldquo;online nog 6 op voorraad&rdquo;). Bestelstatus tracking en annulering mogelijk. Uitgebreide FAQ en garantie-informatie.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== SLIDE 4: 8 C's DETAIL 2 ========== -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="section-label"><span class="dot"></span>8C-model &mdash; Deel 2</div>
+                <h1>Keuze, Gemak &amp; Karakter</h1>
+
+                <div class="pillars" style="flex-wrap: wrap;">
+                    <div class="pillar" style="flex: 1 1 45%;">
+                        <div class="micro-type">Community</div>
+                        <h3>Betrokken community</h3>
+                        <p>Actief op 8 platformen: Facebook, Instagram, TikTok, Pinterest, YouTube, X, LinkedIn en Snapchat. Klanten schrijven productbeoordelingen. Het 100-jarig jubileum (2026) versterkt het gemeenschapsgevoel.</p>
+                    </div>
+                    <div class="pillar" style="flex: 1 1 45%;">
+                        <div class="micro-type">Choice</div>
+                        <h3>Breed en diep assortiment</h3>
+                        <p>13+ hoofdcategorie&euml;n van baby tot cadeaus. Uitgebreide filters: maat, kleur (met aantallen), materiaal, prijsrange. Sorteren op prijs, nieuwste of best verkocht. &ldquo;Shop de set&rdquo; voor complete samenstellingen.</p>
+                    </div>
+                    <div class="pillar" style="flex: 1 1 45%;">
+                        <div class="micro-type">Convenience</div>
+                        <h3>Maximaal gemak</h3>
+                        <p>Duidelijke breadcrumb-navigatie en prominente zoekbalk. Betalen met iDEAL, PayPal, creditcard, Klarna (achteraf). Click &amp; Collect of thuisbezorging (&euro;2,95, gratis vanaf &euro;25). Maatfilter-shortcuts op categoriepagina&rsquo;s.</p>
+                    </div>
+                    <div class="pillar" style="flex: 1 1 45%;">
+                        <div class="micro-type">Character</div>
+                        <h3>HEMA-merkidentiteit</h3>
+                        <p>Slogan: &ldquo;Met liefde gemaakt &mdash; Echt HEMA.&rdquo; Roze/magenta merkkleur met gele accenten. Warm, toegankelijk en typisch Nederlands. Jubileumcampagne &ldquo;liefde voor het dagelijks leven&rdquo; met Guus Meeuwis.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== SLIDE 5: BUSINESS MODEL CANVAS ========== -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="section-label"><span class="dot"></span>Business Model Canvas</div>
+                <h1>Het businessmodel van HEMA</h1>
+
+                <div class="bmc-grid">
+                    <!-- Row 1 -->
+                    <div class="bmc-cell row-2 highlight-cell">
+                        <h3>Kernpartners</h3>
+                        <ul>
+                            <li>Leveranciers (eigen merk)</li>
+                            <li>Logistieke partners (PostNL)</li>
+                            <li>Franchisenemers</li>
+                            <li>Betaalproviders (iDEAL, Klarna)</li>
+                            <li>Thuiswinkel Waarborg</li>
+                        </ul>
+                    </div>
+                    <div class="bmc-cell highlight-cell">
+                        <h3>Kernactiviteiten</h3>
+                        <ul>
+                            <li>Productontwikkeling (eigen merk)</li>
+                            <li>Omnichannel retail</li>
+                            <li>Marketing &amp; campagnes</li>
+                            <li>Fotoservice &amp; personalisatie</li>
+                        </ul>
+                    </div>
+                    <div class="bmc-cell row-2 highlight-cell" style="border-left-color: var(--hema-red); border-left-width: 4px;">
+                        <h3>Waardepropositie</h3>
+                        <ul>
+                            <li>Betaalbare, goed ontworpen dagelijkse producten</li>
+                            <li>Design voor iedereen</li>
+                            <li>Omnichannel gemak</li>
+                            <li>Nederlands erfgoed &amp; vertrouwen</li>
+                            <li>Persoonlijke services</li>
+                        </ul>
+                    </div>
+                    <div class="bmc-cell highlight-cell">
+                        <h3>Klantrelaties</h3>
+                        <ul>
+                            <li>HEMA Pas (loyalty)</li>
+                            <li>Persoonlijke klantenservice</li>
+                            <li>Nieuwsbrief &amp; acties</li>
+                            <li>Social media interactie</li>
+                        </ul>
+                    </div>
+                    <div class="bmc-cell row-2 highlight-cell">
+                        <h3>Klantsegmenten</h3>
+                        <ul>
+                            <li>Budgetbewuste gezinnen</li>
+                            <li>Jonge stedelijke starters</li>
+                            <li>Loyale 50-plussers</li>
+                            <li>Cadeaukopers</li>
+                            <li>Breed: &ldquo;voor iedereen&rdquo;</li>
+                        </ul>
+                    </div>
+                    <!-- Row 2 -->
+                    <div class="bmc-cell highlight-cell">
+                        <h3>Kernmiddelen</h3>
+                        <ul>
+                            <li>700+ fysieke winkels</li>
+                            <li>Webshop hema.nl</li>
+                            <li>Sterk merknaam (100 jaar)</li>
+                            <li>Eigen productlijnen</li>
+                        </ul>
+                    </div>
+                    <div class="bmc-cell highlight-cell">
+                        <h3>Kanalen</h3>
+                        <ul>
+                            <li>Fysieke winkels</li>
+                            <li>Webshop (hema.nl)</li>
+                            <li>HEMA-app</li>
+                            <li>Social media</li>
+                            <li>E-mail &amp; nieuwsbrief</li>
+                        </ul>
+                    </div>
+                    <!-- Row 3 (bottom) -->
+                    <div class="bmc-cell span-2 highlight-cell">
+                        <h3>Kostenstructuur</h3>
+                        <ul>
+                            <li>Huur winkelpanden &bull; Personeelskosten &bull; Productie &amp; inkoop &bull; Logistiek &amp; bezorging &bull; Marketing &amp; IT</li>
+                        </ul>
+                    </div>
+                    <div class="bmc-cell span-3 highlight-cell">
+                        <h3>Inkomstenbronnen</h3>
+                        <ul>
+                            <li>Productverkoop (winkel + online) &bull; Fotoservice &bull; Personalisatie &bull; HEMA cadeaukaarten &bull; Franchise-inkomsten</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== SLIDE 6: BMC BEOORDELING ========== -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="section-label"><span class="dot"></span>BMC &mdash; Beoordeling</div>
+                <h1>Sterke &amp; zwakke punten</h1>
+
+                <div class="cards-container" style="grid-template-columns: repeat(2, 1fr);">
+                    <div class="card" style="border-left: 4px solid #34C759;">
+                        <h3>&#x2705; Sterktes</h3>
+                        <ul>
+                            <li>Zeer sterke waardepropositie: betaalbaar design voor iedereen</li>
+                            <li>Omnichannel aanpak: naadloze integratie online &amp; offline</li>
+                            <li>Hoge merkherkenning na 100 jaar</li>
+                            <li>HEMA Pas versterkt klantrelaties effectief</li>
+                            <li>Breed assortiment spreekt vrijwel alle segmenten aan</li>
+                        </ul>
+                    </div>
+                    <div class="card" style="border-left: 4px solid #FF9500;">
+                        <h3>&#x26A0; Aandachtspunten</h3>
+                        <ul>
+                            <li>Beperkte meertaligheid op de webshop (alleen NL)</li>
+                            <li>Hoge concurrentie van Action, IKEA en Flying Tiger</li>
+                            <li>Afhankelijkheid van fysieke winkels in het kostenmodel</li>
+                            <li>Lagere merktrouw bij jongere doelgroep</li>
+                            <li>Franchise-model kan merkervaring inconsistent maken</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== SLIDE 7: ONLINE PRIJSBEPALING ========== -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="section-label"><span class="dot"></span>Online prijsbepaling</div>
+                <h1>Prijsstrategie&euml;n van HEMA</h1>
+                <p class="subtitle">HEMA hanteert een combinatie van penetratieprijzen en actiegedreven strategie&euml;n</p>
+
+                <div class="cards-container" style="grid-template-columns: repeat(4, 1fr);">
+                    <div class="card" style="text-align: center;">
+                        <div class="icon">&#x1F4E6;</div>
+                        <h3>Stapelkorting</h3>
+                        <p>&ldquo;3 stuks = 40% korting, 2 stuks = 30%&rdquo; op basics en badtextiel. Stimuleert hogere orderwaarde.</p>
+                    </div>
+                    <div class="card" style="text-align: center;">
+                        <div class="icon">&#x1F381;</div>
+                        <h3>Bundelprijs</h3>
+                        <p>Paasartikelen: &ldquo;3 voor &euro;8, 2 voor &euro;6&rdquo;. Combineer producten voor een voordeelprijs.</p>
+                    </div>
+                    <div class="card" style="text-align: center;">
+                        <div class="icon">&#x1F377;</div>
+                        <h3>2e halve prijs</h3>
+                        <p>Bij wijn: &ldquo;2e halve prijs.&rdquo; Klassieke strategie om extra verkoop te stimuleren.</p>
+                    </div>
+                    <div class="card" style="text-align: center;">
+                        <div class="icon">&#x1F4B0;</div>
+                        <h3>Penetratieprijs</h3>
+                        <p>Basics vanaf &euro;7,49. Lage instapprijzen trekken klanten aan die dan ook andere producten kopen.</p>
+                    </div>
+                    <div class="card" style="text-align: center;">
+                        <div class="icon">&#x1F33B;</div>
+                        <h3>Seizoensacties</h3>
+                        <p>Paas-, zomer- en Sinterklaasakties met tijdelijke prijzen. Speelt in op seizoensgebonden vraag.</p>
+                    </div>
+                    <div class="card" style="text-align: center;">
+                        <div class="icon">&#x1F4B3;</div>
+                        <h3>Loyaliteitskorting</h3>
+                        <p>HEMA Pas-leden krijgen exclusieve kortingen en gratis producten via het puntensysteem.</p>
+                    </div>
+                    <div class="card" style="text-align: center;">
+                        <div class="icon">&#x2709;</div>
+                        <h3>Welkomstkorting</h3>
+                        <p>10% korting bij nieuwsbriefaanmelding als acquisitie-instrument voor nieuwe klanten.</p>
+                    </div>
+                    <div class="card" style="text-align: center;">
+                        <div class="icon">&#x1F9E0;</div>
+                        <h3>Psychologische prijs</h3>
+                        <p>Prijzen als &euro;7,49 en &euro;14,99 &mdash; net onder ronde getallen voor een goedkoper gevoel.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== SLIDE 8: WEBSHOP KWALITEIT - CONTENT & ONTWERP ========== -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="section-label"><span class="dot"></span>Websitekwaliteit &mdash; Deel 1</div>
+                <h1>Content &amp; Ontwerp</h1>
+                <p class="subtitle">Beoordeling van hema.nl op basis van het raamwerk van Hasan &amp; Abuelrub</p>
+
+                <div class="cards-container" style="grid-template-columns: repeat(2, 1fr);">
+                    <div class="card">
+                        <h3>&#x1F4DD; Content</h3>
+                        <ul>
+                            <li><strong>Actueel:</strong> Seizoenscontent wordt actief bijgewerkt (Pasen, zomer, tuin)</li>
+                            <li><strong>Relevant:</strong> Producten in thematische carousels die aansluiten bij het moment</li>
+                            <li><strong>Meertalig:</strong> Alleen NL &mdash; aparte Belgische site (hema.com/nl-be)</li>
+                            <li><strong>Variatie:</strong> Mix van productfoto&rsquo;s, lifestyle-beelden en campagnebanners</li>
+                            <li><strong>Accuraat:</strong> Prijs per eenheid (&euro;/kg), exacte voorraadinfo per product</li>
+                            <li><strong>Autoriteit:</strong> 100 jaar merkhistorie, Thuiswinkel Waarborg keurmerk</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>&#x1F3A8; Ontwerp</h3>
+                        <ul>
+                            <li><strong>Aantrekkelijk:</strong> Strak, modern design met veel witruimte</li>
+                            <li><strong>Gepast:</strong> Roze/magenta past bij warm, toegankelijk merkimago</li>
+                            <li><strong>Kleurgebruik:</strong> Consistent roze + gele accenten voor aanbiedingen</li>
+                            <li><strong>Beeldmateriaal:</strong> Hoogwaardige productfotografie en lifestyle-beelden</li>
+                            <li><strong>Tekst:</strong> Goed leesbaar, helder lettertype, voldoende contrast</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== SLIDE 9: WEBSHOP KWALITEIT - STRUCTUUR & USABILITY ========== -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="section-label"><span class="dot"></span>Websitekwaliteit &mdash; Deel 2</div>
+                <h1>Structuur &amp; Gebruiksvriendelijkheid</h1>
+
+                <div class="cards-container" style="grid-template-columns: repeat(2, 1fr);">
+                    <div class="card">
+                        <h3>&#x1F3D7; Structuur</h3>
+                        <ul>
+                            <li><strong>Index:</strong> Prominente zoekbalk met suggesties, goed doorzoekbaar</li>
+                            <li><strong>Mapping:</strong> Logische menustructuur met 13+ categorie&euml;n en subcategorie&euml;n</li>
+                            <li><strong>Consistentie:</strong> Navigatie, lay-out en terminologie overal hetzelfde</li>
+                            <li><strong>Links:</strong> Duidelijke footer met klantenservice, bedrijfsinfo en juridisch</li>
+                            <li><strong>Logo:</strong> Herkenbaar logo dat linkt naar homepage</li>
+                            <li><strong>Domeinnaam:</strong> hema.nl &mdash; kort, krachtig, exact de merknaam</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>&#x1F44D; Gebruiksvriendelijkheid</h3>
+                        <ul>
+                            <li><strong>Bruikbaarheid:</strong> Breadcrumb-navigatie, directe maatfilters op overzichtspagina&rsquo;s</li>
+                            <li><strong>Betrouwbaar:</strong> Thuiswinkel Waarborg (96% herkenning NL)</li>
+                            <li><strong>Interactiviteit:</strong> Filters, sorteer, wishlist, direct add-to-cart</li>
+                            <li><strong>Veiligheid:</strong> HTTPS, privacyverklaring, GDPR-compliant</li>
+                            <li><strong>Maatwerk:</strong> Aanbevelingen o.b.v. bekeken producten, persoonlijk account</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== SLIDE 10: CIALDINI ========== -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="section-label"><span class="dot"></span>Cialdini</div>
+                <h1>6 be&iuml;nvloedingsprincipes</h1>
+                <p class="subtitle">Hoe HEMA de principes van Cialdini toepast op hema.nl</p>
+
+                <div class="cards-container" style="grid-template-columns: repeat(3, 1fr);">
+                    <div class="card">
+                        <div class="icon">&#x1F381;</div>
+                        <h3>Wederkerigheid</h3>
+                        <ul>
+                            <li>10% welkomstkorting bij nieuwsbrief</li>
+                            <li>25 gratis bonuspunten bij registratie</li>
+                            <li>Gratis tompouce op je verjaardag</li>
+                            <li>Gratis koffie/thee voor pashouders</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <div class="icon">&#x1F91D;</div>
+                        <h3>Commitment</h3>
+                        <ul>
+                            <li>HEMA Pas: punten sparen = blijven terugkomen</li>
+                            <li>Wishlist: opslaan = toekomstige aankoop</li>
+                            <li>Account aanmaken als kleine commitment</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <div class="icon">&#x1F465;</div>
+                        <h3>Sociale bewijskracht</h3>
+                        <ul>
+                            <li>Sorteeroptie &ldquo;best verkocht&rdquo;</li>
+                            <li>Productbeoordelingen van klanten</li>
+                            <li>Thuiswinkel Waarborg keurmerk</li>
+                            <li>8 social media platformen</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <div class="icon">&#x1F60A;</div>
+                        <h3>Sympathie</h3>
+                        <ul>
+                            <li>&ldquo;Met liefde gemaakt&rdquo; &mdash; warme toon</li>
+                            <li>Roze/magenta straalt vrolijkheid uit</li>
+                            <li>100-jarig jubileum met Guus Meeuwis</li>
+                            <li>&ldquo;Winkel voor iedereen&rdquo; positionering</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <div class="icon">&#x1F3C6;</div>
+                        <h3>Autoriteit</h3>
+                        <ul>
+                            <li>Thuiswinkel Waarborg (officieel keurmerk)</li>
+                            <li>100 jaar ervaring (opgericht 1926)</li>
+                            <li>Transparantie: KvK, adres, juridisch</li>
+                            <li>Prijs per eenheid (&euro;/kg) toont eerlijkheid</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <div class="icon">&#x23F3;</div>
+                        <h3>Schaarste</h3>
+                        <ul>
+                            <li>&ldquo;Online nog 6 stuks op voorraad&rdquo;</li>
+                            <li>Seizoensgebonden producten (tijdelijk)</li>
+                            <li>Stapelgek-acties met deadline</li>
+                            <li>Limited editions voor Pas-leden</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== SLIDE 11: CIALDINI CONCLUSIE & ADVIES ========== -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="section-label"><span class="dot"></span>Cialdini &mdash; Conclusie &amp; Advies</div>
+                <h1>Bevindingen &amp; aanbevelingen</h1>
+
+                <div class="cards-container" style="grid-template-columns: repeat(2, 1fr);">
+                    <div class="card" style="border-left: 4px solid var(--hema-red);">
+                        <h3>&#x1F4CB; Conclusie</h3>
+                        <ul>
+                            <li><strong>Sterkst ingezet:</strong> Wederkerigheid (gratis cadeaus, kortingen) en Autoriteit (keurmerk, 100 jaar)</li>
+                            <li><strong>Goed ingezet:</strong> Schaarste (voorraadmeldingen) en Sympathie (warm merkkarakter)</li>
+                            <li><strong>Kan beter:</strong> Sociale bewijskracht (reviews zijn weinig zichtbaar op productpagina&rsquo;s) en Commitment (kan actiever)</li>
+                        </ul>
+                    </div>
+                    <div class="card" style="border-left: 4px solid #34C759;">
+                        <h3>&#x1F4A1; Advies</h3>
+                        <ul>
+                            <li><strong>Reviews prominenter tonen:</strong> Sterren direct op overzichtspagina&rsquo;s, niet alleen op productpagina</li>
+                            <li><strong>Urgentie versterken:</strong> &ldquo;12 mensen bekijken dit nu&rdquo; of &ldquo;vandaag al 8x besteld&rdquo;</li>
+                            <li><strong>Commitment uitbreiden:</strong> Gepersonaliseerde spaardoelen in de HEMA Pas (&ldquo;nog 50 punten tot je gratis cadeau&rdquo;)</li>
+                            <li><strong>UGC inzetten:</strong> Klantfoto&rsquo;s bij producten laten zien (sociale bewijskracht + sympathie)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== SLIDE 12: BRONNEN ========== -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="hema-logo-small">HEMA</div>
+                <h1>Bronnen</h1>
+
+                <div class="references-list">
+                    <div class="reference-item">[1] Visser, M. &amp; Sikkenga, B. (2021). <em>Basisboek Online Marketing: Van strategie tot conversie</em> (4e druk). Noordhoff Uitgevers.</div>
+                    <div class="reference-item">[2] Srinivasan, S.S., Anderson, R. &amp; Ponnavolu, K. (2002). Customer loyalty in e-commerce: an exploration of its antecedents and consequences. <em>Journal of Retailing</em>, 78(1), 41-50.</div>
+                    <div class="reference-item">[3] Hasan, L. &amp; Abuelrub, E. (2011). Assessing the quality of web sites. <em>Applied Computing and Informatics</em>, 9(1), 11-29.</div>
+                    <div class="reference-item">[4] Cialdini, R.B. (2006). <em>Influence: The Psychology of Persuasion</em>. Harper Business.</div>
+                    <div class="reference-item">[5] HEMA (z.d.). hema.nl. Geraadpleegd op 3 maart 2026.</div>
+                    <div class="reference-item">[6] HEMA Corporate (2026). HEMA viert 100ste verjaardag. corporate.hema.com.</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Navigation -->
+    <div class="slide-indicator" id="slide-indicator">1 / 12</div>
+    <button class="fullscreen-btn" id="fs-btn" onclick="toggleFullscreen()" title="Fullscreen">
+        <svg id="fs-icon-enter" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>
+        <svg id="fs-icon-exit" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><path d="M8 3v3a2 2 0 01-2 2H3m18 0h-3a2 2 0 01-2-2V3m0 18v-3a2 2 0 012-2h3M3 16h3a2 2 0 012 2v3"/></svg>
+    </button>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        let current = 0;
+        const total = slides.length;
+
+        function updateUI() {
+            document.getElementById('slide-indicator').textContent = `${current + 1} / ${total}`;
+            document.getElementById('progress-bar').style.width = `${((current + 1) / total) * 100}%`;
+        }
+
+        function goToSlide(index, direction) {
+            if (index < 0 || index >= total || index === current) return;
+            const prev = slides[current];
+            const next = slides[index];
+
+            prev.classList.remove('active');
+            prev.classList.add(direction === 'next' ? 'exit-left' : 'exit-right');
+
+            next.classList.remove('exit-left', 'exit-right');
+            void next.offsetWidth;
+            next.classList.add('active');
+
+            current = index;
+            updateUI();
+
+            setTimeout(() => { prev.classList.remove('exit-left', 'exit-right'); }, 1000);
+        }
+
+        function nextSlide() { goToSlide(current + 1, 'next'); }
+        function prevSlide() { goToSlide(current - 1, 'prev'); }
+
+        document.addEventListener('keydown', e => {
+            if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+            else if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+        });
+
+        document.addEventListener('click', e => {
+            if (e.target.closest('.fullscreen-btn')) return;
+            if (e.clientX > window.innerWidth * 0.5) nextSlide();
+            else prevSlide();
+        });
+
+        let touchStartX = 0;
+        document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
+        document.addEventListener('touchend', e => {
+            const diff = e.changedTouches[0].clientX - touchStartX;
+            if (diff > 50) prevSlide();
+            else if (diff < -50) nextSlide();
+        });
+
+        // Fullscreen toggle
+        function toggleFullscreen() {
+            const el = document.documentElement;
+            const isFs = document.fullscreenElement || document.webkitFullscreenElement || document.webkitIsFullScreen;
+
+            if (!isFs) {
+                if (el.requestFullscreen) {
+                    el.requestFullscreen().catch(() => {});
+                } else if (el.webkitRequestFullScreen) {
+                    el.webkitRequestFullScreen();
+                } else if (el.webkitRequestFullscreen) {
+                    el.webkitRequestFullscreen();
+                } else if (el.msRequestFullscreen) {
+                    el.msRequestFullscreen();
+                }
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen().catch(() => {});
+                } else if (document.webkitCancelFullScreen) {
+                    document.webkitCancelFullScreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                }
+            }
+        }
+
+        function updateFsIcon() {
+            const isFs = document.fullscreenElement || document.webkitFullscreenElement || document.webkitIsFullScreen;
+            document.getElementById('fs-icon-enter').style.display = isFs ? 'none' : '';
+            document.getElementById('fs-icon-exit').style.display = isFs ? '' : 'none';
+        }
+
+        document.addEventListener('fullscreenchange', updateFsIcon);
+        document.addEventListener('webkitfullscreenchange', updateFsIcon);
+
+        updateUI();
+    </script>
+</body>
+</html>
