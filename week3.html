@@ -24,12 +24,8 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
-            background: var(--white);
-            color: var(--text);
-            line-height: 1.1;
-            overflow: hidden;
-            -webkit-font-smoothing: antialiased;
-            perspective: 1200px;
+            background: var(--white); color: var(--text); line-height: 1.1;
+            overflow: hidden; -webkit-font-smoothing: antialiased; perspective: 1200px;
         }
 
         .presentation { width: 100vw; height: 100vh; position: relative; transform-style: preserve-3d; }
@@ -39,17 +35,13 @@
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             position: absolute; top: 0; left: 0;
             padding: clamp(30px, 4vh, 60px) clamp(30px, 5vw, 80px);
-            text-align: center;
-            opacity: 0; pointer-events: none;
-            transform: translateX(100%) rotateY(8deg) scale(0.85);
-            filter: blur(8px);
+            text-align: center; opacity: 0; pointer-events: none;
+            transform: translateX(100%) rotateY(8deg) scale(0.85); filter: blur(8px);
             transition: opacity var(--transition-duration) var(--transition-ease),
                         transform var(--transition-duration) var(--transition-ease),
                         filter var(--transition-duration) var(--transition-ease);
-            will-change: opacity, transform, filter;
-            transform-style: preserve-3d;
+            will-change: opacity, transform, filter; transform-style: preserve-3d;
         }
-
         .slide.active { opacity: 1; pointer-events: auto; transform: translateX(0) rotateY(0deg) scale(1); filter: blur(0px); }
         .slide.exit-left { opacity: 0; pointer-events: none; transform: translateX(-100%) rotateY(-8deg) scale(0.85); filter: blur(8px); }
         .slide.exit-right { opacity: 0; pointer-events: none; transform: translateX(100%) rotateY(8deg) scale(0.85); filter: blur(8px); }
@@ -58,7 +50,6 @@
             max-width: 1100px; width: 100%; margin: 0 auto;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
-
         .slide.active .slide-content > * { animation: elementReveal 0.8s var(--transition-ease) both; }
         .slide.active .slide-content > *:nth-child(1) { animation-delay: 0.15s; }
         .slide.active .slide-content > *:nth-child(2) { animation-delay: 0.3s; }
@@ -83,14 +74,13 @@
             70% { transform: scale(1.05) rotateX(0deg); }
             100% { opacity: 1; transform: scale(1) rotateX(0deg); filter: blur(0px); }
         }
-
         .hema-logo-small {
             font-size: clamp(18px, 2.5vw, 28px); font-weight: 900; color: var(--white);
             background: var(--hema-red); padding: 5px clamp(10px, 1.5vw, 18px);
             letter-spacing: 0.08em; line-height: 1; display: inline-block; margin-bottom: 20px;
         }
 
-        h1 { font-size: clamp(32px, 4.5vw, 56px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.05; margin-bottom: clamp(10px, 1.5vh, 20px); color: var(--text); }
+        h1 { font-size: clamp(32px, 4.5vw, 56px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.05; margin-bottom: clamp(10px, 1.5vh, 20px); }
         h1.hero { font-size: clamp(38px, 5.5vw, 68px); font-weight: 800; line-height: 1.0; }
         .subtitle { font-size: clamp(15px, 1.8vw, 22px); font-weight: 400; color: var(--subtext); margin-bottom: clamp(12px, 2vh, 24px); line-height: 1.3; max-width: 700px; }
         .meta-info { font-size: clamp(13px, 1.4vw, 16px); color: var(--subtext); font-weight: 400; line-height: 1.5; margin-top: 8px; }
@@ -105,7 +95,6 @@
         }
         .section-label .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--hema-red); }
 
-        /* CARDS */
         .cards-container {
             display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: clamp(10px, 1.5vw, 20px); margin-top: clamp(12px, 2vh, 24px);
@@ -136,15 +125,14 @@
             100% { opacity: 1; transform: translateY(0) scale(1) rotateX(0deg); filter: blur(0px); }
         }
         .card:hover { background: var(--card-hover); box-shadow: 0 12px 40px rgba(228,0,43,0.08), 0 4px 12px rgba(0,0,0,0.04); }
-        .card h3 { font-size: clamp(12px, 1.4vw, 16px); font-weight: 600; margin-bottom: 5px; color: var(--text); }
-        .card p, .card li { font-size: clamp(10.5px, 1.15vw, 13px); color: var(--subtext); line-height: 1.4; }
+        .card h3 { font-size: clamp(13px, 1.5vw, 17px); font-weight: 600; margin-bottom: 5px; color: var(--text); }
+        .card p, .card li { font-size: clamp(11px, 1.2vw, 14px); color: var(--subtext); line-height: 1.4; }
         .card ul { list-style: none; padding: 0; }
         .card ul li { padding: 2px 0; padding-left: 12px; position: relative; }
-        .card ul li::before { content: ''; position: absolute; left: 0; top: 8px; width: 4px; height: 4px; border-radius: 50%; background: var(--hema-red); }
-        .card .stat { font-size: clamp(22px, 3vw, 34px); font-weight: 800; color: var(--hema-red); margin-bottom: 4px; letter-spacing: -0.02em; }
-        .card .icon { font-size: clamp(20px, 2.2vw, 28px); margin-bottom: 5px; }
+        .card ul li::before { content: ''; position: absolute; left: 0; top: 9px; width: 4px; height: 4px; border-radius: 50%; background: var(--hema-red); }
+        .card .stat { font-size: clamp(24px, 3.5vw, 38px); font-weight: 800; color: var(--hema-red); margin-bottom: 4px; letter-spacing: -0.02em; }
+        .card .icon { font-size: clamp(22px, 2.5vw, 30px); margin-bottom: 5px; }
 
-        /* KEYWORD TABLE */
         .kw-table {
             width: 100%; max-width: 1100px; border-collapse: separate;
             border-spacing: 0; margin-top: clamp(12px, 2vh, 20px);
@@ -164,17 +152,10 @@
         .slide.active .kw-table tbody tr:nth-child(3) { animation-delay: 0.46s; }
         .slide.active .kw-table tbody tr:nth-child(4) { animation-delay: 0.54s; }
         .slide.active .kw-table tbody tr:nth-child(5) { animation-delay: 0.62s; }
-        .slide.active .kw-table tbody tr:nth-child(6) { animation-delay: 0.70s; }
-        .slide.active .kw-table tbody tr:nth-child(7) { animation-delay: 0.78s; }
-        .slide.active .kw-table tbody tr:nth-child(8) { animation-delay: 0.86s; }
-        .slide.active .kw-table tbody tr:nth-child(9) { animation-delay: 0.94s; }
-        .slide.active .kw-table tbody tr:nth-child(10) { animation-delay: 1.02s; }
-
         @keyframes rowReveal {
             from { opacity: 0; transform: translateX(-30px); }
             to { opacity: 1; transform: translateX(0); }
         }
-
         .kw-table tbody td {
             padding: 9px 14px; border-bottom: 1px solid #f0f0f2;
             color: var(--text); text-align: left; vertical-align: top;
@@ -185,13 +166,11 @@
         .match-badge {
             display: inline-block; padding: 2px 8px; border-radius: 50px;
             font-size: clamp(9px, 0.9vw, 11px); font-weight: 600;
-            letter-spacing: 0.02em;
         }
         .match-exact { background: #e8f5e9; color: #2e7d32; }
         .match-phrase { background: #e3f2fd; color: #1565c0; }
         .match-broad { background: #fff3e0; color: #e65100; }
 
-        /* AD PREVIEW */
         .ad-preview {
             background: var(--white); border: 1px solid #e0e0e0; border-radius: 12px;
             padding: clamp(14px, 1.8vw, 22px); text-align: left; width: 100%;
@@ -200,22 +179,18 @@
         .slide.active .ad-preview { animation: cardDrop 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; }
         .slide.active .ad-preview:nth-child(odd) { animation-delay: 0.4s; }
         .slide.active .ad-preview:nth-child(even) { animation-delay: 0.6s; }
-
         .ad-label { font-size: 9px; font-weight: 700; color: var(--subtext); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px; }
         .ad-url { font-size: clamp(11px, 1.1vw, 13px); color: #1a73e8; margin-bottom: 2px; }
-        .ad-headline { font-size: clamp(14px, 1.5vw, 18px); color: #1a0dab; font-weight: 600; margin-bottom: 4px; line-height: 1.2; cursor: pointer; }
-        .ad-headline:hover { text-decoration: underline; }
+        .ad-headline { font-size: clamp(14px, 1.5vw, 18px); color: #1a0dab; font-weight: 600; margin-bottom: 4px; line-height: 1.2; }
         .ad-desc { font-size: clamp(11px, 1.15vw, 13px); color: #4d5156; line-height: 1.4; }
         .ad-extensions { display: flex; gap: 12px; margin-top: 6px; flex-wrap: wrap; }
         .ad-ext { font-size: clamp(10px, 1vw, 12px); color: #1a73e8; }
-
         .ad-grid {
             display: grid; grid-template-columns: repeat(2, 1fr);
             gap: clamp(12px, 1.5vw, 20px); width: 100%; max-width: 1100px;
             margin-top: clamp(10px, 1.5vh, 18px);
         }
 
-        /* PILLARS */
         .pillars { display: flex; gap: clamp(10px, 1.5vw, 20px); max-width: 1100px; margin: clamp(12px, 2vh, 24px) auto 0; width: 100%; }
         .pillar {
             flex: 1; background: var(--card-bg); border-radius: 14px;
@@ -239,15 +214,13 @@
         .pillar .micro-type {
             display: inline-block; background: #fce8ec; color: var(--hema-red);
             padding: 3px 10px; border-radius: 50px; font-size: clamp(9px, 0.9vw, 11px);
-            font-weight: 600; margin-bottom: 6px; letter-spacing: 0.03em;
+            font-weight: 600; margin-bottom: 6px;
         }
 
-        /* LANDING PAGE MOCKUP */
         .lp-mockup {
             background: var(--white); border: 2px solid #e0e0e0; border-radius: 16px;
             max-width: 900px; width: 100%; overflow: hidden;
-            margin-top: clamp(10px, 1.5vh, 18px);
-            opacity: 0;
+            margin-top: clamp(10px, 1.5vh, 18px); opacity: 0;
         }
         .slide.active .lp-mockup { animation: cardDrop 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both; }
         .lp-browser-bar {
@@ -259,10 +232,7 @@
         .lp-dot:nth-child(1) { background: #ff5f57; }
         .lp-dot:nth-child(2) { background: #ffbd2e; }
         .lp-dot:nth-child(3) { background: #28c840; }
-        .lp-url-bar {
-            flex: 1; background: var(--white); border-radius: 6px; padding: 5px 12px;
-            font-size: 11px; color: var(--subtext);
-        }
+        .lp-url-bar { flex: 1; background: var(--white); border-radius: 6px; padding: 5px 12px; font-size: 11px; color: var(--subtext); }
         .lp-content { padding: clamp(16px, 2vw, 30px); }
         .lp-hero {
             background: linear-gradient(135deg, var(--hema-red), var(--hema-dark));
@@ -276,27 +246,17 @@
             padding: 8px 24px; border-radius: 50px; font-weight: 700;
             font-size: clamp(12px, 1.3vw, 15px);
         }
-        .lp-features {
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px;
-        }
-        .lp-feature {
-            background: var(--card-bg); border-radius: 10px; padding: 12px;
-            text-align: center;
-        }
+        .lp-features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
+        .lp-feature { background: var(--card-bg); border-radius: 10px; padding: 12px; text-align: center; }
         .lp-feature .icon { font-size: 20px; margin-bottom: 4px; }
         .lp-feature h4 { font-size: 12px; font-weight: 600; margin-bottom: 2px; }
         .lp-feature p { font-size: 10px; color: var(--subtext); line-height: 1.3; }
-        .lp-reviews {
-            display: flex; gap: 10px;
-        }
-        .lp-review {
-            flex: 1; background: var(--card-bg); border-radius: 10px; padding: 10px;
-        }
+        .lp-reviews { display: flex; gap: 10px; }
+        .lp-review { flex: 1; background: var(--card-bg); border-radius: 10px; padding: 10px; }
         .lp-stars { color: #ffc107; font-size: 12px; margin-bottom: 3px; }
         .lp-review p { font-size: 10px; color: var(--subtext); line-height: 1.3; }
         .lp-review .author { font-size: 9px; font-weight: 600; color: var(--text); margin-top: 3px; }
 
-        /* REFERENCES */
         .references-list { text-align: left; max-width: 900px; margin: clamp(12px, 2vh, 20px) auto 0; width: 100%; }
         .reference-item {
             font-size: clamp(10.5px, 1.1vw, 12px); color: #6e6e73; line-height: 1.5;
@@ -312,9 +272,11 @@
         .slide.active .reference-item:nth-child(6) { animation-delay: 0.9s; }
         .slide.active .reference-item:nth-child(7) { animation-delay: 1.0s; }
         .slide.active .reference-item:nth-child(8) { animation-delay: 1.1s; }
+        .slide.active .reference-item:nth-child(9) { animation-delay: 1.2s; }
+        .slide.active .reference-item:nth-child(10) { animation-delay: 1.3s; }
+        .slide.active .reference-item:nth-child(11) { animation-delay: 1.4s; }
         .reference-item:last-child { border-bottom: none; }
 
-        /* PROGRESS */
         .progress-bar { position: fixed; top: 0; left: 0; height: 3px; background: var(--hema-red); transition: width 0.7s var(--transition-ease); z-index: 200; box-shadow: 0 0 10px rgba(228,0,43,0.4); }
         .slide-indicator { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); font-size: 13px; color: #c7c7cc; font-weight: 400; z-index: 100; }
 
@@ -353,7 +315,7 @@
     <div class="progress-bar" id="progress-bar"></div>
     <div class="presentation">
 
-        <!-- ========== SLIDE 1: TITLE ========== -->
+        <!-- SLIDE 1: TITLE -->
         <div class="slide active">
             <div class="slide-content">
                 <div class="hema-logo">HEMA</div>
@@ -363,328 +325,265 @@
             </div>
         </div>
 
-        <!-- ========== SLIDE 2: 10 ZOEKWOORDEN - DEEL 1 ========== -->
+        <!-- SLIDE 2: 10 ZOEKWOORDEN DEEL 1 -->
         <div class="slide">
             <div class="slide-content">
-                <div class="section-label"><span class="dot"></span>Zoekwoordenonderzoek &mdash; SEO</div>
-                <h1>10 zoekwoorden &mdash; Deel 1</h1>
+                <div class="section-label"><span class="dot"></span>Opdracht 1 &mdash; zoekwoordenonderzoek</div>
+                <h1>10 zoekwoorden (1&ndash;5)</h1>
 
                 <table class="kw-table">
                     <thead>
-                        <tr><th>#</th><th>Zoekwoord</th><th>Waarom relevant?</th><th>SEO-aanpak</th></tr>
+                        <tr><th>#</th><th>Zoekwoord</th><th>Relevantie</th><th>SEO-aanpak</th></tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>goedkope schoolspullen</td>
-                            <td>Hoog zoekvolume aug-sept. Past bij gezinssegment.</td>
-                            <td>Categoriepagina optimaliseren + seizoensblog &ldquo;Back to School&rdquo;</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>cadeau onder 10 euro</td>
-                            <td>Koopintentie, past bij HEMA&rsquo;s prijspositionering.</td>
-                            <td>Landingspagina met prijsfilter + structured data (Product)</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>gepersonaliseerd cadeau</td>
-                            <td>Unieke HEMA-service (graveren, fotoservice).</td>
-                            <td>Contentmarketing: blogartikel + video. Schema markup.</td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td>betaalbare woonaccessoires</td>
-                            <td>Relevant voor jonge starters die inrichten.</td>
-                            <td>On-page SEO: H1/meta-tags + interne links naar wonen.</td>
-                        </tr>
-                        <tr>
-                            <td>5</td>
-                            <td>kinderkleding kopen online</td>
-                            <td>Hoog volume, sterke HEMA-categorie.</td>
-                            <td>Technische SEO: snelle laadtijd + mobile-first. Breadcrumbs.</td>
-                        </tr>
+                        <tr><td>1</td><td>goedkope schoolspullen</td><td>Seizoenspiek aug&ndash;sept, gezinssegment</td><td>Categoriepagina + seizoensblog</td></tr>
+                        <tr><td>2</td><td>cadeau onder 10 euro</td><td>Koopintentie, HEMA-prijspositionering</td><td>Landingspagina + structured data</td></tr>
+                        <tr><td>3</td><td>gepersonaliseerd cadeau</td><td>Unieke HEMA-service (graveren, foto)</td><td>Blog + video + schema markup</td></tr>
+                        <tr><td>4</td><td>betaalbare woonaccessoires</td><td>Jonge starters, eerste woning</td><td>On-page: H1, meta-tags, interne links</td></tr>
+                        <tr><td>5</td><td>kinderkleding kopen online</td><td>Hoog volume, sterke HEMA-categorie</td><td>Mobile-first + breadcrumbs</td></tr>
                     </tbody>
                 </table>
             </div>
         </div>
 
-        <!-- ========== SLIDE 3: 10 ZOEKWOORDEN - DEEL 2 ========== -->
+        <!-- SLIDE 3: 10 ZOEKWOORDEN DEEL 2 -->
         <div class="slide">
             <div class="slide-content">
-                <div class="section-label"><span class="dot"></span>Zoekwoordenonderzoek &mdash; SEO</div>
-                <h1>10 zoekwoorden &mdash; Deel 2</h1>
+                <div class="section-label"><span class="dot"></span>Opdracht 1 &mdash; zoekwoordenonderzoek</div>
+                <h1>10 zoekwoorden (6&ndash;10)</h1>
 
                 <table class="kw-table">
                     <thead>
-                        <tr><th>#</th><th>Zoekwoord</th><th>Waarom relevant?</th><th>SEO-aanpak</th></tr>
+                        <tr><th>#</th><th>Zoekwoord</th><th>Relevantie</th><th>SEO-aanpak</th></tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>6</td>
-                            <td>foto op canvas bestellen</td>
-                            <td>Specifieke HEMA-dienst, hoge conversie-intentie.</td>
-                            <td>Servicepagina met reviews + FAQ-sectie (rich snippets).</td>
-                        </tr>
-                        <tr>
-                            <td>7</td>
-                            <td>sinterklaas cadeau kind</td>
-                            <td>Seizoenspiek nov-dec, past bij alle segmenten.</td>
-                            <td>Seizoens-landingspagina + cadeaugids-blog + interne links.</td>
-                        </tr>
-                        <tr>
-                            <td>8</td>
-                            <td>basics dames ondergoed</td>
-                            <td>HEMA-kernproduct, hoge merktrouw-categorie.</td>
-                            <td>Productpagina&rsquo;s met unieke beschrijvingen + alt-tags.</td>
-                        </tr>
-                        <tr>
-                            <td>9</td>
-                            <td>online taart bestellen bezorgen</td>
-                            <td>Groeiende dienst, combinatie voeding + bezorging.</td>
-                            <td>Lokale SEO (Google Business) + servicegebied-pagina&rsquo;s.</td>
-                        </tr>
-                        <tr>
-                            <td>10</td>
-                            <td>duurzame kleding nederland</td>
-                            <td>Past bij HEMA&rsquo;s duurzaamheidsstrategie.</td>
-                            <td>Contentmarketing: duurzaamheidspagina + linkbuilding.</td>
-                        </tr>
+                        <tr><td>6</td><td>foto op canvas bestellen</td><td>Specifieke dienst, hoge conversie</td><td>Servicepagina + reviews + FAQ</td></tr>
+                        <tr><td>7</td><td>sinterklaas cadeau kind</td><td>Seizoenspiek nov&ndash;dec, alle segmenten</td><td>Seizoens-landingspagina + cadeaugids</td></tr>
+                        <tr><td>8</td><td>basics dames ondergoed</td><td>Kernproduct, hoge merktrouw</td><td>Unieke beschrijvingen + alt-tags</td></tr>
+                        <tr><td>9</td><td>online taart bestellen bezorgen</td><td>Groeiende dienst, voeding + bezorging</td><td>Lokale SEO + Google Business</td></tr>
+                        <tr><td>10</td><td>duurzame kleding nederland</td><td>HEMA-duurzaamheidsstrategie</td><td>Contentmarketing + linkbuilding</td></tr>
                     </tbody>
                 </table>
             </div>
         </div>
 
-        <!-- ========== SLIDE 4: SEO AANPAK ========== -->
+        <!-- SLIDE 4: SEO AANPAK -->
         <div class="slide">
             <div class="slide-content">
-                <div class="section-label"><span class="dot"></span>SEO-strategie</div>
-                <h1>Optimalisatie-aanpak</h1>
-                <p class="subtitle">Drie pijlers waarop HEMA haar organische vindbaarheid verbetert</p>
+                <div class="section-label"><span class="dot"></span>Opdracht 1 &mdash; optimalisatie</div>
+                <h1>SEO-aanpak in 3 pijlers</h1>
 
                 <div class="pillars">
                     <div class="pillar">
                         <div class="icon">&#x1F4DD;</div>
-                        <h3>On-page SEO</h3>
+                        <h3>On-page</h3>
                         <ul>
-                            <li>Zoekwoord in H1, title tag en meta description</li>
-                            <li>Unieke productbeschrijvingen (geen duplicate content)</li>
-                            <li>Alt-tags op alle productafbeeldingen</li>
-                            <li>Interne linkstructuur naar gerelateerde categorie&euml;n</li>
-                            <li>Structured data (Product, FAQ, Breadcrumb)</li>
+                            <li>Zoekwoord in H1 + title + meta</li>
+                            <li>Unieke productbeschrijvingen</li>
+                            <li>Alt-tags op afbeeldingen</li>
+                            <li>Interne linkstructuur</li>
+                            <li>Structured data (Product, FAQ)</li>
                         </ul>
                     </div>
                     <div class="pillar">
                         <div class="icon">&#x270D;</div>
-                        <h3>Contentoptimalisatie</h3>
+                        <h3>Content</h3>
                         <ul>
-                            <li>Seizoensblogs: &ldquo;Back to School&rdquo;, &ldquo;Sinterklaas cadeaugids&rdquo;</li>
-                            <li>Inspiratiepagina&rsquo;s: &ldquo;Kamer inrichten op budget&rdquo;</li>
-                            <li>FAQ-secties op categoriepagina&rsquo;s</li>
-                            <li>Video-content: &ldquo;Hoe bestel je een foto op canvas?&rdquo;</li>
-                            <li>Linkbuilding via PR en samenwerkingen</li>
+                            <li>Seizoensblogs (Back to School, Sint)</li>
+                            <li>Inspiratiepagina&rsquo;s</li>
+                            <li>FAQ-secties per categorie</li>
+                            <li>Video-content</li>
+                            <li>Linkbuilding via PR</li>
                         </ul>
                     </div>
                     <div class="pillar">
                         <div class="icon">&#x2699;</div>
-                        <h3>Technische SEO</h3>
+                        <h3>Technisch</h3>
                         <ul>
-                            <li>Core Web Vitals optimalisatie (LCP, FID, CLS)</li>
-                            <li>Mobile-first design (responsive)</li>
-                            <li>XML-sitemap en robots.txt correct ingesteld</li>
-                            <li>Canonicals om duplicate content te voorkomen</li>
-                            <li>HTTPS en snelle serverresponse (&lt;200ms)</li>
+                            <li>Core Web Vitals (LCP, INP, CLS)</li>
+                            <li>Mobile-first responsive</li>
+                            <li>XML-sitemap + robots.txt</li>
+                            <li>Canonical tags</li>
+                            <li>HTTPS + snelle server</li>
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- ========== SLIDE 5: SEA - 5 ZOEKWOORDEN + MATCH TYPES ========== -->
+        <!-- SLIDE 5: SEA ZOEKWOORDEN -->
         <div class="slide">
             <div class="slide-content">
-                <div class="section-label"><span class="dot"></span>SEA &mdash; Google Ads</div>
-                <h1>5 zoekwoorden voor SEA</h1>
-                <p class="subtitle">Geselecteerd op basis van koopintentie en conversiekans</p>
+                <div class="section-label"><span class="dot"></span>Opdracht 2 &mdash; SEA-zoekwoorden</div>
+                <h1>5 zoekwoorden + match types</h1>
 
                 <table class="kw-table">
                     <thead>
-                        <tr><th>Zoekwoord</th><th>Zoekwoordoptie</th><th>Waarom deze optie?</th></tr>
+                        <tr><th>Zoekwoord</th><th>Match type</th><th>Waarom?</th></tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>cadeau onder 10 euro</td>
-                            <td><span class="match-badge match-broad">Breed</span></td>
-                            <td>Vangt variaties op zoals &ldquo;cadeautje 10 euro&rdquo;, &ldquo;goedkoop cadeau kind&rdquo;. Breed bereik, gecombineerd met Smart Bidding voor conversie-optimalisatie.</td>
-                        </tr>
-                        <tr>
-                            <td>gepersonaliseerd cadeau</td>
-                            <td><span class="match-badge match-phrase">Woordgroep</span></td>
-                            <td>Vangt gerelateerde zoekopdrachten met context (&ldquo;gepersonaliseerd cadeau bestellen&rdquo;). Balans tussen bereik en relevantie voor deze specifieke HEMA-service.</td>
-                        </tr>
-                        <tr>
-                            <td>foto op canvas bestellen</td>
-                            <td><span class="match-badge match-exact">Exact</span></td>
-                            <td>Zeer specifieke zoekterm met hoge koopintentie. Exact match voorkomt irrelevante klikken en maximaliseert ROAS voor deze specifieke dienst.</td>
-                        </tr>
-                        <tr>
-                            <td>goedkope schoolspullen</td>
-                            <td><span class="match-badge match-phrase">Woordgroep</span></td>
-                            <td>Vangt seizoensvariaties (&ldquo;goedkope schoolspullen kopen&rdquo;, &ldquo;goedkope schoolspullen online&rdquo;). Woordgroep houdt de intentie intact.</td>
-                        </tr>
-                        <tr>
-                            <td>sinterklaas cadeau kind</td>
-                            <td><span class="match-badge match-broad">Breed</span></td>
-                            <td>Breed match vangt alle seizoensvariaties: &ldquo;Sint cadeau meisje 8&rdquo;, &ldquo;Sinterklaas surprise onder 15 euro&rdquo;. Gecombineerd met seizoensgebonden budget.</td>
-                        </tr>
+                        <tr><td>cadeau onder 10 euro</td><td><span class="match-badge match-broad">Breed</span></td><td>Vangt variaties op + Smart Bidding</td></tr>
+                        <tr><td>gepersonaliseerd cadeau</td><td><span class="match-badge match-phrase">Woordgroep</span></td><td>Balans bereik &amp; relevantie</td></tr>
+                        <tr><td>foto op canvas bestellen</td><td><span class="match-badge match-exact">Exact</span></td><td>Hoge koopintentie, maximale ROAS</td></tr>
+                        <tr><td>goedkope schoolspullen</td><td><span class="match-badge match-phrase">Woordgroep</span></td><td>Intentie intact, seizoensvariaties</td></tr>
+                        <tr><td>sinterklaas cadeau kind</td><td><span class="match-badge match-broad">Breed</span></td><td>Alle seizoensvariaties opvangen</td></tr>
                     </tbody>
                 </table>
             </div>
         </div>
 
-        <!-- ========== SLIDE 6: SEO TRENDS ========== -->
+        <!-- SLIDE 6: SEO TRENDS -->
         <div class="slide">
             <div class="slide-content">
-                <div class="section-label"><span class="dot"></span>Nieuwe ontwikkelingen</div>
-                <h1>3 SEO-trends in 2025&ndash;2026</h1>
+                <div class="section-label"><span class="dot"></span>Opdracht 3 &mdash; nieuwe ontwikkelingen SEO</div>
+                <h1>3 SEO-trends</h1>
 
                 <div class="pillars">
                     <div class="pillar">
                         <div class="micro-type">Trend 1</div>
                         <div class="icon">&#x1F916;</div>
-                        <h3>AI Overviews &amp; zero-click searches</h3>
-                        <p>Google toont AI-samenvattingen boven organische resultaten. Bereikt maandelijks <strong>1,5 miljard gebruikers</strong> wereldwijd. Bij queries met AI Overviews is het zero-click percentage <strong>83%</strong>, en de CTR daalt met <strong>34&ndash;46%</strong>.</p>
-                        <p style="margin-top: 6px;"><strong>HEMA-toepassing:</strong> Inzetten op Generative Engine Optimization (GEO): structured data en FAQ-schema op productpagina&rsquo;s zodat HEMA als bron wordt geciteerd. Branded searches stimuleren (&ldquo;HEMA cadeau&rdquo;) &mdash; die worden minder getroffen door zero-click.</p>
-                        <p style="margin-top: 4px; font-size: 10px; color: #999;"><em>Bron: Semrush (2025). AI Overviews Study. / ALM Corp (2026). AI Overviews and Zero-Click Searches.</em></p>
+                        <h3>AI Overviews &amp; zero-click</h3>
+                        <ul>
+                            <li><strong>1,5 miljard</strong> gebruikers/maand</li>
+                            <li><strong>83%</strong> zero-click percentage</li>
+                            <li>CTR daalt <strong>34&ndash;46%</strong></li>
+                        </ul>
+                        <p style="margin-top: 6px;"><strong>HEMA:</strong> structured data, FAQ-schema, branded searches stimuleren</p>
                     </div>
                     <div class="pillar">
                         <div class="micro-type">Trend 2</div>
                         <div class="icon">&#x2B50;</div>
                         <h3>E-E-A-T versterking</h3>
-                        <p>Google beloont steeds sterker content met aantoonbare <strong>persoonlijke ervaring</strong> (Experience). Content zonder duidelijke E-E-A-T-signalen faalt steeds vaker om te ranken, vooral bij producten en diensten.</p>
-                        <p style="margin-top: 6px;"><strong>HEMA-toepassing:</strong> Echte klantreviews prominent op productpagina&rsquo;s. Auteurspagina&rsquo;s voor blogcontent (bijv. een HEMA-stylist over interieurtrends). Transparante bedrijfsinformatie en Thuiswinkel Waarborg zichtbaar.</p>
-                        <p style="margin-top: 4px; font-size: 10px; color: #999;"><em>Bron: Evergreen Media (2026). SEO Trends 2026. / Google Search Central (2023). Quality Rater Guidelines.</em></p>
+                        <ul>
+                            <li>Experience steeds zwaarder gewogen</li>
+                            <li>Eerstehands ervaring vereist</li>
+                            <li>Cruciaal voor productcontent</li>
+                        </ul>
+                        <p style="margin-top: 6px;"><strong>HEMA:</strong> klantreviews, auteurspagina&rsquo;s, Thuiswinkel Waarborg</p>
                     </div>
                     <div class="pillar">
                         <div class="micro-type">Trend 3</div>
                         <div class="icon">&#x1F310;</div>
-                        <h3>GEO: van ranken naar geciteerd worden</h3>
-                        <p>SEO verschuift fundamenteel: het gaat niet meer alleen om hoog ranken, maar om <strong>de bron zijn die AI-systemen citeren</strong> &mdash; zowel Google AI Overviews als ChatGPT en Perplexity.</p>
-                        <p style="margin-top: 6px;"><strong>HEMA-toepassing:</strong> Schema markup (Product, Offer, Review) op alle productpagina&rsquo;s. Beknopte, feitelijke antwoorden in content. Optimaliseren voor conversational queries (&ldquo;wat is een leuk cadeau onder 10 euro?&rdquo;).</p>
-                        <p style="margin-top: 4px; font-size: 10px; color: #999;"><em>Bron: Analytica House (2026). 2026 SEO Trends. / FlowUp Agency (2026). AI-Driven SEO Trends.</em></p>
+                        <h3>GEO: geciteerd worden</h3>
+                        <ul>
+                            <li>Van ranken &rarr; bron voor AI</li>
+                            <li>Google, ChatGPT, Perplexity</li>
+                            <li>Conversational queries groeien</li>
+                        </ul>
+                        <p style="margin-top: 6px;"><strong>HEMA:</strong> schema markup, feitelijke antwoorden, kennisplatforms</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- ========== SLIDE 7: ADVERTENTIETEKSTEN DEEL 1 ========== -->
+        <!-- SLIDE 7: ADS 1 & 2 -->
         <div class="slide">
             <div class="slide-content">
-                <div class="section-label"><span class="dot"></span>SEA &mdash; Advertentieteksten</div>
-                <h1>Google Ads &mdash; Zoekwoord 1 &amp; 2</h1>
+                <div class="section-label"><span class="dot"></span>Opdracht 4 &mdash; advertentieteksten</div>
+                <h1>&ldquo;cadeau onder 10 euro&rdquo; &amp; &ldquo;gepersonaliseerd cadeau&rdquo;</h1>
 
                 <div class="ad-grid">
                     <div class="ad-preview">
-                        <div class="ad-label">Advertentie &bull; cadeau onder 10 euro &bull; Variant A</div>
-                        <div class="ad-url">https://www.hema.nl &rsaquo; cadeaus &rsaquo; onder-10-euro</div>
+                        <div class="ad-label">Cadeau onder 10 euro &bull; Variant A</div>
+                        <div class="ad-url">hema.nl &rsaquo; cadeaus &rsaquo; onder-10-euro</div>
                         <div class="ad-headline">Leuke Cadeaus Onder &euro;10 | HEMA &mdash; Voor Iedereen Iets Leuks</div>
-                        <div class="ad-desc">Verras iemand zonder je portemonnee leeg te trekken. Van gepersonaliseerde kaarten tot leuke gadgets. Bestel vandaag, morgen in huis!</div>
-                        <div class="ad-extensions"><span class="ad-ext">&#x2714; Gratis verzending v.a. &euro;25</span><span class="ad-ext">&#x2714; 30 dagen retour</span><span class="ad-ext">&#x2714; Afhalen in de winkel</span></div>
+                        <div class="ad-desc">Verras iemand zonder je budget te overschrijden. Bestel vandaag, morgen in huis!</div>
+                        <div class="ad-extensions"><span class="ad-ext">Gratis v.a. &euro;25</span><span class="ad-ext">30 dagen retour</span></div>
                     </div>
                     <div class="ad-preview">
-                        <div class="ad-label">Advertentie &bull; cadeau onder 10 euro &bull; Variant B</div>
-                        <div class="ad-url">https://www.hema.nl &rsaquo; cadeaus &rsaquo; budget</div>
+                        <div class="ad-label">Cadeau onder 10 euro &bull; Variant B</div>
+                        <div class="ad-url">hema.nl &rsaquo; cadeaus &rsaquo; budget</div>
                         <div class="ad-headline">HEMA Cadeautjes Vanaf &euro;2,50 | Snel Bezorgd of Afhalen</div>
-                        <div class="ad-desc">Meer dan 500 cadeaus onder de 10 euro. Persoonlijk maken? Graveer of bedruk jouw cadeau. Vandaag besteld, morgen bezorgd.</div>
-                        <div class="ad-extensions"><span class="ad-ext">&#x2714; Personalisatie mogelijk</span><span class="ad-ext">&#x2714; Click &amp; Collect</span></div>
+                        <div class="ad-desc">500+ cadeaus onder &euro;10. Personaliseerbaar. Vandaag besteld, morgen bezorgd.</div>
+                        <div class="ad-extensions"><span class="ad-ext">Personalisatie</span><span class="ad-ext">Click &amp; Collect</span></div>
                     </div>
                     <div class="ad-preview">
-                        <div class="ad-label">Advertentie &bull; gepersonaliseerd cadeau &bull; Variant A</div>
-                        <div class="ad-url">https://www.hema.nl &rsaquo; personaliseren</div>
-                        <div class="ad-headline">Gepersonaliseerd Cadeau bij HEMA | Maak Het Uniek Met Jouw Tekst</div>
-                        <div class="ad-desc">Graveer, bedruk of ontwerp jouw eigen cadeau. Van mokken tot sieraden. Persoonlijk en betaalbaar &mdash; al vanaf &euro;4,99.</div>
-                        <div class="ad-extensions"><span class="ad-ext">&#x2714; Online ontwerpen</span><span class="ad-ext">&#x2714; Snel geleverd</span><span class="ad-ext">&#x2714; 100+ producten</span></div>
+                        <div class="ad-label">Gepersonaliseerd cadeau &bull; Variant A</div>
+                        <div class="ad-url">hema.nl &rsaquo; personaliseren</div>
+                        <div class="ad-headline">Gepersonaliseerd Cadeau bij HEMA | Maak Het Uniek</div>
+                        <div class="ad-desc">Graveer, bedruk of ontwerp jouw eigen cadeau. Al vanaf &euro;4,99.</div>
+                        <div class="ad-extensions"><span class="ad-ext">Online ontwerpen</span><span class="ad-ext">100+ producten</span></div>
                     </div>
                     <div class="ad-preview">
-                        <div class="ad-label">Advertentie &bull; gepersonaliseerd cadeau &bull; Variant B</div>
-                        <div class="ad-url">https://www.hema.nl &rsaquo; cadeau-op-maat</div>
+                        <div class="ad-label">Gepersonaliseerd cadeau &bull; Variant B</div>
+                        <div class="ad-url">hema.nl &rsaquo; cadeau-op-maat</div>
                         <div class="ad-headline">Zelf Ontwerpen bij HEMA | Unieke Cadeaus Met Foto of Naam</div>
-                        <div class="ad-desc">Upload je foto, kies je product en wij doen de rest. Ideaal voor verjaardagen, bruiloften of zomaar. Binnen 3 werkdagen bezorgd.</div>
-                        <div class="ad-extensions"><span class="ad-ext">&#x2714; Fotoservice</span><span class="ad-ext">&#x2714; Graveerservice</span></div>
+                        <div class="ad-desc">Upload je foto, kies je product. Binnen 3 werkdagen bezorgd.</div>
+                        <div class="ad-extensions"><span class="ad-ext">Fotoservice</span><span class="ad-ext">Graveerservice</span></div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- ========== SLIDE 8: ADVERTENTIETEKSTEN DEEL 2 ========== -->
+        <!-- SLIDE 8: ADS 3 & 4 -->
         <div class="slide">
             <div class="slide-content">
-                <div class="section-label"><span class="dot"></span>SEA &mdash; Advertentieteksten</div>
-                <h1>Google Ads &mdash; Zoekwoord 3 &amp; 4</h1>
+                <div class="section-label"><span class="dot"></span>Opdracht 4 &mdash; advertentieteksten</div>
+                <h1>&ldquo;foto op canvas&rdquo; &amp; &ldquo;goedkope schoolspullen&rdquo;</h1>
 
                 <div class="ad-grid">
                     <div class="ad-preview">
-                        <div class="ad-label">Advertentie &bull; foto op canvas bestellen &bull; Variant A</div>
-                        <div class="ad-url">https://www.hema.nl &rsaquo; fotoservice &rsaquo; canvas</div>
-                        <div class="ad-headline">Foto op Canvas Bestellen | HEMA Fotoservice &mdash; Vanaf &euro;14,99</div>
-                        <div class="ad-desc">Jouw mooiste foto op echt canvas. Kies uit 15 formaten, upload je foto en ontvang binnen 5 werkdagen. Al 100 jaar vertrouwd.</div>
-                        <div class="ad-extensions"><span class="ad-ext">&#x2714; 15 formaten</span><span class="ad-ext">&#x2714; Scherpe prijs</span><span class="ad-ext">&#x2714; Thuisbezorgd</span></div>
+                        <div class="ad-label">Foto op canvas &bull; Variant A</div>
+                        <div class="ad-url">hema.nl &rsaquo; fotoservice &rsaquo; canvas</div>
+                        <div class="ad-headline">Foto op Canvas | HEMA Fotoservice &mdash; Vanaf &euro;14,99</div>
+                        <div class="ad-desc">15 formaten, upload je foto, binnen 5 werkdagen bezorgd.</div>
+                        <div class="ad-extensions"><span class="ad-ext">15 formaten</span><span class="ad-ext">Scherpe prijs</span></div>
                     </div>
                     <div class="ad-preview">
-                        <div class="ad-label">Advertentie &bull; foto op canvas bestellen &bull; Variant B</div>
-                        <div class="ad-url">https://www.hema.nl &rsaquo; canvas-prints</div>
-                        <div class="ad-headline">Canvas Print van Jouw Foto | HEMA &mdash; Snel, Betaalbaar &amp; Mooi</div>
-                        <div class="ad-desc">Maak van elke herinnering een kunstwerk. Hoge kwaliteit canvas, levendige kleuren. Makkelijk online ontwerpen in 3 stappen.</div>
-                        <div class="ad-extensions"><span class="ad-ext">&#x2714; In 3 stappen klaar</span><span class="ad-ext">&#x2714; Hoogwaardig canvas</span></div>
+                        <div class="ad-label">Foto op canvas &bull; Variant B</div>
+                        <div class="ad-url">hema.nl &rsaquo; canvas-prints</div>
+                        <div class="ad-headline">Canvas Print van Jouw Foto | Snel, Betaalbaar &amp; Mooi</div>
+                        <div class="ad-desc">Van herinnering naar kunstwerk. In 3 stappen online ontwerpen.</div>
+                        <div class="ad-extensions"><span class="ad-ext">3 stappen</span><span class="ad-ext">Hoge kwaliteit</span></div>
                     </div>
                     <div class="ad-preview">
-                        <div class="ad-label">Advertentie &bull; goedkope schoolspullen &bull; Variant A</div>
-                        <div class="ad-url">https://www.hema.nl &rsaquo; school &rsaquo; back-to-school</div>
-                        <div class="ad-headline">Schoolspullen Vanaf &euro;0,75 | HEMA Back to School Collectie</div>
-                        <div class="ad-desc">Etuis, schriften, pennen en rugzakken. Alles voor school in &eacute;&eacute;n keer geregeld. Betaalbaar &eacute;n leuk design &mdash; dat is HEMA.</div>
-                        <div class="ad-extensions"><span class="ad-ext">&#x2714; Gratis verzending v.a. &euro;25</span><span class="ad-ext">&#x2714; Click &amp; Collect</span></div>
+                        <div class="ad-label">Goedkope schoolspullen &bull; Variant A</div>
+                        <div class="ad-url">hema.nl &rsaquo; school &rsaquo; back-to-school</div>
+                        <div class="ad-headline">Schoolspullen Vanaf &euro;0,75 | HEMA Back to School</div>
+                        <div class="ad-desc">Etuis, schriften, pennen, rugzakken. Betaalbaar &eacute;n leuk design.</div>
+                        <div class="ad-extensions"><span class="ad-ext">Gratis v.a. &euro;25</span><span class="ad-ext">Click &amp; Collect</span></div>
                     </div>
                     <div class="ad-preview">
-                        <div class="ad-label">Advertentie &bull; goedkope schoolspullen &bull; Variant B</div>
-                        <div class="ad-url">https://www.hema.nl &rsaquo; school</div>
-                        <div class="ad-headline">HEMA School Shop | Compleet Uitgerust Vanaf &euro;15 Per Kind</div>
-                        <div class="ad-desc">Van broodtrommel tot rekenmachine. HEMA heeft alles wat je kind nodig heeft. Bestel het complete schoolpakket en bespaar.</div>
-                        <div class="ad-extensions"><span class="ad-ext">&#x2714; Bundelprijzen</span><span class="ad-ext">&#x2714; 30 dagen retour</span></div>
+                        <div class="ad-label">Goedkope schoolspullen &bull; Variant B</div>
+                        <div class="ad-url">hema.nl &rsaquo; school</div>
+                        <div class="ad-headline">HEMA School Shop | Compleet Uitgerust Vanaf &euro;15</div>
+                        <div class="ad-desc">Van broodtrommel tot rekenmachine. Bestel het complete schoolpakket.</div>
+                        <div class="ad-extensions"><span class="ad-ext">Bundelprijzen</span><span class="ad-ext">30 dagen retour</span></div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- ========== SLIDE 9: ADVERTENTIETEKSTEN DEEL 3 ========== -->
+        <!-- SLIDE 9: ADS 5 -->
         <div class="slide">
             <div class="slide-content">
-                <div class="section-label"><span class="dot"></span>SEA &mdash; Advertentieteksten</div>
-                <h1>Google Ads &mdash; Zoekwoord 5</h1>
+                <div class="section-label"><span class="dot"></span>Opdracht 4 &mdash; advertentieteksten</div>
+                <h1>&ldquo;sinterklaas cadeau kind&rdquo;</h1>
 
                 <div class="ad-grid" style="max-width: 800px; margin: clamp(10px, 1.5vh, 18px) auto 0;">
                     <div class="ad-preview">
-                        <div class="ad-label">Advertentie &bull; sinterklaas cadeau kind &bull; Variant A</div>
-                        <div class="ad-url">https://www.hema.nl &rsaquo; sinterklaas &rsaquo; cadeaus</div>
-                        <div class="ad-headline">Sinterklaascadeaus bij HEMA | Leuke Cadeaus Vanaf &euro;2,50</div>
-                        <div class="ad-desc">De leukste Sinterklaascadeaus voor elk budget. Speelgoed, boeken en surprises. Bestel op tijd en laat het gratis inpakken!</div>
-                        <div class="ad-extensions"><span class="ad-ext">&#x2714; Gratis inpakservice</span><span class="ad-ext">&#x2714; Leeftijdsfilter</span><span class="ad-ext">&#x2714; Snel bezorgd</span></div>
+                        <div class="ad-label">Sinterklaas cadeau kind &bull; Variant A</div>
+                        <div class="ad-url">hema.nl &rsaquo; sinterklaas &rsaquo; cadeaus</div>
+                        <div class="ad-headline">Sinterklaascadeaus bij HEMA | Vanaf &euro;2,50</div>
+                        <div class="ad-desc">Speelgoed, boeken en surprises voor elk budget. Gratis inpakken!</div>
+                        <div class="ad-extensions"><span class="ad-ext">Gratis inpakservice</span><span class="ad-ext">Leeftijdsfilter</span></div>
                     </div>
                     <div class="ad-preview">
-                        <div class="ad-label">Advertentie &bull; sinterklaas cadeau kind &bull; Variant B</div>
-                        <div class="ad-url">https://www.hema.nl &rsaquo; sint &rsaquo; top-picks</div>
-                        <div class="ad-headline">Sint Top-Picks Onder &euro;10 | HEMA &mdash; Voor Elk Kind Wat Wils</div>
-                        <div class="ad-desc">Geen inspiratie? Bekijk onze Sinterklaas cadeaugids op leeftijd. Van 2 tot 12 jaar, van speelgoed tot gepersonaliseerde cadeaus.</div>
-                        <div class="ad-extensions"><span class="ad-ext">&#x2714; Cadeaugids op leeftijd</span><span class="ad-ext">&#x2714; Click &amp; Collect</span></div>
+                        <div class="ad-label">Sinterklaas cadeau kind &bull; Variant B</div>
+                        <div class="ad-url">hema.nl &rsaquo; sint &rsaquo; top-picks</div>
+                        <div class="ad-headline">Sint Top-Picks Onder &euro;10 | Voor Elk Kind Wat Wils</div>
+                        <div class="ad-desc">Cadeaugids op leeftijd. Van 2 tot 12 jaar, speelgoed tot personalisatie.</div>
+                        <div class="ad-extensions"><span class="ad-ext">Cadeaugids</span><span class="ad-ext">Click &amp; Collect</span></div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- ========== SLIDE 10: LANDINGSPAGINA ========== -->
+        <!-- SLIDE 10: LANDINGSPAGINA -->
         <div class="slide">
             <div class="slide-content">
-                <div class="section-label"><span class="dot"></span>Landingspagina</div>
-                <h1>Zoekwoord: &ldquo;cadeau onder 10 euro&rdquo;</h1>
+                <div class="section-label"><span class="dot"></span>Opdracht 5 &mdash; landingspagina</div>
+                <h1>&ldquo;cadeau onder 10 euro&rdquo;</h1>
 
                 <div class="lp-mockup">
                     <div class="lp-browser-bar">
@@ -694,151 +593,132 @@
                     <div class="lp-content">
                         <div class="lp-hero">
                             <h2>Leuke cadeaus onder &euro;10</h2>
-                            <p>Verras iemand zonder je budget te overschrijden. Meer dan 500 opties!</p>
+                            <p>500+ opties voor alle leeftijden</p>
                             <div class="lp-cta">Bekijk alle cadeaus &rarr;</div>
                         </div>
                         <div class="lp-features">
-                            <div class="lp-feature">
-                                <div class="icon">&#x1F381;</div>
-                                <h4>500+ cadeaus</h4>
-                                <p>Breed assortiment voor alle leeftijden</p>
-                            </div>
-                            <div class="lp-feature">
-                                <div class="icon">&#x2699;</div>
-                                <h4>Personaliseerbaar</h4>
-                                <p>Maak het uniek met tekst of foto</p>
-                            </div>
-                            <div class="lp-feature">
-                                <div class="icon">&#x1F69A;</div>
-                                <h4>Morgen in huis</h4>
-                                <p>Gratis verzending v.a. &euro;25</p>
-                            </div>
+                            <div class="lp-feature"><div class="icon">&#x1F381;</div><h4>500+ cadeaus</h4><p>Alle leeftijden</p></div>
+                            <div class="lp-feature"><div class="icon">&#x2699;</div><h4>Personaliseerbaar</h4><p>Tekst of foto</p></div>
+                            <div class="lp-feature"><div class="icon">&#x1F69A;</div><h4>Morgen in huis</h4><p>Gratis v.a. &euro;25</p></div>
                         </div>
                         <div class="lp-reviews">
-                            <div class="lp-review">
-                                <div class="lp-stars">&#x2B50;&#x2B50;&#x2B50;&#x2B50;&#x2B50;</div>
-                                <p>&ldquo;Altijd leuke cadeautjes bij HEMA. Snelle bezorging en mooi ingepakt!&rdquo;</p>
-                                <div class="author">&mdash; Lisa, 36</div>
-                            </div>
-                            <div class="lp-review">
-                                <div class="lp-stars">&#x2B50;&#x2B50;&#x2B50;&#x2B50;&#x2B50;</div>
-                                <p>&ldquo;Super dat je dingen kan personaliseren. Mijn vriend was echt blij!&rdquo;</p>
-                                <div class="author">&mdash; Youssef, 24</div>
-                            </div>
-                            <div class="lp-review">
-                                <div class="lp-stars">&#x2B50;&#x2B50;&#x2B50;&#x2B50;</div>
-                                <p>&ldquo;Fijne cadeaus voor de kleinkinderen. Click &amp; Collect is ideaal.&rdquo;</p>
-                                <div class="author">&mdash; Gerda, 61</div>
-                            </div>
+                            <div class="lp-review"><div class="lp-stars">&#x2B50;&#x2B50;&#x2B50;&#x2B50;&#x2B50;</div><p>&ldquo;Altijd leuke cadeautjes, snelle bezorging!&rdquo;</p><div class="author">&mdash; Lisa, 36</div></div>
+                            <div class="lp-review"><div class="lp-stars">&#x2B50;&#x2B50;&#x2B50;&#x2B50;&#x2B50;</div><p>&ldquo;Super dat je dingen kan personaliseren.&rdquo;</p><div class="author">&mdash; Youssef, 24</div></div>
+                            <div class="lp-review"><div class="lp-stars">&#x2B50;&#x2B50;&#x2B50;&#x2B50;</div><p>&ldquo;Click &amp; Collect is ideaal voor mij.&rdquo;</p><div class="author">&mdash; Gerda, 61</div></div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- ========== SLIDE 11: LANDINGSPAGINA UITLEG ========== -->
+        <!-- SLIDE 11: LANDINGSPAGINA UITLEG -->
         <div class="slide">
             <div class="slide-content">
-                <div class="section-label"><span class="dot"></span>Landingspagina &mdash; Effectiviteit</div>
+                <div class="section-label"><span class="dot"></span>Opdracht 5 &mdash; effectiviteit</div>
                 <h1>Waarom werkt deze pagina?</h1>
 
-                <div class="cards-container" style="grid-template-columns: repeat(2, 1fr);">
-                    <div class="card">
+                <div class="cards-container" style="grid-template-columns: repeat(4, 1fr);">
+                    <div class="card" style="text-align: center;">
                         <div class="icon">&#x1F3AF;</div>
-                        <h3>Relevantie met zoekwoord</h3>
+                        <h3>Relevantie</h3>
                         <ul>
-                            <li>H1 bevat exact het zoekwoord &ldquo;cadeaus onder &euro;10&rdquo;</li>
-                            <li>URL-structuur: /cadeaus/onder-10-euro</li>
-                            <li>Alle getoonde producten vallen binnen de prijsrange</li>
-                            <li>Meta description sluit aan bij zoekintentie</li>
+                            <li>Zoekwoord in H1</li>
+                            <li>URL: /cadeaus/onder-10-euro</li>
+                            <li>Producten binnen prijsrange</li>
                         </ul>
                     </div>
-                    <div class="card">
+                    <div class="card" style="text-align: center;">
                         <div class="icon">&#x1F449;</div>
-                        <h3>Duidelijke call-to-action</h3>
+                        <h3>Call-to-action</h3>
                         <ul>
-                            <li>Prominente CTA-knop: &ldquo;Bekijk alle cadeaus&rdquo;</li>
-                            <li>Contrasterende kleur (wit op rood) trekt aandacht</li>
-                            <li>Boven de vouw zichtbaar (above the fold)</li>
-                            <li>Actieve, uitnodigende taal</li>
+                            <li>Prominente CTA-knop</li>
+                            <li>Contrasterende kleur</li>
+                            <li>Above the fold</li>
                         </ul>
                     </div>
-                    <div class="card">
+                    <div class="card" style="text-align: center;">
                         <div class="icon">&#x1F44D;</div>
-                        <h3>Gebruiksvriendelijkheid</h3>
+                        <h3>Gebruiksvriendelijk</h3>
                         <ul>
-                            <li>Overzichtelijke layout met weinig afleiding</li>
-                            <li>3 USP&rsquo;s direct zichtbaar (assortiment, personalisatie, bezorging)</li>
-                            <li>Filters en categorisering voor snel navigeren</li>
-                            <li>Mobile-responsive ontwerp</li>
+                            <li>Overzichtelijke layout</li>
+                            <li>3 USP&rsquo;s direct zichtbaar</li>
+                            <li>Mobile-responsive</li>
                         </ul>
                     </div>
-                    <div class="card">
+                    <div class="card" style="text-align: center;">
                         <div class="icon">&#x2B50;</div>
-                        <h3>Conversie-elementen</h3>
+                        <h3>Conversie</h3>
                         <ul>
-                            <li>Sociale bewijskracht: klantreviews met sterren</li>
-                            <li>Vertrouwen: gratis retourneren, Thuiswinkel Waarborg</li>
-                            <li>Urgentie: &ldquo;morgen in huis&rdquo; bij vandaag bestellen</li>
-                            <li>Personalisatie als USP (uniek HEMA-voordeel)</li>
+                            <li>Klantreviews + sterren</li>
+                            <li>Thuiswinkel Waarborg</li>
+                            <li>&ldquo;Morgen in huis&rdquo;</li>
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- ========== SLIDE 12: SEA TRENDS ========== -->
+        <!-- SLIDE 12: SEA TRENDS -->
         <div class="slide">
             <div class="slide-content">
-                <div class="section-label"><span class="dot"></span>Nieuwe ontwikkelingen</div>
-                <h1>3 SEA-trends in 2025&ndash;2026</h1>
+                <div class="section-label"><span class="dot"></span>Opdracht 6 &mdash; nieuwe ontwikkelingen SEA</div>
+                <h1>3 SEA-trends</h1>
 
                 <div class="pillars">
                     <div class="pillar">
                         <div class="micro-type">Trend 1</div>
                         <div class="icon">&#x1F680;</div>
                         <h3>Performance Max 2.0</h3>
-                        <p>Google heeft PMax fors verbeterd: <strong>kanaal-niveau rapportage</strong> (YouTube, Display, Search, Shopping apart zichtbaar), volledige zoektermrapportage, en tot <strong>10.000 uitsluitingszoekwoorden</strong>. Nieuwe &ldquo;high-value customer mode&rdquo; voorspelt welke nieuwe klanten de hoogste lifetime value hebben.</p>
-                        <p style="margin-top: 6px;"><strong>HEMA-toepassing:</strong> Kanaalrapportage gebruiken om te zien welke kanalen het beste renderen per seizoenscampagne. High-value customer mode activeren met HEMA Pas-klantendata. Brand exclusions instellen op Search maar behouden op Shopping.</p>
-                        <p style="margin-top: 4px; font-size: 10px; color: #999;"><em>Bron: WordStream (2025). 11 Biggest Google Ads Updates. / Practical Ecommerce (2026). PMax Updates.</em></p>
+                        <ul>
+                            <li>Kanaal-niveau rapportage</li>
+                            <li>Tot <strong>10.000</strong> uitsluitingszoekwoorden</li>
+                            <li>High-value customer mode</li>
+                        </ul>
+                        <p style="margin-top: 6px;"><strong>HEMA:</strong> PMax per seizoenscampagne, HEMA Pas-data voor targeting</p>
                     </div>
                     <div class="pillar">
                         <div class="micro-type">Trend 2</div>
                         <div class="icon">&#x1F9E0;</div>
                         <h3>AI Max for Search</h3>
-                        <p>Google&rsquo;s nieuwste AI-product combineert automatische zoekwoorduitbreiding, creatieve optimalisatie en Smart Bidding. De Smart Bidding Exploration-feature levert <strong>18% meer unieke zoekcategorie&euml;n</strong> en <strong>19% meer conversies</strong>. Simulatietools laten vooraf zien hoe biedstrategie&euml;n presteren.</p>
-                        <p style="margin-top: 6px;"><strong>HEMA-toepassing:</strong> AI Max testen naast bestaande zoekcampagnes voor nieuwe conversiemogelijkheden. Simulatietools gebruiken voor optimale biedstrategie per categorie: Target ROAS voor fotoservice (hoge marge), Maximize Conversions voor seizoensartikelen.</p>
-                        <p style="margin-top: 4px; font-size: 10px; color: #999;"><em>Bron: ALM Corp (2025). Google Ads Year-in-Review. / Google Ads Help (2025). Highlights of 2025.</em></p>
+                        <ul>
+                            <li><strong>18%</strong> meer zoekcategorie&euml;n</li>
+                            <li><strong>19%</strong> meer conversies</li>
+                            <li>Biedstrategie-simulatietools</li>
+                        </ul>
+                        <p style="margin-top: 6px;"><strong>HEMA:</strong> Target ROAS fotoservice, Maximize Conversions seizoensartikelen</p>
                     </div>
                     <div class="pillar">
                         <div class="micro-type">Trend 3</div>
                         <div class="icon">&#x1F512;</div>
-                        <h3>First-party data &amp; cookieless</h3>
-                        <p>Third-party cookies verdwijnen. Google&rsquo;s oplossingen: <strong>Enhanced Conversions</strong> (5&ndash;25% meer gemeten conversies), <strong>Customer Match</strong>, <strong>Consent Mode V2</strong> (verplicht in EU) en de nieuwe <strong>Data Manager API</strong> als centraal punt voor alle first-party data.</p>
-                        <p style="margin-top: 6px;"><strong>HEMA-toepassing:</strong> Enhanced Conversions op alle conversiepunten. HEMA Pas-data uploaden als Customer Match-lijsten voor retargeting. Server-side tagging via Google Tag Gateway. Consent Mode V2 correct implementeren.</p>
-                        <p style="margin-top: 4px; font-size: 10px; color: #999;"><em>Bron: Dinmo (2026). Enhanced Conversions Guide. / DataSlayer (2025). Consent Mode V2 Guide.</em></p>
+                        <h3>First-party data</h3>
+                        <ul>
+                            <li>Enhanced Conversions: <strong>+5&ndash;25%</strong> meetbaarheid</li>
+                            <li>Consent Mode V2 (EU-verplicht)</li>
+                            <li>Data Manager API</li>
+                        </ul>
+                        <p style="margin-top: 6px;"><strong>HEMA:</strong> HEMA Pas als Customer Match, server-side tagging</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- ========== SLIDE 13: BRONNEN ========== -->
+        <!-- SLIDE 13: BRONNEN -->
         <div class="slide">
             <div class="slide-content">
                 <div class="hema-logo-small">HEMA</div>
                 <h1>Bronnen</h1>
 
                 <div class="references-list">
-                    <div class="reference-item">[1] Visser, M. &amp; Sikkenga, B. (2021). <em>Basisboek Online Marketing: Van strategie tot conversie</em> (4e druk). Noordhoff Uitgevers.</div>
-                    <div class="reference-item">[2] Semrush (2025). <em>AI Overviews Study</em>. semrush.com/blog/semrush-ai-overviews-study.</div>
-                    <div class="reference-item">[3] ALM Corp (2026). <em>AI Overviews and Zero-Click Searches: Adapting Your SEO Strategy for 2026</em>. almcorp.com.</div>
-                    <div class="reference-item">[4] Evergreen Media (2026). <em>SEO Trends 2026: Developing Strategies for the AI Era</em>. evergreen.media.</div>
+                    <div class="reference-item">[1] Visser, M. &amp; Sikkenga, B. (2021). <em>Basisboek Online Marketing</em> (4e druk). Noordhoff.</div>
+                    <div class="reference-item">[2] Semrush (2025). <em>AI Overviews Study</em>. semrush.com.</div>
+                    <div class="reference-item">[3] ALM Corp (2026). <em>AI Overviews and Zero-Click Searches</em>. almcorp.com.</div>
+                    <div class="reference-item">[4] Evergreen Media (2026). <em>SEO Trends 2026</em>. evergreen.media.</div>
                     <div class="reference-item">[5] Google Search Central (2023). <em>E-E-A-T Quality Rater Guidelines</em>. developers.google.com.</div>
-                    <div class="reference-item">[6] Analytica House (2026). <em>2026 SEO Expectations and Trends: AI, GEO, and E-Commerce Strategies</em>. analyticahouse.com.</div>
-                    <div class="reference-item">[7] WordStream (2025). <em>11 Biggest Google Ads Updates of 2025</em>. wordstream.com.</div>
-                    <div class="reference-item">[8] Practical Ecommerce (2026). <em>3 Performance Max Updates for 2026</em>. practicalecommerce.com.</div>
-                    <div class="reference-item">[9] Google Ads Help (2025). <em>Google Ads Highlights of 2025</em>. support.google.com.</div>
-                    <div class="reference-item">[10] Dinmo (2026). <em>Google Ads Enhanced Conversions: 2026 Guide</em>. dinmo.com.</div>
+                    <div class="reference-item">[6] Analytica House (2026). <em>2026 SEO Trends: AI, GEO, E-Commerce</em>. analyticahouse.com.</div>
+                    <div class="reference-item">[7] WordStream (2025). <em>11 Biggest Google Ads Updates</em>. wordstream.com.</div>
+                    <div class="reference-item">[8] Practical Ecommerce (2026). <em>3 Performance Max Updates</em>. practicalecommerce.com.</div>
+                    <div class="reference-item">[9] Google Ads Help (2025). <em>Highlights of 2025</em>. support.google.com.</div>
+                    <div class="reference-item">[10] Dinmo (2026). <em>Enhanced Conversions Guide</em>. dinmo.com.</div>
                     <div class="reference-item">[11] HEMA (z.d.). hema.nl. Geraadpleegd op 10 maart 2026.</div>
                 </div>
             </div>
@@ -861,11 +741,9 @@
             document.getElementById('slide-indicator').textContent = `${current + 1} / ${total}`;
             document.getElementById('progress-bar').style.width = `${((current + 1) / total) * 100}%`;
         }
-
         function goToSlide(index, direction) {
             if (index < 0 || index >= total || index === current) return;
-            const prev = slides[current];
-            const next = slides[index];
+            const prev = slides[current], next = slides[index];
             prev.classList.remove('active');
             prev.classList.add(direction === 'next' ? 'exit-left' : 'exit-right');
             next.classList.remove('exit-left', 'exit-right');
@@ -875,7 +753,6 @@
             updateUI();
             setTimeout(() => { prev.classList.remove('exit-left', 'exit-right'); }, 1000);
         }
-
         function nextSlide() { goToSlide(current + 1, 'next'); }
         function prevSlide() { goToSlide(current - 1, 'prev'); }
 
@@ -883,19 +760,15 @@
             if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
             else if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
         });
-
         document.addEventListener('click', e => {
             if (e.target.closest('.fullscreen-btn')) return;
-            if (e.clientX > window.innerWidth * 0.5) nextSlide();
-            else prevSlide();
+            if (e.clientX > window.innerWidth * 0.5) nextSlide(); else prevSlide();
         });
-
         let touchStartX = 0;
         document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
         document.addEventListener('touchend', e => {
             const diff = e.changedTouches[0].clientX - touchStartX;
-            if (diff > 50) prevSlide();
-            else if (diff < -50) nextSlide();
+            if (diff > 50) prevSlide(); else if (diff < -50) nextSlide();
         });
 
         function toggleFullscreen() {
@@ -904,20 +777,16 @@
             if (!isFs) {
                 if (el.requestFullscreen) el.requestFullscreen().catch(() => {});
                 else if (el.webkitRequestFullScreen) el.webkitRequestFullScreen();
-                else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
             } else {
                 if (document.exitFullscreen) document.exitFullscreen().catch(() => {});
                 else if (document.webkitCancelFullScreen) document.webkitCancelFullScreen();
-                else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
             }
         }
-
         function updateFsIcon() {
             const isFs = document.fullscreenElement || document.webkitFullscreenElement || document.webkitIsFullScreen;
             document.getElementById('fs-icon-enter').style.display = isFs ? 'none' : '';
             document.getElementById('fs-icon-exit').style.display = isFs ? '' : 'none';
         }
-
         document.addEventListener('fullscreenchange', updateFsIcon);
         document.addEventListener('webkitfullscreenchange', updateFsIcon);
         updateUI();
