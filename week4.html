@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weekopdracht 4 — HEMA</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --hema-red: #E4002B;
+            --hema-dark: #C50025;
+            --text: #1d1d1f;
+            --subtext: #86868b;
+            --card-bg: #f5f5f7;
+            --card-hover: #ededf0;
+            --accent: #E4002B;
+            --white: #FFFFFF;
+            --transition-duration: 0.9s;
+            --transition-ease: cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+            background: var(--white); color: var(--text); line-height: 1.1;
+            overflow: hidden; -webkit-font-smoothing: antialiased; perspective: 1200px;
+        }
+
+        .presentation { width: 100vw; height: 100vh; position: relative; transform-style: preserve-3d; }
+
+        .slide {
+            width: 100%; height: 100%;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            position: absolute; top: 0; left: 0;
+            padding: clamp(30px, 4vh, 60px) clamp(30px, 5vw, 80px);
+            text-align: center; opacity: 0; pointer-events: none;
+            transform: translateX(100%) rotateY(8deg) scale(0.85); filter: blur(8px);
+            transition: opacity var(--transition-duration) var(--transition-ease),
+                        transform var(--transition-duration) var(--transition-ease),
+                        filter var(--transition-duration) var(--transition-ease);
+            will-change: opacity, transform, filter; transform-style: preserve-3d;
+        }
+        .slide.active { opacity: 1; pointer-events: auto; transform: translateX(0) rotateY(0deg) scale(1); filter: blur(0px); }
+        .slide.exit-left { opacity: 0; pointer-events: none; transform: translateX(-100%) rotateY(-8deg) scale(0.85); filter: blur(8px); }
+        .slide.exit-right { opacity: 0; pointer-events: none; transform: translateX(100%) rotateY(8deg) scale(0.85); filter: blur(8px); }
+
+        .slide-content {
+            max-width: 1100px; width: 100%; margin: 0 auto;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+        .slide.active .slide-content > * { animation: elementReveal 0.8s var(--transition-ease) both; }
+        .slide.active .slide-content > *:nth-child(1) { animation-delay: 0.15s; }
+        .slide.active .slide-content > *:nth-child(2) { animation-delay: 0.3s; }
+        .slide.active .slide-content > *:nth-child(3) { animation-delay: 0.45s; }
+        .slide.active .slide-content > *:nth-child(4) { animation-delay: 0.6s; }
+        .slide.active .slide-content > *:nth-child(5) { animation-delay: 0.75s; }
+
+        @keyframes elementReveal {
+            from { opacity: 0; transform: translateY(40px) scale(0.92); filter: blur(6px); }
+            to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0px); }
+        }
+
+        .hema-logo {
+            font-size: clamp(60px, 10vw, 120px); font-weight: 900; color: var(--white);
+            background: var(--hema-red); padding: 12px clamp(24px, 4vw, 50px);
+            letter-spacing: 0.08em; line-height: 1; margin-bottom: clamp(20px, 3vh, 40px);
+            display: inline-block;
+        }
+        .slide.active .hema-logo { animation: logoReveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both; }
+        @keyframes logoReveal {
+            0% { opacity: 0; transform: scale(0.3) rotateX(20deg); filter: blur(20px); }
+            50% { opacity: 1; filter: blur(0px); }
+            70% { transform: scale(1.05) rotateX(0deg); }
+            100% { opacity: 1; transform: scale(1) rotateX(0deg); filter: blur(0px); }
+        }
+        .hema-logo-small {
+            font-size: clamp(18px, 2.5vw, 28px); font-weight: 900; color: var(--white);
+            background: var(--hema-red); padding: 5px clamp(10px, 1.5vw, 18px);
+            letter-spacing: 0.08em; line-height: 1; display: inline-block; margin-bottom: 20px;
+        }
+
+        h1 { font-size: clamp(32px, 4.5vw, 56px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.05; margin-bottom: clamp(10px, 1.5vh, 20px); }
+        h1.hero { font-size: clamp(38px, 5.5vw, 68px); font-weight: 800; line-height: 1.0; }
+        .subtitle { font-size: clamp(15px, 1.8vw, 22px); font-weight: 400; color: var(--subtext); margin-bottom: clamp(12px, 2vh, 24px); line-height: 1.3; max-width: 700px; }
+        .meta-info { font-size: clamp(13px, 1.4vw, 16px); color: var(--subtext); font-weight: 400; line-height: 1.5; margin-top: 8px; }
+        .highlight { color: var(--accent); font-weight: 600; }
+
+        .section-label {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: var(--card-bg); color: var(--subtext);
+            padding: 6px 16px; border-radius: 50px;
+            font-size: clamp(11px, 1.2vw, 14px); font-weight: 500;
+            letter-spacing: 0.02em; margin-bottom: 16px;
+        }
+        .section-label .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--hema-red); }
+
+        .cards-container {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: clamp(10px, 1.5vw, 20px); margin-top: clamp(12px, 2vh, 24px);
+            max-width: 1100px; width: 100%;
+        }
+        .card {
+            background: var(--card-bg); border-radius: 14px;
+            padding: clamp(14px, 1.8vw, 24px); text-align: left;
+            opacity: 0; transform: translateY(60px) scale(0.9) rotateX(8deg); filter: blur(4px);
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+        .slide.active .card { animation: cardDrop 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; }
+        .slide.active .card:nth-child(1) { animation-delay: 0.35s; }
+        .slide.active .card:nth-child(2) { animation-delay: 0.45s; }
+        .slide.active .card:nth-child(3) { animation-delay: 0.55s; }
+        .slide.active .card:nth-child(4) { animation-delay: 0.65s; }
+        .slide.active .card:nth-child(5) { animation-delay: 0.75s; }
+        .slide.active .card:nth-child(6) { animation-delay: 0.85s; }
+
+        @keyframes cardDrop {
+            0% { opacity: 0; transform: translateY(60px) scale(0.9) rotateX(8deg); filter: blur(4px); }
+            60% { opacity: 1; filter: blur(0px); }
+            80% { transform: translateY(-8px) scale(1.02) rotateX(0deg); }
+            100% { opacity: 1; transform: translateY(0) scale(1) rotateX(0deg); filter: blur(0px); }
+        }
+        .card:hover { background: var(--card-hover); box-shadow: 0 12px 40px rgba(228,0,43,0.08), 0 4px 12px rgba(0,0,0,0.04); }
+        .card h3 { font-size: clamp(13px, 1.5vw, 17px); font-weight: 600; margin-bottom: 5px; color: var(--text); }
+        .card p, .card li { font-size: clamp(11px, 1.2vw, 14px); color: var(--subtext); line-height: 1.4; }
+        .card ul { list-style: none; padding: 0; }
+        .card ul li { padding: 2px 0; padding-left: 12px; position: relative; }
+        .card ul li::before { content: ''; position: absolute; left: 0; top: 9px; width: 4px; height: 4px; border-radius: 50%; background: var(--hema-red); }
+        .card .stat { font-size: clamp(24px, 3.5vw, 38px); font-weight: 800; color: var(--hema-red); margin-bottom: 4px; letter-spacing: -0.02em; }
+        .card .icon { font-size: clamp(22px, 2.5vw, 30px); margin-bottom: 5px; }
+
+        .pillars { display: flex; gap: clamp(10px, 1.5vw, 20px); max-width: 1100px; margin: clamp(12px, 2vh, 24px) auto 0; width: 100%; }
+        .pillar {
+            flex: 1; background: var(--card-bg); border-radius: 14px;
+            padding: clamp(14px, 1.8vw, 22px); text-align: left;
+            opacity: 0; transform: translateX(-80px) scale(0.85); filter: blur(6px);
+        }
+        .slide.active .pillar { animation: pillarSlide 0.9s cubic-bezier(0.16, 1, 0.3, 1) both; }
+        .slide.active .pillar:nth-child(1) { animation-delay: 0.4s; }
+        .slide.active .pillar:nth-child(2) { animation-delay: 0.6s; transform: translateY(60px) scale(0.85); }
+        .slide.active .pillar:nth-child(3) { animation-delay: 0.8s; transform: translateX(80px) scale(0.85); }
+        .slide.active .pillar:nth-child(4) { animation-delay: 1.0s; transform: translateY(60px) scale(0.85); }
+        @keyframes pillarSlide {
+            0% { opacity: 0; filter: blur(6px); }
+            100% { opacity: 1; transform: translateX(0) translateY(0) scale(1); filter: blur(0px); }
+        }
+        .pillar .icon { font-size: clamp(22px, 2.8vw, 32px); margin-bottom: 6px; }
+        .pillar h3 { font-size: clamp(13px, 1.4vw, 16px); font-weight: 700; color: var(--text); margin-bottom: 4px; }
+        .pillar p, .pillar li { font-size: clamp(10.5px, 1.15vw, 13px); color: var(--subtext); line-height: 1.4; }
+        .pillar ul { list-style: none; padding: 0; }
+        .pillar ul li { padding: 2px 0; padding-left: 12px; position: relative; }
+        .pillar ul li::before { content: ''; position: absolute; left: 0; top: 8px; width: 4px; height: 4px; border-radius: 50%; background: var(--hema-red); }
+        .pillar .micro-type {
+            display: inline-block; background: #fce8ec; color: var(--hema-red);
+            padding: 3px 10px; border-radius: 50px; font-size: clamp(9px, 0.9vw, 11px);
+            font-weight: 600; margin-bottom: 6px;
+        }
+
+        /* Flow diagram */
+        .flow-container {
+            display: flex; align-items: stretch; gap: 0;
+            max-width: 1100px; width: 100%; margin-top: clamp(12px, 2vh, 24px);
+        }
+        .flow-step {
+            flex: 1; background: var(--card-bg); padding: clamp(14px, 1.8vw, 22px);
+            text-align: left; position: relative;
+            opacity: 0; transform: translateY(40px); filter: blur(4px);
+        }
+        .flow-step:first-child { border-radius: 14px 0 0 14px; }
+        .flow-step:last-child { border-radius: 0 14px 14px 0; }
+        .slide.active .flow-step { animation: cardDrop 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; }
+        .slide.active .flow-step:nth-child(1) { animation-delay: 0.3s; }
+        .slide.active .flow-step:nth-child(2) { animation-delay: 0.5s; }
+        .slide.active .flow-step:nth-child(3) { animation-delay: 0.7s; }
+        .slide.active .flow-step:nth-child(4) { animation-delay: 0.9s; }
+        .flow-step .step-num {
+            display: inline-block; background: var(--hema-red); color: white;
+            width: 28px; height: 28px; border-radius: 50%; text-align: center;
+            line-height: 28px; font-weight: 700; font-size: 13px; margin-bottom: 8px;
+        }
+        .flow-step h3 { font-size: clamp(13px, 1.4vw, 16px); font-weight: 700; color: var(--text); margin-bottom: 4px; }
+        .flow-step p { font-size: clamp(10.5px, 1.1vw, 13px); color: var(--subtext); line-height: 1.4; }
+        .flow-step ul { list-style: none; padding: 0; margin-top: 6px; }
+        .flow-step ul li { font-size: clamp(10px, 1vw, 12px); color: var(--subtext); padding: 2px 0 2px 12px; position: relative; }
+        .flow-step ul li::before { content: ''; position: absolute; left: 0; top: 8px; width: 4px; height: 4px; border-radius: 50%; background: var(--hema-red); }
+        .flow-arrow {
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px; color: var(--hema-red); font-weight: 700;
+            min-width: 30px; opacity: 0;
+        }
+        .slide.active .flow-arrow { animation: elementReveal 0.6s var(--transition-ease) both; }
+        .slide.active .flow-arrow:nth-of-type(2) { animation-delay: 0.4s; }
+        .slide.active .flow-arrow:nth-of-type(4) { animation-delay: 0.6s; }
+        .slide.active .flow-arrow:nth-of-type(6) { animation-delay: 0.8s; }
+
+        /* Campaign card (larger) */
+        .campaign-card {
+            background: var(--card-bg); border-radius: 14px;
+            padding: clamp(20px, 2.5vw, 36px); text-align: left;
+            max-width: 1100px; width: 100%; margin-top: clamp(12px, 2vh, 20px);
+            opacity: 0; transform: translateY(40px);
+        }
+        .slide.active .campaign-card { animation: cardDrop 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both; }
+        .campaign-card h3 { font-size: clamp(15px, 1.6vw, 19px); font-weight: 700; color: var(--text); margin-bottom: 10px; }
+        .campaign-card p, .campaign-card li { font-size: clamp(11px, 1.2vw, 14px); color: var(--subtext); line-height: 1.5; }
+        .campaign-card ul { list-style: none; padding: 0; }
+        .campaign-card ul li { padding: 3px 0 3px 14px; position: relative; }
+        .campaign-card ul li::before { content: ''; position: absolute; left: 0; top: 10px; width: 5px; height: 5px; border-radius: 50%; background: var(--hema-red); }
+        .campaign-card .campaign-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 12px; }
+        .campaign-card .campaign-section h4 {
+            font-size: clamp(12px, 1.3vw, 15px); font-weight: 600; color: var(--hema-red);
+            margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.03em;
+        }
+
+        /* Blog mockup */
+        .blog-mockup {
+            background: var(--white); border: 2px solid #e0e0e0; border-radius: 16px;
+            max-width: 900px; width: 100%; overflow: hidden;
+            margin-top: clamp(10px, 1.5vh, 18px); opacity: 0;
+        }
+        .slide.active .blog-mockup { animation: cardDrop 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both; }
+        .blog-browser-bar {
+            background: var(--card-bg); padding: 8px 16px;
+            display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #e0e0e0;
+        }
+        .blog-dots { display: flex; gap: 5px; }
+        .blog-dot { width: 10px; height: 10px; border-radius: 50%; }
+        .blog-dot:nth-child(1) { background: #ff5f57; }
+        .blog-dot:nth-child(2) { background: #ffbd2e; }
+        .blog-dot:nth-child(3) { background: #28c840; }
+        .blog-url-bar { flex: 1; background: var(--white); border-radius: 6px; padding: 5px 12px; font-size: 11px; color: var(--subtext); }
+        .blog-content { padding: clamp(16px, 2vw, 30px); text-align: left; }
+        .blog-hero {
+            background: linear-gradient(135deg, var(--hema-red), var(--hema-dark));
+            border-radius: 12px; padding: clamp(20px, 3vw, 40px);
+            color: white; text-align: center; margin-bottom: 16px;
+        }
+        .blog-hero h2 { font-size: clamp(16px, 2.2vw, 24px); font-weight: 800; margin-bottom: 6px; }
+        .blog-hero p { font-size: clamp(11px, 1.2vw, 14px); opacity: 0.9; }
+        .blog-excerpt { font-size: clamp(11px, 1.15vw, 13px); color: var(--subtext); line-height: 1.6; }
+        .blog-excerpt h4 { color: var(--text); font-size: clamp(12px, 1.3vw, 15px); margin: 10px 0 4px; }
+        .blog-tags { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+        .blog-tag {
+            background: #fce8ec; color: var(--hema-red); padding: 3px 10px;
+            border-radius: 50px; font-size: 10px; font-weight: 600;
+        }
+
+        /* Storyboard */
+        .storyboard {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(8px, 1vw, 14px);
+            max-width: 1100px; width: 100%; margin-top: clamp(12px, 2vh, 20px);
+        }
+        .story-frame {
+            background: var(--card-bg); border-radius: 12px; padding: clamp(12px, 1.5vw, 18px);
+            text-align: center; opacity: 0; transform: translateY(40px);
+        }
+        .slide.active .story-frame { animation: cardDrop 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; }
+        .slide.active .story-frame:nth-child(1) { animation-delay: 0.3s; }
+        .slide.active .story-frame:nth-child(2) { animation-delay: 0.45s; }
+        .slide.active .story-frame:nth-child(3) { animation-delay: 0.6s; }
+        .slide.active .story-frame:nth-child(4) { animation-delay: 0.75s; }
+        .story-frame .frame-num {
+            display: inline-block; background: var(--hema-red); color: white;
+            width: 24px; height: 24px; border-radius: 50%; line-height: 24px;
+            font-size: 11px; font-weight: 700; margin-bottom: 6px;
+        }
+        .story-frame .frame-icon { font-size: clamp(28px, 3.5vw, 40px); margin-bottom: 6px; }
+        .story-frame h4 { font-size: clamp(11px, 1.2vw, 14px); font-weight: 600; color: var(--text); margin-bottom: 3px; }
+        .story-frame p { font-size: clamp(9.5px, 1vw, 12px); color: var(--subtext); line-height: 1.4; }
+        .story-frame .frame-time {
+            display: inline-block; background: #fce8ec; color: var(--hema-red);
+            padding: 2px 8px; border-radius: 50px; font-size: 9px; font-weight: 600; margin-top: 6px;
+        }
+
+        /* Targeting table */
+        .target-table {
+            width: 100%; max-width: 1100px; border-collapse: separate;
+            border-spacing: 0; margin-top: clamp(12px, 2vh, 20px);
+            font-size: clamp(11px, 1.2vw, 14px);
+        }
+        .target-table thead th {
+            background: var(--card-bg); color: var(--subtext); font-weight: 600;
+            padding: 10px 14px; text-align: left; letter-spacing: 0.03em;
+            font-size: clamp(10px, 1vw, 12px); text-transform: uppercase;
+        }
+        .target-table thead th:first-child { border-radius: 10px 0 0 0; }
+        .target-table thead th:last-child { border-radius: 0 10px 0 0; }
+        .target-table tbody tr { opacity: 0; }
+        .slide.active .target-table tbody tr { animation: rowReveal 0.6s var(--transition-ease) both; }
+        .slide.active .target-table tbody tr:nth-child(1) { animation-delay: 0.3s; }
+        .slide.active .target-table tbody tr:nth-child(2) { animation-delay: 0.38s; }
+        .slide.active .target-table tbody tr:nth-child(3) { animation-delay: 0.46s; }
+        .slide.active .target-table tbody tr:nth-child(4) { animation-delay: 0.54s; }
+        .slide.active .target-table tbody tr:nth-child(5) { animation-delay: 0.62s; }
+        @keyframes rowReveal {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        .target-table tbody td {
+            padding: 9px 14px; border-bottom: 1px solid #f0f0f2;
+            color: var(--text); text-align: left; vertical-align: top;
+        }
+        .target-table tbody td:first-child { font-weight: 600; color: var(--hema-red); }
+        .target-table tbody tr:last-child td { border-bottom: none; }
+
+        .method-badge {
+            display: inline-block; padding: 2px 8px; border-radius: 50px;
+            font-size: clamp(9px, 0.9vw, 11px); font-weight: 600;
+        }
+        .method-social { background: #e8f5e9; color: #2e7d32; }
+        .method-influencer { background: #e3f2fd; color: #1565c0; }
+
+        .references-list { text-align: left; max-width: 900px; margin: clamp(12px, 2vh, 20px) auto 0; width: 100%; }
+        .reference-item {
+            font-size: clamp(10.5px, 1.1vw, 12px); color: #6e6e73; line-height: 1.5;
+            padding: 7px 0; border-bottom: 1px solid #f0f0f2;
+            padding-left: 28px; text-indent: -28px; opacity: 0;
+        }
+        .slide.active .reference-item { animation: elementReveal 0.6s var(--transition-ease) both; }
+        .slide.active .reference-item:nth-child(1) { animation-delay: 0.4s; }
+        .slide.active .reference-item:nth-child(2) { animation-delay: 0.5s; }
+        .slide.active .reference-item:nth-child(3) { animation-delay: 0.6s; }
+        .slide.active .reference-item:nth-child(4) { animation-delay: 0.7s; }
+        .slide.active .reference-item:nth-child(5) { animation-delay: 0.8s; }
+        .slide.active .reference-item:nth-child(6) { animation-delay: 0.9s; }
+        .slide.active .reference-item:nth-child(7) { animation-delay: 1.0s; }
+        .slide.active .reference-item:nth-child(8) { animation-delay: 1.1s; }
+        .slide.active .reference-item:nth-child(9) { animation-delay: 1.2s; }
+        .reference-item:last-child { border-bottom: none; }
+
+        .progress-bar { position: fixed; top: 0; left: 0; height: 3px; background: var(--hema-red); transition: width 0.7s var(--transition-ease); z-index: 200; box-shadow: 0 0 10px rgba(228,0,43,0.4); }
+        .slide-indicator { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); font-size: 13px; color: #c7c7cc; font-weight: 400; z-index: 100; }
+
+        .fullscreen-btn {
+            position: fixed; bottom: 20px; right: 24px; width: 40px; height: 40px;
+            border-radius: 10px; border: none; background: var(--card-bg);
+            color: var(--subtext); cursor: pointer; display: flex;
+            align-items: center; justify-content: center; z-index: 200;
+            transition: all 0.3s ease;
+        }
+        .fullscreen-btn:hover { background: var(--hema-red); color: white; transform: scale(1.1); }
+
+        body:fullscreen, body:-webkit-full-screen, body:-moz-full-screen { background: #FFFFFF !important; color: var(--text) !important; }
+        ::backdrop { background: #FFFFFF !important; }
+        ::-webkit-backdrop { background: #FFFFFF !important; }
+        html:fullscreen, html:-webkit-full-screen { background: #FFFFFF !important; }
+
+        @media (max-width: 768px) {
+            .cards-container { grid-template-columns: 1fr !important; }
+            .pillars { flex-direction: column; }
+            .flow-container { flex-direction: column; }
+            .flow-arrow { transform: rotate(90deg); min-height: 20px; min-width: auto; }
+            .flow-step:first-child, .flow-step:last-child { border-radius: 14px; }
+            .campaign-card .campaign-grid { grid-template-columns: 1fr; }
+            .storyboard { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-height: 700px) {
+            .slide { padding: clamp(16px, 2.5vh, 30px) clamp(20px, 3vw, 50px); }
+            h1 { font-size: clamp(26px, 3.5vw, 44px); margin-bottom: 8px; }
+            .subtitle { font-size: clamp(13px, 1.4vw, 18px); margin-bottom: 10px; }
+            .cards-container { margin-top: 10px; gap: 8px; }
+            .card { padding: 12px; }
+            .hema-logo { font-size: clamp(40px, 8vw, 80px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar" id="progress-bar"></div>
+    <div class="presentation">
+
+        <!-- SLIDE 1: TITLE -->
+        <div class="slide active">
+            <div class="slide-content">
+                <div class="hema-logo">HEMA</div>
+                <h1 class="hero">Weekopdracht 4</h1>
+                <p class="subtitle">Social media &mdash; klantacquisitie &amp; advertising</p>
+                <p class="meta-info">Stan van Dijk &bull; Niels Gunst &bull; Mees Egberts &bull; Levi de Jong &bull; Tom Koenraads<br>Online Marketing &mdash; Blok 3 &mdash; 2026</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 2: KLANTACQUISITIEPROCES -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="section-label"><span class="dot"></span>Klantacquisitie</div>
+                <h1>Het acquisitieproces in 4 stappen</h1>
+
+                <div class="flow-container">
+                    <div class="flow-step">
+                        <div class="step-num">1</div>
+                        <h3>Bereik</h3>
+                        <p>Zoveel mogelijk potenti&euml;le klanten bereiken</p>
+                        <ul>
+                            <li>TikTok-video&rsquo;s &amp; Reels</li>
+                            <li>Branded content</li>
+                            <li>Breed targeten</li>
+                        </ul>
+                    </div>
+                    <div class="flow-arrow">&rarr;</div>
+                    <div class="flow-step">
+                        <div class="step-num">2</div>
+                        <h3>Interesse</h3>
+                        <p>Aandacht vasthouden en engagement cre&euml;ren</p>
+                        <ul>
+                            <li>Carousels &amp; Stories</li>
+                            <li>Influencer-content</li>
+                            <li>Interactieve polls</li>
+                        </ul>
+                    </div>
+                    <div class="flow-arrow">&rarr;</div>
+                    <div class="flow-step">
+                        <div class="step-num">3</div>
+                        <h3>Conversie</h3>
+                        <p>Bezoekers omzetten naar kopers</p>
+                        <ul>
+                            <li>Shopping tags</li>
+                            <li>Retargeting ads</li>
+                            <li>Kortingsacties</li>
+                        </ul>
+                    </div>
+                    <div class="flow-arrow">&rarr;</div>
+                    <div class="flow-step">
+                        <div class="step-num">4</div>
+                        <h3>Loyaliteit</h3>
+                        <p>Klanten behouden en herhaalaankopen stimuleren</p>
+                        <ul>
+                            <li>HEMA Pas-acties</li>
+                            <li>UGC-campagnes</li>
+                            <li>Exclusieve aanbiedingen</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 3: KANAAL 1 — INSTAGRAM -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="section-label"><span class="dot"></span>Kanaal 1</div>
+                <h1>Instagram</h1>
+                <p class="subtitle">Inspiratie &amp; conversie voor gezinnen en starters</p>
+
+                <div class="cards-container" style="grid-template-columns: repeat(2, 1fr);">
+                    <div class="card">
+                        <div class="icon">&#x1F3AF;</div>
+                        <h3>Waarom Instagram?</h3>
+                        <ul>
+                            <li><strong>2+ miljard</strong> actieve gebruikers wereldwijd</li>
+                            <li>Visueel platform past bij HEMA&rsquo;s designfocus</li>
+                            <li>Shopping-integratie voor directe conversie</li>
+                            <li>Breed bereik: 20&ndash;45 jaar</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <div class="icon">&#x1F465;</div>
+                        <h3>Doelgroep</h3>
+                        <ul>
+                            <li><strong>Youssef</strong> (24) &mdash; dagelijks op Instagram</li>
+                            <li><strong>Lisa</strong> (36) &mdash; inspiratie &amp; aankopen</li>
+                            <li>Jonge starters en gezinnen</li>
+                            <li>Visueel geori&euml;nteerde shoppers</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <div class="icon">&#x1F4F1;</div>
+                        <h3>Contentvormen</h3>
+                        <ul>
+                            <li><strong>Reels</strong> &mdash; korte productvideo&rsquo;s</li>
+                            <li><strong>Stories</strong> &mdash; polls, behind-the-scenes</li>
+                            <li><strong>Shopping tags</strong> &mdash; directe aankoop</li>
+                            <li><strong>Carousels</strong> &mdash; collectie-overzichten</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <div class="icon">&#x1F4C8;</div>
+                        <h3>Communicatiedoel</h3>
+                        <ul>
+                            <li>Inspireren met visuele content</li>
+                            <li>Directe conversie via Shopping</li>
+                            <li>Engagement door interactie</li>
+                            <li>Merkbekendheid versterken</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 4: KANAAL 2 — TIKTOK -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="section-label"><span class="dot"></span>Kanaal 2</div>
+                <h1>TikTok</h1>
+                <p class="subtitle">Bereik &amp; engagement bij jonge doelgroepen</p>
+
+                <div class="cards-container" style="grid-template-columns: repeat(2, 1fr);">
+                    <div class="card">
+                        <div class="icon">&#x1F680;</div>
+                        <h3>Waarom TikTok?</h3>
+                        <ul>
+                            <li><strong>1,5+ miljard</strong> actieve gebruikers</li>
+                            <li>Hoogste organisch bereik van alle platforms</li>
+                            <li>TikTok Shop voor directe verkoop</li>
+                            <li>&ldquo;TikTok made me buy it&rdquo;-effect</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <div class="icon">&#x1F465;</div>
+                        <h3>Doelgroep</h3>
+                        <ul>
+                            <li><strong>Youssef</strong> (24) &mdash; dagelijks op TikTok</li>
+                            <li>Primair: 16&ndash;30 jaar</li>
+                            <li>Groeiend bij 30&ndash;45 (gezinnen)</li>
+                            <li>Impulsgevoelige kopers</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <div class="icon">&#x1F3AC;</div>
+                        <h3>Contentvormen</h3>
+                        <ul>
+                            <li><strong>Korte video&rsquo;s</strong> &mdash; 15&ndash;60 sec</li>
+                            <li><strong>Trends</strong> &mdash; trending sounds/formats</li>
+                            <li><strong>Challenges</strong> &mdash; gebruikersparticipatie</li>
+                            <li><strong>TikTok Shop</strong> &mdash; in-app aankopen</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <div class="icon">&#x1F4A1;</div>
+                        <h3>Communicatiedoel</h3>
+                        <ul>
+                            <li>Maximaal bereik bij Gen Z/millennials</li>
+                            <li>Virale content cre&euml;ren</li>
+                            <li>HEMA positioneren als trendy merk</li>
+                            <li>Impulsaankopen stimuleren</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 5: KANAAL 3 — FACEBOOK -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="section-label"><span class="dot"></span>Kanaal 3</div>
+                <h1>Facebook</h1>
+                <p class="subtitle">Retargeting &amp; loyaliteit voor gezinnen en 50-plussers</p>
+
+                <div class="cards-container" style="grid-template-columns: repeat(2, 1fr);">
+                    <div class="card">
+                        <div class="icon">&#x1F4E2;</div>
+                        <h3>Waarom Facebook?</h3>
+                        <ul>
+                            <li><strong>10+ miljoen</strong> NL-gebruikers</li>
+                            <li>Sterkste targeting-opties (Meta Ads)</li>
+                            <li>Beste retargeting-mogelijkheden</li>
+                            <li>Bereik 35&ndash;65+ leeftijdsgroep</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <div class="icon">&#x1F465;</div>
+                        <h3>Doelgroep</h3>
+                        <ul>
+                            <li><strong>Lisa</strong> (36) &mdash; dagelijks op Facebook</li>
+                            <li><strong>Gerda</strong> (61) &mdash; familie-updates &amp; aanbiedingen</li>
+                            <li>Gezinnen en 50-plussers</li>
+                            <li>Loyale, terugkerende klanten</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <div class="icon">&#x1F4CB;</div>
+                        <h3>Contentvormen</h3>
+                        <ul>
+                            <li><strong>Ads</strong> &mdash; carousel, video, collection</li>
+                            <li><strong>Retargeting</strong> &mdash; websitebezoekers</li>
+                            <li><strong>Events</strong> &mdash; seizoensacties</li>
+                            <li><strong>Groepen</strong> &mdash; community-building</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <div class="icon">&#x1F504;</div>
+                        <h3>Communicatiedoel</h3>
+                        <ul>
+                            <li>Retargeting van websitebezoekers</li>
+                            <li>Loyaliteit versterken via community</li>
+                            <li>Seizoenscampagnes promoten</li>
+                            <li>Herhaalaankopen stimuleren</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 6: CAMPAGNE FLOW -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="section-label"><span class="dot"></span>Campagne flow</div>
+                <h1>Kanalen in het acquisitieproces</h1>
+
+                <div class="pillars" style="margin-top: clamp(14px, 2vh, 24px);">
+                    <div class="pillar">
+                        <div class="micro-type">Bereik</div>
+                        <div class="icon">&#x1F4E3;</div>
+                        <h3>Awareness cre&euml;ren</h3>
+                        <ul>
+                            <li><strong>TikTok:</strong> virale video&rsquo;s, trending content</li>
+                            <li><strong>Instagram:</strong> Reels met breed bereik</li>
+                            <li><strong>Facebook:</strong> breed getargete ads</li>
+                        </ul>
+                        <p style="margin-top: 6px;"><strong>KPI:</strong> impressies, videoweergaven, bereik</p>
+                    </div>
+                    <div class="pillar">
+                        <div class="micro-type">Interesse</div>
+                        <div class="icon">&#x1F50D;</div>
+                        <h3>Engagement opbouwen</h3>
+                        <ul>
+                            <li><strong>Instagram:</strong> carousels, Stories met polls</li>
+                            <li><strong>TikTok:</strong> behind-the-scenes, influencers</li>
+                            <li><strong>Facebook:</strong> informatieve posts</li>
+                        </ul>
+                        <p style="margin-top: 6px;"><strong>KPI:</strong> likes, saves, comments, shares</p>
+                    </div>
+                    <div class="pillar">
+                        <div class="micro-type">Conversie</div>
+                        <div class="icon">&#x1F6D2;</div>
+                        <h3>Aankoop realiseren</h3>
+                        <ul>
+                            <li><strong>Instagram:</strong> Shopping tags, product-ads</li>
+                            <li><strong>Facebook:</strong> retargeting, dynamic ads</li>
+                            <li><strong>TikTok:</strong> TikTok Shop, kortingscodes</li>
+                        </ul>
+                        <p style="margin-top: 6px;"><strong>KPI:</strong> CTR, conversieratio, ROAS</p>
+                    </div>
+                    <div class="pillar">
+                        <div class="micro-type">Loyaliteit</div>
+                        <div class="icon">&#x2764;&#xFE0F;</div>
+                        <h3>Klant behouden</h3>
+                        <ul>
+                            <li><strong>Facebook:</strong> community, exclusieve acties</li>
+                            <li><strong>Instagram:</strong> UGC, HEMA Pas-voordelen</li>
+                            <li><strong>TikTok:</strong> loyaliteitschallenges</li>
+                        </ul>
+                        <p style="margin-top: 6px;"><strong>KPI:</strong> herhaalaankopen, CLV, NPS</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 7: VERKOOPSTIMULERING -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="section-label"><span class="dot"></span>Verkoopstimulering</div>
+                <h1>2 methoden om verkoop te stimuleren</h1>
+
+                <div class="cards-container" style="grid-template-columns: repeat(2, 1fr); max-width: 900px;">
+                    <div class="card">
+                        <div class="icon">&#x1F6CD;&#xFE0F;</div>
+                        <h3>Methode 1: social commerce</h3>
+                        <p style="margin-bottom: 8px;"><span class="method-badge method-social">Gekozen</span></p>
+                        <ul>
+                            <li>Instagram Shopping &amp; TikTok Shop</li>
+                            <li>Directe aankoop zonder platform te verlaten</li>
+                            <li>Verlaagt drempel van ontdekking naar aankoop</li>
+                            <li>Ideaal voor impulsaankopen (HEMA-prijsrange)</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <div class="icon">&#x1F91D;</div>
+                        <h3>Methode 2: influencer marketing</h3>
+                        <p style="margin-bottom: 8px;"><span class="method-badge method-influencer">Uitgewerkt</span></p>
+                        <ul>
+                            <li>Micro-influencers (10K&ndash;50K volgers)</li>
+                            <li>Authentieke aanbevelingen via vertrouwde gezichten</li>
+                            <li>Hogere engagement dan traditionele ads</li>
+                            <li>Past bij HEMA&rsquo;s toegankelijke merkimago</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 8: UITWERKING INFLUENCER CAMPAGNE -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="section-label"><span class="dot"></span>Campagne-uitwerking</div>
+                <h1>&ldquo;HEMA Favorieten&rdquo;</h1>
+                <p class="subtitle">Influencer-campagne met micro-influencers</p>
+
+                <div class="campaign-card">
+                    <div class="campaign-grid">
+                        <div class="campaign-section">
+                            <h4>Concept</h4>
+                            <ul>
+                                <li>10&ndash;15 micro-influencers (10K&ndash;50K volgers)</li>
+                                <li>Niches: lifestyle, interieur, gezin, food</li>
+                                <li>Elke influencer toont hun &ldquo;top 5 HEMA-favorieten&rdquo;</li>
+                                <li>Authentiek, niet-geregisseerd format</li>
+                            </ul>
+                        </div>
+                        <div class="campaign-section">
+                            <h4>Kanalen &amp; format</h4>
+                            <ul>
+                                <li><strong>Instagram Reels</strong> &mdash; &ldquo;Mijn HEMA top 5&rdquo; video (30&ndash;60 sec)</li>
+                                <li><strong>Instagram Stories</strong> &mdash; unboxing + swipe-up link</li>
+                                <li><strong>TikTok</strong> &mdash; &ldquo;Things I always buy at HEMA&rdquo; trend</li>
+                            </ul>
+                        </div>
+                        <div class="campaign-section">
+                            <h4>Waarom passend?</h4>
+                            <ul>
+                                <li>Micro-influencers: <strong>60% hogere engagement</strong> dan macro</li>
+                                <li>Betaalbaar: &euro;200&ndash;&euro;800 per samenwerking</li>
+                                <li>Past bij HEMA&rsquo;s &ldquo;voor iedereen&rdquo;-imago</li>
+                                <li>UGC herbruikbaar als advertentiemateriaal</li>
+                            </ul>
+                        </div>
+                        <div class="campaign-section">
+                            <h4>Call-to-action</h4>
+                            <ul>
+                                <li>Unieke kortingscode per influencer (10% korting)</li>
+                                <li>Link naar speciale landingspagina hema.nl/favorieten</li>
+                                <li>Hashtag: <strong>#HEMAFavorieten</strong></li>
+                                <li>Meetbaar via UTM-tags en codes</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 9: TARGETINGSTRATEGIE -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="section-label"><span class="dot"></span>Targeting</div>
+                <h1>Targetingstrategie</h1>
+
+                <table class="target-table">
+                    <thead>
+                        <tr><th>Methode</th><th>Toepassing</th><th>Waarom effectief?</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Demografisch</td>
+                            <td>Leeftijd 20&ndash;45 (Instagram/TikTok), 35&ndash;65+ (Facebook), vrouwen &amp; mannen, heel NL</td>
+                            <td>Sluit direct aan op de drie HEMA-klantsegmenten</td>
+                        </tr>
+                        <tr>
+                            <td>Interesses</td>
+                            <td>Interieur, budget shopping, gezin, koken, lifestyle, DIY, mode</td>
+                            <td>Bereikt mensen met koopintentie voor HEMA-productcategorie&euml;n</td>
+                        </tr>
+                        <tr>
+                            <td>Gedrag</td>
+                            <td>Websitebezoekers, app-gebruikers, eerdere kopers, winkelmandje-vullers</td>
+                            <td>Richt zich op mensen die al interactie hadden met HEMA</td>
+                        </tr>
+                        <tr>
+                            <td>Retargeting</td>
+                            <td>Winkelmandje-verlaters, productpagina-bezoekers, video-kijkers (&gt;50%)</td>
+                            <td>Herinnert warme leads aan hun interesse &mdash; <strong>3&ndash;5x hogere conversie</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Lookalike</td>
+                            <td>1&ndash;3% lookalike van HEMA Pas-leden en online kopers</td>
+                            <td>Vindt nieuwe klanten die lijken op bestaande kopers &mdash; schaalbaar bereik</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- SLIDE 10: ANALYSE HUIDIGE ADVERTISING -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="section-label"><span class="dot"></span>Analyse</div>
+                <h1>Huidige social media advertising</h1>
+
+                <div class="cards-container" style="grid-template-columns: repeat(3, 1fr);">
+                    <div class="card">
+                        <div class="icon">&#x1F50E;</div>
+                        <h3>Hoe achterhaald?</h3>
+                        <ul>
+                            <li><strong>Meta Advertentiebibliotheek</strong> &mdash; actieve Facebook/Instagram ads</li>
+                            <li><strong>TikTok Creative Center</strong> &mdash; trending ads</li>
+                            <li><strong>Social media-kanalen</strong> &mdash; organische content analyse</li>
+                            <li><strong>Website-analyse</strong> &mdash; pixels &amp; tracking</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <div class="icon">&#x2705;</div>
+                        <h3>Wat doet HEMA goed?</h3>
+                        <ul>
+                            <li>Seizoensgebonden campagnes (Pasen, zomer, Sint)</li>
+                            <li>Product-gerichte carousel ads</li>
+                            <li>Consistent merkbeeld (rood, wit, clean)</li>
+                            <li>Retargeting via Meta-pixel</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <div class="icon">&#x26A0;&#xFE0F;</div>
+                        <h3>Verbeterpunten</h3>
+                        <ul>
+                            <li>Beperkte TikTok-aanwezigheid</li>
+                            <li>Weinig influencer-samenwerkingen</li>
+                            <li>Geen duidelijke UGC-strategie</li>
+                            <li>Shopping-functies onderbenut</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 11: ADVIES & OPTIMALISATIE -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="section-label"><span class="dot"></span>Advies</div>
+                <h1>Optimalisatie &amp; nieuwe idee&euml;n</h1>
+
+                <div class="cards-container" style="grid-template-columns: repeat(2, 1fr);">
+                    <div class="card">
+                        <div class="icon">&#x1F4F8;</div>
+                        <h3>1. UGC-campagne</h3>
+                        <ul>
+                            <li>#MijnHEMA &mdash; klanten delen hun favoriete producten</li>
+                            <li>Beste content hergebruiken als advertentie</li>
+                            <li>Maandelijkse winactie als incentive</li>
+                            <li><strong>Doel:</strong> authentieke content &amp; community</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <div class="icon">&#x1F3B5;</div>
+                        <h3>2. TikTok-challenges</h3>
+                        <ul>
+                            <li>Seizoensgebonden challenges (bijv. &ldquo;Back to School haul&rdquo;)</li>
+                            <li>Trending sounds + HEMA-producten</li>
+                            <li>Samenwerking met TikTok-creators</li>
+                            <li><strong>Doel:</strong> viraal bereik bij Gen Z</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <div class="icon">&#x1F6CD;&#xFE0F;</div>
+                        <h3>3. Instagram Shopping optimaliseren</h3>
+                        <ul>
+                            <li>Productcatalogus volledig integreren</li>
+                            <li>Shopping tags in alle Reels en posts</li>
+                            <li>Live Shopping events bij productlanceringen</li>
+                            <li><strong>Doel:</strong> hogere conversie vanuit Instagram</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <div class="icon">&#x1F504;</div>
+                        <h3>4. Retargeting funnel verbeteren</h3>
+                        <ul>
+                            <li>Gelaagde retargeting: bezoekers &rarr; kijkers &rarr; verlaters</li>
+                            <li>Dynamic Product Ads per categorie</li>
+                            <li>Cross-platform retargeting (Meta + TikTok)</li>
+                            <li><strong>Doel:</strong> verlaten winkelmandjes terugwinnen</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 12: BLOG -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="section-label"><span class="dot"></span>Contentmarketing &mdash; blog</div>
+                <h1>Blogpost voor hema.nl</h1>
+
+                <div class="blog-mockup">
+                    <div class="blog-browser-bar">
+                        <div class="blog-dots"><div class="blog-dot"></div><div class="blog-dot"></div><div class="blog-dot"></div></div>
+                        <div class="blog-url-bar">&#x1F512; hema.nl/blog/studentenkamer-gezellig-maken</div>
+                    </div>
+                    <div class="blog-content">
+                        <div class="blog-hero">
+                            <h2>10 betaalbare tips om je studentenkamer gezellig te maken</h2>
+                            <p>Van kale muren naar een plek die echt van jou is &mdash; zonder je budget te overschrijden</p>
+                        </div>
+                        <div class="blog-excerpt">
+                            <h4>Over de blog</h4>
+                            <p>Deze blogpost richt zich op <strong>jonge starters</strong> (persona Youssef) die hun eerste kamer of appartement inrichten. Met 10 concrete tips &mdash; van lichtslingers en fotolijsten tot opbergoplossingen en textiel &mdash; laat HEMA zien dat stijlvol wonen niet duur hoeft te zijn. Elk product linkt direct naar de webshop.</p>
+
+                            <h4>Waarom deze blog?</h4>
+                            <p><strong>Merkidentiteit:</strong> versterkt HEMA&rsquo;s positionering als betaalbaar &amp; stijlvol. <strong>Zichtbaarheid:</strong> rankt op zoekwoorden als &ldquo;studentenkamer inrichten budget&rdquo; en &ldquo;goedkope woonaccessoires&rdquo;. <strong>Conversie:</strong> elk tip bevat product-links met prijzen. <strong>SEO:</strong> long-tail zoekwoorden, interne links naar categoriepagina&rsquo;s, optimale H-structuur.</p>
+                        </div>
+                        <div class="blog-tags">
+                            <span class="blog-tag">Wonen</span>
+                            <span class="blog-tag">Budget</span>
+                            <span class="blog-tag">Studenten</span>
+                            <span class="blog-tag">Interieur</span>
+                            <span class="blog-tag">Tips</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 13: SOCIAL MEDIA VIDEO -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="section-label"><span class="dot"></span>Social media video (CapCut)</div>
+                <h1>Video: &ldquo;HEMA kamer makeover&rdquo;</h1>
+                <p class="subtitle">TikTok / Instagram Reels &bull; 30&ndash;45 seconden &bull; doelgroep: jonge starters</p>
+
+                <div class="storyboard">
+                    <div class="story-frame">
+                        <div class="frame-num">1</div>
+                        <div class="frame-icon">&#x1F3E0;</div>
+                        <h4>Opening</h4>
+                        <p>Kale, lege studentenkamer. Tekst: &ldquo;POV: je kamer is saai&rdquo;</p>
+                        <div class="frame-time">0&ndash;5 sec</div>
+                    </div>
+                    <div class="story-frame">
+                        <div class="frame-num">2</div>
+                        <div class="frame-icon">&#x1F6CD;&#xFE0F;</div>
+                        <h4>HEMA-haul</h4>
+                        <p>Snelle unboxing van HEMA-producten: kussens, lichtjes, fotolijsten, kaarsen</p>
+                        <div class="frame-time">5&ndash;15 sec</div>
+                    </div>
+                    <div class="story-frame">
+                        <div class="frame-num">3</div>
+                        <div class="frame-icon">&#x2728;</div>
+                        <h4>Transformatie</h4>
+                        <p>Timelapse van het inrichten. Before/after met trending transition</p>
+                        <div class="frame-time">15&ndash;35 sec</div>
+                    </div>
+                    <div class="story-frame">
+                        <div class="frame-num">4</div>
+                        <div class="frame-icon">&#x1F4B0;</div>
+                        <h4>Reveal + CTA</h4>
+                        <p>Eindresultaat + totaalprijs (&lt;&euro;50). &ldquo;Alles van HEMA &mdash; link in bio&rdquo;</p>
+                        <div class="frame-time">35&ndash;45 sec</div>
+                    </div>
+                </div>
+
+                <div class="cards-container" style="grid-template-columns: repeat(3, 1fr); margin-top: clamp(10px, 1.5vh, 16px);">
+                    <div class="card" style="text-align: center;">
+                        <div class="icon">&#x1F3B6;</div>
+                        <h3>Muziek</h3>
+                        <p>Trending TikTok-sound, upbeat tempo</p>
+                    </div>
+                    <div class="card" style="text-align: center;">
+                        <div class="icon">&#x1F3A8;</div>
+                        <h3>Stijl</h3>
+                        <p>CapCut: smooth transitions, tekst-overlays, speed ramps</p>
+                    </div>
+                    <div class="card" style="text-align: center;">
+                        <div class="icon">&#x1F4C8;</div>
+                        <h3>Doel</h3>
+                        <p>Zichtbaarheid &amp; engagement, verkeer naar webshop</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 14: BRONNEN -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="hema-logo-small">HEMA</div>
+                <h1>Bronnen</h1>
+
+                <div class="references-list">
+                    <div class="reference-item">[1] Visser, M. &amp; Sikkenga, B. (2021). <em>Basisboek Online Marketing</em> (4e druk). Noordhoff.</div>
+                    <div class="reference-item">[2] Meta (2026). <em>Meta Advertentiebibliotheek</em>. facebook.com/ads/library.</div>
+                    <div class="reference-item">[3] TikTok (2026). <em>TikTok Creative Center</em>. ads.tiktok.com/business/creativecenter.</div>
+                    <div class="reference-item">[4] Hootsuite (2026). <em>Social Media Trends 2026</em>. hootsuite.com.</div>
+                    <div class="reference-item">[5] Sprout Social (2026). <em>Social Media Benchmarks Report</em>. sproutsocial.com.</div>
+                    <div class="reference-item">[6] Statista (2026). <em>Social media usage in the Netherlands</em>. statista.com.</div>
+                    <div class="reference-item">[7] Influencer Marketing Hub (2026). <em>Influencer Marketing Benchmark Report</em>. influencermarketinghub.com.</div>
+                    <div class="reference-item">[8] HEMA (z.d.). hema.nl. Geraadpleegd op 17 maart 2026.</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="slide-indicator" id="slide-indicator">1 / 14</div>
+    <button class="fullscreen-btn" id="fs-btn" onclick="toggleFullscreen()" title="Fullscreen">
+        <svg id="fs-icon-enter" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>
+        <svg id="fs-icon-exit" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><path d="M8 3v3a2 2 0 01-2 2H3m18 0h-3a2 2 0 01-2-2V3m0 18v-3a2 2 0 012-2h3M3 16h3a2 2 0 012 2v3"/></svg>
+    </button>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        let current = 0;
+        const total = slides.length;
+
+        function updateUI() {
+            document.getElementById('slide-indicator').textContent = `${current + 1} / ${total}`;
+            document.getElementById('progress-bar').style.width = `${((current + 1) / total) * 100}%`;
+        }
+        function goToSlide(index, direction) {
+            if (index < 0 || index >= total || index === current) return;
+            const prev = slides[current], next = slides[index];
+            prev.classList.remove('active');
+            prev.classList.add(direction === 'next' ? 'exit-left' : 'exit-right');
+            next.classList.remove('exit-left', 'exit-right');
+            void next.offsetWidth;
+            next.classList.add('active');
+            current = index;
+            updateUI();
+            setTimeout(() => { prev.classList.remove('exit-left', 'exit-right'); }, 1000);
+        }
+        function nextSlide() { goToSlide(current + 1, 'next'); }
+        function prevSlide() { goToSlide(current - 1, 'prev'); }
+
+        document.addEventListener('keydown', e => {
+            if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+            else if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+        });
+        document.addEventListener('click', e => {
+            if (e.target.closest('.fullscreen-btn')) return;
+            if (e.clientX > window.innerWidth * 0.5) nextSlide(); else prevSlide();
+        });
+        let touchStartX = 0;
+        document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
+        document.addEventListener('touchend', e => {
+            const diff = e.changedTouches[0].clientX - touchStartX;
+            if (diff > 50) prevSlide(); else if (diff < -50) nextSlide();
+        });
+
+        function toggleFullscreen() {
+            const el = document.documentElement;
+            const isFs = document.fullscreenElement || document.webkitFullscreenElement || document.webkitIsFullScreen;
+            if (!isFs) {
+                if (el.requestFullscreen) el.requestFullscreen().catch(() => {});
+                else if (el.webkitRequestFullScreen) el.webkitRequestFullScreen();
+            } else {
+                if (document.exitFullscreen) document.exitFullscreen().catch(() => {});
+                else if (document.webkitCancelFullScreen) document.webkitCancelFullScreen();
+            }
+        }
+        function updateFsIcon() {
+            const isFs = document.fullscreenElement || document.webkitFullscreenElement || document.webkitIsFullScreen;
+            document.getElementById('fs-icon-enter').style.display = isFs ? 'none' : '';
+            document.getElementById('fs-icon-exit').style.display = isFs ? '' : 'none';
+        }
+        document.addEventListener('fullscreenchange', updateFsIcon);
+        document.addEventListener('webkitfullscreenchange', updateFsIcon);
+        updateUI();
+    </script>
+</body>
+</html>
