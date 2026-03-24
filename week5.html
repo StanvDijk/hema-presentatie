@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weekopdracht 5 — HEMA</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&display=swap');
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --hema-red: #E4002B; --hema-dark: #C50025; --text: #1d1d1f;
+            --subtext: #86868b; --card-bg: #f5f5f7; --card-hover: #ededf0;
+            --accent: #E4002B; --white: #FFFFFF;
+            --transition-duration: 0.9s; --transition-ease: cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+            background: var(--white); color: var(--text); line-height: 1.1;
+            overflow: hidden; -webkit-font-smoothing: antialiased; perspective: 1200px;
+        }
+        .presentation { width: 100vw; height: 100vh; position: relative; transform-style: preserve-3d; }
+        .slide {
+            width: 100%; height: 100%; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; position: absolute; top: 0; left: 0;
+            padding: clamp(30px, 4vh, 60px) clamp(30px, 5vw, 80px);
+            text-align: center; opacity: 0; pointer-events: none;
+            transform: translateX(100%) rotateY(8deg) scale(0.85); filter: blur(8px);
+            transition: opacity var(--transition-duration) var(--transition-ease),
+                        transform var(--transition-duration) var(--transition-ease),
+                        filter var(--transition-duration) var(--transition-ease);
+            will-change: opacity, transform, filter; transform-style: preserve-3d;
+        }
+        .slide.active { opacity: 1; pointer-events: auto; transform: translateX(0) rotateY(0deg) scale(1); filter: blur(0px); }
+        .slide.exit-left { opacity: 0; pointer-events: none; transform: translateX(-100%) rotateY(-8deg) scale(0.85); filter: blur(8px); }
+        .slide.exit-right { opacity: 0; pointer-events: none; transform: translateX(100%) rotateY(8deg) scale(0.85); filter: blur(8px); }
+        .slide-content {
+            max-width: 1100px; width: 100%; margin: 0 auto;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+        .slide.active .slide-content > * { animation: elementReveal 0.8s var(--transition-ease) both; }
+        .slide.active .slide-content > *:nth-child(1) { animation-delay: 0.15s; }
+        .slide.active .slide-content > *:nth-child(2) { animation-delay: 0.3s; }
+        .slide.active .slide-content > *:nth-child(3) { animation-delay: 0.45s; }
+        .slide.active .slide-content > *:nth-child(4) { animation-delay: 0.6s; }
+        @keyframes elementReveal {
+            from { opacity: 0; transform: translateY(40px) scale(0.92); filter: blur(6px); }
+            to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0px); }
+        }
+        .hema-logo {
+            font-size: clamp(60px, 10vw, 120px); font-weight: 900; color: var(--white);
+            background: var(--hema-red); padding: 12px clamp(24px, 4vw, 50px);
+            letter-spacing: 0.08em; line-height: 1; margin-bottom: clamp(20px, 3vh, 40px); display: inline-block;
+        }
+        .slide.active .hema-logo { animation: logoReveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both; }
+        @keyframes logoReveal {
+            0% { opacity: 0; transform: scale(0.3) rotateX(20deg); filter: blur(20px); }
+            50% { opacity: 1; filter: blur(0px); }
+            70% { transform: scale(1.05) rotateX(0deg); }
+            100% { opacity: 1; transform: scale(1) rotateX(0deg); filter: blur(0px); }
+        }
+        .hema-logo-small {
+            font-size: clamp(18px, 2.5vw, 28px); font-weight: 900; color: var(--white);
+            background: var(--hema-red); padding: 5px clamp(10px, 1.5vw, 18px);
+            letter-spacing: 0.08em; line-height: 1; display: inline-block; margin-bottom: 20px;
+        }
+        h1 { font-size: clamp(32px, 4.5vw, 56px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.05; margin-bottom: clamp(10px, 1.5vh, 20px); }
+        h1.hero { font-size: clamp(38px, 5.5vw, 68px); font-weight: 800; line-height: 1.0; }
+        .subtitle { font-size: clamp(15px, 1.8vw, 22px); font-weight: 400; color: var(--subtext); margin-bottom: clamp(12px, 2vh, 24px); line-height: 1.3; max-width: 700px; }
+        .meta-info { font-size: clamp(13px, 1.4vw, 16px); color: var(--subtext); font-weight: 400; line-height: 1.5; margin-top: 8px; }
+        .highlight { color: var(--accent); font-weight: 600; }
+        .section-label {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: var(--card-bg); color: var(--subtext);
+            padding: 6px 16px; border-radius: 50px;
+            font-size: clamp(11px, 1.2vw, 14px); font-weight: 500; margin-bottom: 16px;
+        }
+        .section-label .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--hema-red); }
+
+        .cards-container {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: clamp(10px, 1.5vw, 20px); margin-top: clamp(12px, 2vh, 24px);
+            max-width: 1100px; width: 100%;
+        }
+        .card {
+            background: var(--card-bg); border-radius: 14px;
+            padding: clamp(14px, 1.8vw, 24px); text-align: left;
+            opacity: 0; transform: translateY(60px) scale(0.9) rotateX(8deg); filter: blur(4px);
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+        .slide.active .card { animation: cardDrop 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; }
+        .slide.active .card:nth-child(1) { animation-delay: 0.35s; }
+        .slide.active .card:nth-child(2) { animation-delay: 0.45s; }
+        .slide.active .card:nth-child(3) { animation-delay: 0.55s; }
+        .slide.active .card:nth-child(4) { animation-delay: 0.65s; }
+        .slide.active .card:nth-child(5) { animation-delay: 0.75s; }
+        .slide.active .card:nth-child(6) { animation-delay: 0.85s; }
+        @keyframes cardDrop {
+            0% { opacity: 0; transform: translateY(60px) scale(0.9) rotateX(8deg); filter: blur(4px); }
+            60% { opacity: 1; filter: blur(0px); }
+            80% { transform: translateY(-8px) scale(1.02) rotateX(0deg); }
+            100% { opacity: 1; transform: translateY(0) scale(1) rotateX(0deg); filter: blur(0px); }
+        }
+        .card:hover { background: var(--card-hover); box-shadow: 0 12px 40px rgba(228,0,43,0.08), 0 4px 12px rgba(0,0,0,0.04); }
+        .card h3 { font-size: clamp(13px, 1.5vw, 17px); font-weight: 600; margin-bottom: 5px; color: var(--text); }
+        .card p, .card li { font-size: clamp(11px, 1.2vw, 14px); color: var(--subtext); line-height: 1.4; }
+        .card ul { list-style: none; padding: 0; }
+        .card ul li { padding: 2px 0; padding-left: 12px; position: relative; }
+        .card ul li::before { content: ''; position: absolute; left: 0; top: 9px; width: 4px; height: 4px; border-radius: 50%; background: var(--hema-red); }
+        .card .stat { font-size: clamp(24px, 3.5vw, 38px); font-weight: 800; color: var(--hema-red); margin-bottom: 4px; }
+        .card .icon { font-size: clamp(22px, 2.5vw, 30px); margin-bottom: 5px; }
+
+        .pillars { display: flex; gap: clamp(10px, 1.5vw, 20px); max-width: 1100px; margin: clamp(12px, 2vh, 24px) auto 0; width: 100%; }
+        .pillar {
+            flex: 1; background: var(--card-bg); border-radius: 14px;
+            padding: clamp(14px, 1.8vw, 22px); text-align: left;
+            opacity: 0; transform: translateX(-80px) scale(0.85); filter: blur(6px);
+        }
+        .slide.active .pillar { animation: pillarSlide 0.9s cubic-bezier(0.16, 1, 0.3, 1) both; }
+        .slide.active .pillar:nth-child(1) { animation-delay: 0.4s; }
+        .slide.active .pillar:nth-child(2) { animation-delay: 0.6s; transform: translateY(60px) scale(0.85); }
+        .slide.active .pillar:nth-child(3) { animation-delay: 0.8s; transform: translateX(80px) scale(0.85); }
+        @keyframes pillarSlide {
+            0% { opacity: 0; filter: blur(6px); }
+            100% { opacity: 1; transform: translateX(0) translateY(0) scale(1); filter: blur(0px); }
+        }
+        .pillar .icon { font-size: clamp(22px, 2.8vw, 32px); margin-bottom: 6px; }
+        .pillar h3 { font-size: clamp(13px, 1.4vw, 16px); font-weight: 700; color: var(--text); margin-bottom: 4px; }
+        .pillar p, .pillar li { font-size: clamp(10.5px, 1.15vw, 13px); color: var(--subtext); line-height: 1.4; }
+        .pillar ul { list-style: none; padding: 0; }
+        .pillar ul li { padding: 2px 0; padding-left: 12px; position: relative; }
+        .pillar ul li::before { content: ''; position: absolute; left: 0; top: 8px; width: 4px; height: 4px; border-radius: 50%; background: var(--hema-red); }
+        .pillar .micro-type {
+            display: inline-block; background: #fce8ec; color: var(--hema-red);
+            padding: 3px 10px; border-radius: 50px; font-size: clamp(9px, 0.9vw, 11px); font-weight: 600; margin-bottom: 6px;
+        }
+
+        /* BENCHMARK TABLE */
+        .bench-table {
+            width: 100%; max-width: 1100px; border-collapse: separate;
+            border-spacing: 0; margin-top: clamp(12px, 2vh, 20px);
+            font-size: clamp(10.5px, 1.15vw, 13px);
+        }
+        .bench-table thead th {
+            background: var(--card-bg); color: var(--subtext); font-weight: 600;
+            padding: 10px 12px; text-align: center; font-size: clamp(10px, 1vw, 12px);
+            text-transform: uppercase; letter-spacing: 0.03em;
+        }
+        .bench-table thead th:first-child { text-align: left; border-radius: 10px 0 0 0; }
+        .bench-table thead th:last-child { border-radius: 0 10px 0 0; }
+        .bench-table thead th.hema-col { background: #fce8ec; color: var(--hema-red); }
+        .bench-table tbody tr { opacity: 0; }
+        .slide.active .bench-table tbody tr { animation: rowReveal 0.6s var(--transition-ease) both; }
+        .slide.active .bench-table tbody tr:nth-child(1) { animation-delay: 0.3s; }
+        .slide.active .bench-table tbody tr:nth-child(2) { animation-delay: 0.4s; }
+        .slide.active .bench-table tbody tr:nth-child(3) { animation-delay: 0.5s; }
+        .slide.active .bench-table tbody tr:nth-child(4) { animation-delay: 0.6s; }
+        .slide.active .bench-table tbody tr:nth-child(5) { animation-delay: 0.7s; }
+        .slide.active .bench-table tbody tr:nth-child(6) { animation-delay: 0.8s; }
+        @keyframes rowReveal {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        .bench-table tbody td {
+            padding: 8px 12px; border-bottom: 1px solid #f0f0f2;
+            color: var(--text); text-align: center; vertical-align: top;
+        }
+        .bench-table tbody td:first-child { font-weight: 600; color: var(--hema-red); text-align: left; }
+        .bench-table tbody tr:last-child td { border-bottom: none; }
+        .grade { font-weight: 800; font-size: clamp(14px, 1.5vw, 18px); }
+        .grade-high { color: #34C759; }
+        .grade-mid { color: #FF9500; }
+        .grade-low { color: var(--hema-red); }
+
+        .references-list { text-align: left; max-width: 900px; margin: clamp(12px, 2vh, 20px) auto 0; width: 100%; }
+        .reference-item {
+            font-size: clamp(10.5px, 1.1vw, 12px); color: #6e6e73; line-height: 1.5;
+            padding: 7px 0; border-bottom: 1px solid #f0f0f2;
+            padding-left: 28px; text-indent: -28px; opacity: 0;
+        }
+        .slide.active .reference-item { animation: elementReveal 0.6s var(--transition-ease) both; }
+        .slide.active .reference-item:nth-child(1) { animation-delay: 0.4s; }
+        .slide.active .reference-item:nth-child(2) { animation-delay: 0.5s; }
+        .slide.active .reference-item:nth-child(3) { animation-delay: 0.6s; }
+        .slide.active .reference-item:nth-child(4) { animation-delay: 0.7s; }
+        .reference-item:last-child { border-bottom: none; }
+
+        .progress-bar { position: fixed; top: 0; left: 0; height: 3px; background: var(--hema-red); transition: width 0.7s var(--transition-ease); z-index: 200; box-shadow: 0 0 10px rgba(228,0,43,0.4); }
+        .slide-indicator { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); font-size: 13px; color: #c7c7cc; font-weight: 400; z-index: 100; }
+        .fullscreen-btn {
+            position: fixed; bottom: 20px; right: 24px; width: 40px; height: 40px;
+            border-radius: 10px; border: none; background: var(--card-bg);
+            color: var(--subtext); cursor: pointer; display: flex;
+            align-items: center; justify-content: center; z-index: 200; transition: all 0.3s ease;
+        }
+        .fullscreen-btn:hover { background: var(--hema-red); color: white; transform: scale(1.1); }
+        body:fullscreen, body:-webkit-full-screen { background: #FFFFFF !important; color: var(--text) !important; }
+        ::backdrop { background: #FFFFFF !important; }
+        ::-webkit-backdrop { background: #FFFFFF !important; }
+        html:fullscreen, html:-webkit-full-screen { background: #FFFFFF !important; }
+
+        @media (max-width: 768px) {
+            .cards-container { grid-template-columns: 1fr !important; }
+            .pillars { flex-direction: column; }
+            .bench-table { font-size: 10px; }
+        }
+        @media (max-height: 700px) {
+            .slide { padding: clamp(16px, 2.5vh, 30px) clamp(20px, 3vw, 50px); }
+            h1 { font-size: clamp(26px, 3.5vw, 44px); margin-bottom: 8px; }
+            .subtitle { font-size: clamp(13px, 1.4vw, 18px); margin-bottom: 10px; }
+            .cards-container { margin-top: 10px; gap: 8px; }
+            .card { padding: 12px; }
+            .hema-logo { font-size: clamp(40px, 8vw, 80px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar" id="progress-bar"></div>
+    <div class="presentation">
+
+        <!-- SLIDE 1: TITLE -->
+        <div class="slide active">
+            <div class="slide-content">
+                <div class="hema-logo">HEMA</div>
+                <h1 class="hero">Weekopdracht 5</h1>
+                <p class="subtitle">Analyse webshop &mdash; BAIA-model, 6B-model &amp; benchmarkanalyse</p>
+                <p class="meta-info">Stan van Dijk &bull; Niels Gunst &bull; Mees Egberts &bull; Levi de Jong &bull; Tom Koenraads<br>Online Marketing &mdash; Blok 3 &mdash; 2026</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 2: BAIA-MODEL -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="section-label"><span class="dot"></span>Opdracht 1 &mdash; BAIA-model</div>
+                <h1>BAIA-model bij HEMA</h1>
+                <p class="subtitle">Hoe HEMA de doelgroep motiveert om hema.nl te bezoeken</p>
+
+                <div class="cards-container" style="grid-template-columns: repeat(4, 1fr);">
+                    <div class="card" style="text-align: center; border-top: 3px solid var(--hema-red);">
+                        <div class="stat">B</div>
+                        <h3>Bereiken</h3>
+                        <ul>
+                            <li>Google Ads (SEA)</li>
+                            <li>Social media ads</li>
+                            <li>Display advertising</li>
+                            <li>Affiliate marketing</li>
+                        </ul>
+                    </div>
+                    <div class="card" style="text-align: center; border-top: 3px solid var(--hema-red);">
+                        <div class="stat">A</div>
+                        <h3>Aantrekken</h3>
+                        <ul>
+                            <li>SEO (organisch)</li>
+                            <li>Contentmarketing</li>
+                            <li>E-mailnieuwsbrief</li>
+                            <li>Social media organisch</li>
+                        </ul>
+                    </div>
+                    <div class="card" style="text-align: center; border-top: 3px solid var(--hema-red);">
+                        <div class="stat">I</div>
+                        <h3>Interactie</h3>
+                        <ul>
+                            <li>Personalisatie (account)</li>
+                            <li>HEMA Pas spaarpunten</li>
+                            <li>Live chat klantenservice</li>
+                            <li>Productreviews</li>
+                        </ul>
+                    </div>
+                    <div class="card" style="text-align: center; border-top: 3px solid var(--hema-red);">
+                        <div class="stat">A</div>
+                        <h3>Actie</h3>
+                        <ul>
+                            <li>Abandoned cart e-mails</li>
+                            <li>Click &amp; Collect</li>
+                            <li>Kortingscodes / acties</li>
+                            <li>One-click checkout</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 3: BOUGHT / OWNED / EARNED + CIJFERS -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="section-label"><span class="dot"></span>Opdracht 2 &mdash; media per BAIA-fase</div>
+                <h1>Bought, owned &amp; earned media</h1>
+
+                <div class="cards-container" style="grid-template-columns: repeat(4, 1fr);">
+                    <div class="card">
+                        <h3>Bereiken</h3>
+                        <ul>
+                            <li><strong>Bought:</strong> Google Ads, social ads, display</li>
+                            <li><strong>Owned:</strong> SEO, website</li>
+                            <li><strong>Earned:</strong> mond-tot-mond, shares</li>
+                        </ul>
+                        <div class="stat" style="margin-top: 8px;">7</div>
+                    </div>
+                    <div class="card">
+                        <h3>Aantrekken</h3>
+                        <ul>
+                            <li><strong>Bought:</strong> retargeting ads</li>
+                            <li><strong>Owned:</strong> blog, e-mail, socials</li>
+                            <li><strong>Earned:</strong> reviews, PR, UGC</li>
+                        </ul>
+                        <div class="stat" style="margin-top: 8px;">7</div>
+                    </div>
+                    <div class="card">
+                        <h3>Interactie</h3>
+                        <ul>
+                            <li><strong>Bought:</strong> remarketing</li>
+                            <li><strong>Owned:</strong> website, app, chat</li>
+                            <li><strong>Earned:</strong> reviews, community</li>
+                        </ul>
+                        <div class="stat" style="margin-top: 8px;">8</div>
+                    </div>
+                    <div class="card">
+                        <h3>Actie</h3>
+                        <ul>
+                            <li><strong>Bought:</strong> shopping ads</li>
+                            <li><strong>Owned:</strong> checkout, e-mailflows</li>
+                            <li><strong>Earned:</strong> referrals, aanbevelingen</li>
+                        </ul>
+                        <div class="stat" style="margin-top: 8px;">8</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 4: 6B-MODEL OVERVIEW -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="section-label"><span class="dot"></span>Opdracht 3 &mdash; 6B-model</div>
+                <h1>De online marketingfunnel</h1>
+                <p class="subtitle">6 B&rsquo;s van Visser &amp; Sikkenga, toegepast op HEMA</p>
+
+                <div class="cards-container" style="grid-template-columns: repeat(6, 1fr);">
+                    <div class="card" style="text-align: center;">
+                        <div class="stat">7</div>
+                        <h3>Bereiken</h3>
+                        <p>Traffic genereren</p>
+                    </div>
+                    <div class="card" style="text-align: center;">
+                        <div class="stat">7</div>
+                        <h3>Boeien</h3>
+                        <p>Aandacht vasthouden</p>
+                    </div>
+                    <div class="card" style="text-align: center;">
+                        <div class="stat">7</div>
+                        <h3>Beslissen</h3>
+                        <p>Overtuigen tot koop</p>
+                    </div>
+                    <div class="card" style="text-align: center;">
+                        <div class="stat">8</div>
+                        <h3>Bestellen</h3>
+                        <p>Aankoopproces</p>
+                    </div>
+                    <div class="card" style="text-align: center;">
+                        <div class="stat">8</div>
+                        <h3>Betalen</h3>
+                        <p>Betaalproces</p>
+                    </div>
+                    <div class="card" style="text-align: center;">
+                        <div class="stat">8</div>
+                        <h3>Binden</h3>
+                        <p>Klantretentie</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 5: BEREIKEN & BOEIEN -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="section-label"><span class="dot"></span>Opdracht 3 &mdash; 6B uitwerking</div>
+                <h1>Bereiken &amp; boeien</h1>
+
+                <div class="cards-container" style="grid-template-columns: repeat(2, 1fr);">
+                    <div class="card" style="border-left: 4px solid var(--hema-red);">
+                        <h3>Bereiken <span class="highlight">(7/10)</span></h3>
+                        <ul>
+                            <li><strong>KSF:</strong> online zichtbaarheid</li>
+                            <li><strong>SEA:</strong> Google Shopping, zoekadvertenties</li>
+                            <li><strong>SEO:</strong> organisch goed vindbaar op merknaam</li>
+                            <li><strong>Social ads:</strong> Facebook, Instagram, TikTok</li>
+                            <li><strong>E-mail:</strong> nieuwsbrief naar bestaande klanten</li>
+                            <li><strong>Min:</strong> weinig affiliate/influencer marketing</li>
+                        </ul>
+                    </div>
+                    <div class="card" style="border-left: 4px solid var(--hema-red);">
+                        <h3>Boeien <span class="highlight">(7/10)</span></h3>
+                        <ul>
+                            <li><strong>KSF:</strong> relevante, aantrekkelijke content</li>
+                            <li><strong>Design:</strong> strak, overzichtelijk, veel witruimte</li>
+                            <li><strong>Seizoenscampagnes:</strong> Pasen, zomer, Sinterklaas</li>
+                            <li><strong>Inspiratie:</strong> &ldquo;shop de set&rdquo;, themacarousels</li>
+                            <li><strong>Personalisatie:</strong> aanbevelingen, recent bekeken</li>
+                            <li><strong>Min:</strong> geen blog of inspiratieartikelen</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 6: BESLISSEN & BESTELLEN -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="section-label"><span class="dot"></span>Opdracht 3 &mdash; 6B uitwerking</div>
+                <h1>Beslissen &amp; bestellen</h1>
+
+                <div class="cards-container" style="grid-template-columns: repeat(2, 1fr);">
+                    <div class="card" style="border-left: 4px solid var(--hema-red);">
+                        <h3>Beslissen <span class="highlight">(7/10)</span></h3>
+                        <ul>
+                            <li><strong>KSF:</strong> vertrouwen &amp; productinformatie</li>
+                            <li><strong>Keurmerk:</strong> Thuiswinkel Waarborg (96% herkenning)</li>
+                            <li><strong>Reviews:</strong> klantbeoordelingen aanwezig</li>
+                            <li><strong>Productinfo:</strong> specificaties, foto&rsquo;s, voorraad</li>
+                            <li><strong>Prijs:</strong> transparant, prijs per eenheid</li>
+                            <li><strong>Min:</strong> reviews niet altijd prominent</li>
+                        </ul>
+                    </div>
+                    <div class="card" style="border-left: 4px solid var(--hema-red);">
+                        <h3>Bestellen <span class="highlight">(8/10)</span></h3>
+                        <ul>
+                            <li><strong>KSF:</strong> gemak en snelheid</li>
+                            <li><strong>Click &amp; Collect:</strong> afhalen in 700+ winkels</li>
+                            <li><strong>Gastenbestelling:</strong> geen account verplicht</li>
+                            <li><strong>Bezorging:</strong> &euro;2,95, gratis v.a. &euro;25</li>
+                            <li><strong>Mandje:</strong> overzichtelijk, duidelijke stappen</li>
+                            <li><strong>Min:</strong> geen same-day delivery</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 7: BETALEN & BINDEN -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="section-label"><span class="dot"></span>Opdracht 3 &mdash; 6B uitwerking</div>
+                <h1>Betalen &amp; binden</h1>
+
+                <div class="cards-container" style="grid-template-columns: repeat(2, 1fr);">
+                    <div class="card" style="border-left: 4px solid var(--hema-red);">
+                        <h3>Betalen <span class="highlight">(8/10)</span></h3>
+                        <ul>
+                            <li><strong>KSF:</strong> veiligheid &amp; keuze</li>
+                            <li><strong>Opties:</strong> iDEAL, PayPal, creditcard, Klarna</li>
+                            <li><strong>Achteraf:</strong> betalen via Klarna/PayPal</li>
+                            <li><strong>Veiligheid:</strong> HTTPS, GDPR-compliant</li>
+                            <li><strong>Cadeaukaart:</strong> HEMA cadeaukaart als betaalmiddel</li>
+                            <li><strong>Min:</strong> geen Apple Pay / Google Pay</li>
+                        </ul>
+                    </div>
+                    <div class="card" style="border-left: 4px solid var(--hema-red);">
+                        <h3>Binden <span class="highlight">(8/10)</span></h3>
+                        <ul>
+                            <li><strong>KSF:</strong> loyaliteit &amp; retentie</li>
+                            <li><strong>HEMA Pas:</strong> spaarpunten, gratis tompouce</li>
+                            <li><strong>Retour:</strong> 30 dagen, winkel &eacute;n post</li>
+                            <li><strong>E-mail:</strong> persoonlijke aanbiedingen, nazorg</li>
+                            <li><strong>App:</strong> pushnotificaties, spaarpunten</li>
+                            <li><strong>Min:</strong> geen exclusief loyaliteitsniveau</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 8: BENCHMARK MATRIX -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="section-label"><span class="dot"></span>Opdracht 4 &mdash; benchmarkanalyse</div>
+                <h1>HEMA vs Action vs IKEA</h1>
+
+                <table class="bench-table">
+                    <thead>
+                        <tr>
+                            <th>6B</th>
+                            <th class="hema-col">HEMA</th>
+                            <th>Action</th>
+                            <th>IKEA</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Bereiken</td>
+                            <td><span class="grade grade-high">7</span><br>SEA + social ads + e-mail</td>
+                            <td><span class="grade grade-mid">5</span><br>Beperkt online, focus fysiek</td>
+                            <td><span class="grade grade-high">8</span><br>Sterk SEA + YouTube + display</td>
+                        </tr>
+                        <tr>
+                            <td>Boeien</td>
+                            <td><span class="grade grade-high">7</span><br>Seizoenscampagnes, personalisatie</td>
+                            <td><span class="grade grade-mid">5</span><br>Basis webshop, weinig content</td>
+                            <td><span class="grade grade-high">9</span><br>Roomplanners, inspiratie, UGC</td>
+                        </tr>
+                        <tr>
+                            <td>Beslissen</td>
+                            <td><span class="grade grade-high">7</span><br>Thuiswinkel Waarborg, reviews</td>
+                            <td><span class="grade grade-mid">5</span><br>Beperkte productinfo, geen reviews</td>
+                            <td><span class="grade grade-high">8</span><br>Reviews, 3D-modellen, specs</td>
+                        </tr>
+                        <tr>
+                            <td>Bestellen</td>
+                            <td><span class="grade grade-high">8</span><br>Click &amp; Collect, gastenbestelling</td>
+                            <td><span class="grade grade-low">4</span><br>Beperkte webshop, focus winkels</td>
+                            <td><span class="grade grade-high">8</span><br>Click &amp; Collect, bezorgopties</td>
+                        </tr>
+                        <tr>
+                            <td>Betalen</td>
+                            <td><span class="grade grade-high">8</span><br>iDEAL, Klarna, PayPal, creditcard</td>
+                            <td><span class="grade grade-mid">6</span><br>iDEAL, creditcard, beperkt</td>
+                            <td><span class="grade grade-high">8</span><br>Breed scala + IKEA cadeaukaart</td>
+                        </tr>
+                        <tr>
+                            <td>Binden</td>
+                            <td><span class="grade grade-high">8</span><br>HEMA Pas, spaarpunten, app</td>
+                            <td><span class="grade grade-low">3</span><br>Geen loyaliteitsprogramma</td>
+                            <td><span class="grade grade-high">8</span><br>IKEA Family, workshops, app</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- SLIDE 9: BENCHMARK CONCLUSIES -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="section-label"><span class="dot"></span>Opdracht 4 &mdash; conclusies</div>
+                <h1>Benchmark conclusies</h1>
+
+                <div class="pillars">
+                    <div class="pillar" style="border-top: 4px solid var(--hema-red);">
+                        <div class="icon">&#x1F3E0;</div>
+                        <h3>HEMA (gem. 7,5)</h3>
+                        <ul>
+                            <li>Sterke omnichannel-aanpak</li>
+                            <li>HEMA Pas is effectief loyaliteitstool</li>
+                            <li>Breed betaalopties</li>
+                            <li>Kan verbeteren: content, reviews, influencer</li>
+                        </ul>
+                    </div>
+                    <div class="pillar" style="border-top: 4px solid #FF9500;">
+                        <div class="icon">&#x1F4B0;</div>
+                        <h3>Action (gem. 4,7)</h3>
+                        <ul>
+                            <li>Focus op fysieke winkels</li>
+                            <li>Online zwak: beperkte webshop</li>
+                            <li>Geen loyaliteitsprogramma</li>
+                            <li>Weinig online marketing-inspanning</li>
+                        </ul>
+                    </div>
+                    <div class="pillar" style="border-top: 4px solid #34C759;">
+                        <div class="icon">&#x1F6CB;</div>
+                        <h3>IKEA (gem. 8,2)</h3>
+                        <ul>
+                            <li>Sterkste online ervaring</li>
+                            <li>Inspiratiecontent + 3D roomplanners</li>
+                            <li>IKEA Family zeer sterk</li>
+                            <li>HEMA kan leren: contentmarketing, UGC</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 10: BRONNEN -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="hema-logo-small">HEMA</div>
+                <h1>Bronnen</h1>
+
+                <div class="references-list">
+                    <div class="reference-item">[1] Visser, M. &amp; Sikkenga, B. (2021). <em>Basisboek Online Marketing</em> (4e druk). Noordhoff. Paragraaf 3.3: 6B-model.</div>
+                    <div class="reference-item">[2] HEMA (z.d.). hema.nl. Geraadpleegd op 17 maart 2026.</div>
+                    <div class="reference-item">[3] Action (z.d.). action.com. Geraadpleegd op 17 maart 2026.</div>
+                    <div class="reference-item">[4] IKEA (z.d.). ikea.com/nl. Geraadpleegd op 17 maart 2026.</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="slide-indicator" id="slide-indicator">1 / 10</div>
+    <button class="fullscreen-btn" id="fs-btn" onclick="toggleFullscreen()" title="Fullscreen">
+        <svg id="fs-icon-enter" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>
+        <svg id="fs-icon-exit" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><path d="M8 3v3a2 2 0 01-2 2H3m18 0h-3a2 2 0 01-2-2V3m0 18v-3a2 2 0 012-2h3M3 16h3a2 2 0 012 2v3"/></svg>
+    </button>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        let current = 0;
+        const total = slides.length;
+        function updateUI() {
+            document.getElementById('slide-indicator').textContent = `${current + 1} / ${total}`;
+            document.getElementById('progress-bar').style.width = `${((current + 1) / total) * 100}%`;
+        }
+        function goToSlide(index, direction) {
+            if (index < 0 || index >= total || index === current) return;
+            const prev = slides[current], next = slides[index];
+            prev.classList.remove('active');
+            prev.classList.add(direction === 'next' ? 'exit-left' : 'exit-right');
+            next.classList.remove('exit-left', 'exit-right');
+            void next.offsetWidth;
+            next.classList.add('active');
+            current = index;
+            updateUI();
+            setTimeout(() => { prev.classList.remove('exit-left', 'exit-right'); }, 1000);
+        }
+        function nextSlide() { goToSlide(current + 1, 'next'); }
+        function prevSlide() { goToSlide(current - 1, 'prev'); }
+        document.addEventListener('keydown', e => {
+            if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+            else if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+        });
+        document.addEventListener('click', e => {
+            if (e.target.closest('.fullscreen-btn')) return;
+            if (e.clientX > window.innerWidth * 0.5) nextSlide(); else prevSlide();
+        });
+        let touchStartX = 0;
+        document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
+        document.addEventListener('touchend', e => {
+            const diff = e.changedTouches[0].clientX - touchStartX;
+            if (diff > 50) prevSlide(); else if (diff < -50) nextSlide();
+        });
+        function toggleFullscreen() {
+            const el = document.documentElement;
+            const isFs = document.fullscreenElement || document.webkitFullscreenElement || document.webkitIsFullScreen;
+            if (!isFs) { if (el.requestFullscreen) el.requestFullscreen().catch(() => {}); else if (el.webkitRequestFullScreen) el.webkitRequestFullScreen(); }
+            else { if (document.exitFullscreen) document.exitFullscreen().catch(() => {}); else if (document.webkitCancelFullScreen) document.webkitCancelFullScreen(); }
+        }
+        function updateFsIcon() {
+            const isFs = document.fullscreenElement || document.webkitFullscreenElement || document.webkitIsFullScreen;
+            document.getElementById('fs-icon-enter').style.display = isFs ? 'none' : '';
+            document.getElementById('fs-icon-exit').style.display = isFs ? '' : 'none';
+        }
+        document.addEventListener('fullscreenchange', updateFsIcon);
+        document.addEventListener('webkitfullscreenchange', updateFsIcon);
+        updateUI();
+    </script>
+</body>
+</html>
