@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eindpitch &mdash; Retentiemarketing HEMA</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&display=swap');
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --hema-red: #E4002B; --hema-dark: #C50025; --text: #1d1d1f;
+            --subtext: #86868b; --card-bg: #f5f5f7; --card-hover: #ededf0;
+            --accent: #E4002B; --white: #FFFFFF; --green: #34C759; --orange: #FF9500;
+            --transition-duration: 0.9s; --transition-ease: cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+            background: var(--white); color: var(--text); line-height: 1.1;
+            overflow: hidden; -webkit-font-smoothing: antialiased; perspective: 1200px;
+        }
+        .presentation { width: 100vw; height: 100vh; position: relative; transform-style: preserve-3d; }
+        .slide {
+            width: 100%; height: 100%; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; position: absolute; top: 0; left: 0;
+            padding: clamp(30px, 4vh, 60px) clamp(30px, 5vw, 80px);
+            text-align: center; opacity: 0; pointer-events: none;
+            transform: translateX(100%) rotateY(8deg) scale(0.85); filter: blur(8px);
+            transition: opacity var(--transition-duration) var(--transition-ease),
+                        transform var(--transition-duration) var(--transition-ease),
+                        filter var(--transition-duration) var(--transition-ease);
+            will-change: opacity, transform, filter; transform-style: preserve-3d;
+        }
+        .slide.active { opacity: 1; pointer-events: auto; transform: translateX(0) rotateY(0deg) scale(1); filter: blur(0px); }
+        .slide.exit-left { opacity: 0; pointer-events: none; transform: translateX(-100%) rotateY(-8deg) scale(0.85); filter: blur(8px); }
+        .slide.exit-right { opacity: 0; pointer-events: none; transform: translateX(100%) rotateY(8deg) scale(0.85); filter: blur(8px); }
+        .slide-content {
+            max-width: 1100px; width: 100%; margin: 0 auto;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+        .slide.active .slide-content > * { animation: elementReveal 0.8s var(--transition-ease) both; }
+        .slide.active .slide-content > *:nth-child(1) { animation-delay: 0.15s; }
+        .slide.active .slide-content > *:nth-child(2) { animation-delay: 0.3s; }
+        .slide.active .slide-content > *:nth-child(3) { animation-delay: 0.45s; }
+        .slide.active .slide-content > *:nth-child(4) { animation-delay: 0.6s; }
+        .slide.active .slide-content > *:nth-child(5) { animation-delay: 0.75s; }
+        @keyframes elementReveal {
+            from { opacity: 0; transform: translateY(40px) scale(0.92); filter: blur(6px); }
+            to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0px); }
+        }
+        .hema-logo {
+            font-size: clamp(60px, 10vw, 120px); font-weight: 900; color: var(--white);
+            background: var(--hema-red); padding: 12px clamp(24px, 4vw, 50px);
+            letter-spacing: 0.08em; line-height: 1; margin-bottom: clamp(20px, 3vh, 40px); display: inline-block;
+        }
+        .slide.active .hema-logo { animation: logoReveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both; }
+        @keyframes logoReveal {
+            0% { opacity: 0; transform: scale(0.3) rotateX(20deg); filter: blur(20px); }
+            50% { opacity: 1; filter: blur(0px); }
+            70% { transform: scale(1.05) rotateX(0deg); }
+            100% { opacity: 1; transform: scale(1) rotateX(0deg); filter: blur(0px); }
+        }
+        .hema-logo-small {
+            font-size: clamp(18px, 2.5vw, 28px); font-weight: 900; color: var(--white);
+            background: var(--hema-red); padding: 5px clamp(10px, 1.5vw, 18px);
+            letter-spacing: 0.08em; line-height: 1; display: inline-block; margin-bottom: 20px;
+        }
+        h1 { font-size: clamp(36px, 5vw, 64px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.05; margin-bottom: clamp(10px, 1.5vh, 20px); }
+        h1.hero { font-size: clamp(42px, 6vw, 76px); font-weight: 800; line-height: 1.0; }
+        .subtitle { font-size: clamp(17px, 2vw, 26px); font-weight: 400; color: var(--subtext); margin-bottom: clamp(12px, 2vh, 24px); line-height: 1.35; max-width: 800px; }
+        .meta-info { font-size: clamp(13px, 1.4vw, 16px); color: var(--subtext); font-weight: 400; line-height: 1.5; margin-top: 8px; }
+        .highlight { color: var(--accent); font-weight: 700; }
+        .section-label {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: var(--card-bg); color: var(--subtext);
+            padding: 6px 16px; border-radius: 50px;
+            font-size: clamp(11px, 1.2vw, 14px); font-weight: 500; margin-bottom: 16px;
+        }
+        .section-label .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--hema-red); }
+
+        /* Keyword cards - clean, minimal */
+        .keywords {
+            display: flex; gap: clamp(12px, 1.5vw, 22px); margin-top: clamp(16px, 2.5vh, 32px);
+            flex-wrap: wrap; justify-content: center; max-width: 1100px;
+        }
+        .kw {
+            background: var(--card-bg); border-radius: 14px;
+            padding: clamp(18px, 2.2vw, 32px) clamp(20px, 2.5vw, 36px);
+            text-align: center; opacity: 0; transform: translateY(50px) scale(0.9); filter: blur(4px);
+            min-width: 140px; flex: 1;
+        }
+        .slide.active .kw { animation: cardDrop 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; }
+        .slide.active .kw:nth-child(1) { animation-delay: 0.3s; }
+        .slide.active .kw:nth-child(2) { animation-delay: 0.4s; }
+        .slide.active .kw:nth-child(3) { animation-delay: 0.5s; }
+        .slide.active .kw:nth-child(4) { animation-delay: 0.6s; }
+        .slide.active .kw:nth-child(5) { animation-delay: 0.7s; }
+        @keyframes cardDrop {
+            0% { opacity: 0; transform: translateY(50px) scale(0.9); filter: blur(4px); }
+            60% { opacity: 1; filter: blur(0); }
+            80% { transform: translateY(-6px) scale(1.02); }
+            100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+        }
+        .kw .icon { font-size: clamp(28px, 3.5vw, 44px); margin-bottom: 8px; }
+        .kw h3 { font-size: clamp(15px, 1.7vw, 20px); font-weight: 700; color: var(--text); margin-bottom: 4px; }
+        .kw p { font-size: clamp(12px, 1.2vw, 15px); color: var(--subtext); font-weight: 400; }
+        .kw .stat { font-size: clamp(28px, 4vw, 48px); font-weight: 800; color: var(--hema-red); line-height: 1; margin-bottom: 4px; }
+        .kw.accent { border-top: 3px solid var(--hema-red); }
+        .kw.green { border-top: 3px solid var(--green); }
+        .kw.orange { border-top: 3px solid var(--orange); }
+        .kw.blue { border-top: 3px solid #007AFF; }
+
+        /* Score circle */
+        .score-circle {
+            width: clamp(120px, 16vw, 200px); height: clamp(120px, 16vw, 200px);
+            border-radius: 50%; background: var(--hema-red); display: flex;
+            flex-direction: column; align-items: center; justify-content: center;
+            margin-bottom: clamp(16px, 2.5vh, 32px);
+        }
+        .score-circle .number { font-size: clamp(52px, 8vw, 88px); font-weight: 900; color: white; line-height: 1; }
+        .score-circle .label { font-size: clamp(14px, 1.6vw, 20px); font-weight: 400; color: rgba(255,255,255,0.8); }
+        .slide.active .score-circle { animation: scoreReveal 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both; }
+        @keyframes scoreReveal {
+            0% { opacity: 0; transform: scale(0.3) rotateZ(-20deg); filter: blur(12px); }
+            60% { opacity: 1; filter: blur(0); }
+            80% { transform: scale(1.08) rotateZ(2deg); }
+            100% { transform: scale(1) rotateZ(0deg); }
+        }
+
+        /* Stat banner */
+        .stat-banner {
+            background: #fce8ec; border-radius: 12px; padding: 12px 28px;
+            margin-top: clamp(14px, 2vh, 24px); max-width: 800px;
+        }
+        .stat-banner p { color: var(--hema-red); font-weight: 600; font-size: clamp(13px, 1.4vw, 17px); }
+
+        /* Bench mini */
+        .bench-row {
+            display: flex; gap: clamp(10px, 1.2vw, 16px); margin-top: clamp(12px, 2vh, 20px);
+            max-width: 900px; width: 100%;
+        }
+        .bench-item {
+            flex: 1; border-radius: 14px; padding: clamp(16px, 2vw, 28px);
+            text-align: center; opacity: 0; transform: translateY(40px); filter: blur(4px);
+        }
+        .slide.active .bench-item { animation: cardDrop 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; }
+        .slide.active .bench-item:nth-child(1) { animation-delay: 0.35s; }
+        .slide.active .bench-item:nth-child(2) { animation-delay: 0.5s; }
+        .slide.active .bench-item:nth-child(3) { animation-delay: 0.65s; }
+        .bench-item .score { font-size: clamp(36px, 5vw, 56px); font-weight: 900; line-height: 1; }
+        .bench-item h3 { font-size: clamp(16px, 1.8vw, 22px); font-weight: 700; margin-top: 6px; }
+        .bench-item p { font-size: clamp(12px, 1.2vw, 15px); color: var(--subtext); margin-top: 4px; }
+
+        .progress-bar { position: fixed; top: 0; left: 0; height: 3px; background: var(--hema-red); transition: width 0.7s var(--transition-ease); z-index: 200; box-shadow: 0 0 10px rgba(228,0,43,0.4); }
+        .slide-indicator { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); font-size: 13px; color: #c7c7cc; font-weight: 400; z-index: 100; }
+        .fullscreen-btn {
+            position: fixed; bottom: 20px; right: 24px; width: 40px; height: 40px;
+            border-radius: 10px; border: none; background: var(--card-bg);
+            color: var(--subtext); cursor: pointer; display: flex;
+            align-items: center; justify-content: center; z-index: 200; transition: all 0.3s ease;
+        }
+        .fullscreen-btn:hover { background: var(--hema-red); color: white; transform: scale(1.1); }
+        body:fullscreen, body:-webkit-full-screen { background: #FFFFFF !important; }
+        ::backdrop { background: #FFFFFF !important; }
+
+        @media (max-width: 768px) {
+            .keywords, .bench-row { flex-direction: column; }
+        }
+        @media (max-height: 700px) {
+            .slide { padding: clamp(16px, 2.5vh, 30px) clamp(20px, 3vw, 50px); }
+            h1 { font-size: clamp(28px, 4vw, 48px); margin-bottom: 8px; }
+            .subtitle { font-size: clamp(14px, 1.5vw, 20px); margin-bottom: 10px; }
+            .hema-logo { font-size: clamp(40px, 8vw, 80px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar" id="progress-bar"></div>
+    <div class="presentation">
+
+        <!-- SLIDE 1: TITLE -->
+        <div class="slide active">
+            <div class="slide-content">
+                <div class="hema-logo">HEMA</div>
+                <h1 class="hero">Eindpitch Online Marketing</h1>
+                <p class="subtitle">Retentiemarketing &mdash; Hoe goed bindt HEMA bestaande klanten?</p>
+                <p class="meta-info">Stan &bull; Niels &bull; Mees &bull; Levi &bull; Tom<br>CEV1C &mdash; Groep 5 &mdash; Blok 3 &mdash; 2026</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 2: POSITIONERING -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="section-label"><span class="dot"></span>Positionering</div>
+                <h1>Waarom retentie bij HEMA?</h1>
+                <p class="subtitle">700+ winkels &bull; webshop &bull; 3 klantsegmenten &bull; hoge concurrentie</p>
+
+                <div class="keywords">
+                    <div class="kw">
+                        <div class="icon">&#x1F3E0;</div>
+                        <h3>100 jaar</h3>
+                        <p>Nederlands erfgoed</p>
+                    </div>
+                    <div class="kw">
+                        <div class="icon">&#x1F465;</div>
+                        <h3>3 segmenten</h3>
+                        <p>Gezinnen &bull; Starters &bull; 50+</p>
+                    </div>
+                    <div class="kw accent">
+                        <div class="stat">5&ndash;7&times;</div>
+                        <h3>goedkoper</h3>
+                        <p>Behouden vs. werven</p>
+                    </div>
+                    <div class="kw">
+                        <div class="icon">&#x26A0;&#xFE0F;</div>
+                        <h3>Concurrentie</h3>
+                        <p>Action &bull; IKEA &bull; Flying Tiger</p>
+                    </div>
+                </div>
+
+                <div class="stat-banner">
+                    <p>HEMA leeft van herhaalaankopen &mdash; retentie is essentieel voor groei</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 3: HUIDIGE STRATEGIEEN -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="section-label"><span class="dot"></span>Huidige retentie</div>
+                <h1>Wat doet HEMA nu al?</h1>
+                <p class="subtitle">5 retentiestrategie&euml;n ge&iuml;dentificeerd</p>
+
+                <div class="keywords">
+                    <div class="kw accent">
+                        <div class="icon">&#x1F3AF;</div>
+                        <h3>HEMA Pas</h3>
+                        <p>Spaarpunten &bull; gratis voordelen</p>
+                    </div>
+                    <div class="kw accent">
+                        <div class="icon">&#x1F4E7;</div>
+                        <h3>E-mail &amp; timing</h3>
+                        <p>Abandoned cart &bull; seizoensacties</p>
+                    </div>
+                    <div class="kw accent">
+                        <div class="icon">&#x1F6D2;</div>
+                        <h3>Cross- &amp; upselling</h3>
+                        <p>Shop de set &bull; aanbevelingen</p>
+                    </div>
+                    <div class="kw accent">
+                        <div class="icon">&#x1F4F1;</div>
+                        <h3>Personalisatie</h3>
+                        <p>Account &bull; koopgedrag</p>
+                    </div>
+                    <div class="kw accent">
+                        <div class="icon">&#x1F465;</div>
+                        <h3>Content</h3>
+                        <p>Social media &bull; app &bull; service</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 4: MODELLEN -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="section-label"><span class="dot"></span>Theoretische onderbouwing</div>
+                <h1>Retentie in de modellen</h1>
+
+                <div class="keywords" style="max-width:900px;">
+                    <div class="kw accent" style="flex:1;">
+                        <div class="stat">8/10</div>
+                        <h3>6B &mdash; Binden</h3>
+                        <p>HEMA Pas &bull; retourbeleid &bull; e-mail &bull; app</p>
+                        <p style="margin-top:6px; color:var(--orange); font-weight:600; font-size:clamp(10px,1vw,13px);">Min: geen loyaliteitsniveaus</p>
+                    </div>
+                    <div class="kw orange" style="flex:1;">
+                        <div class="icon">&#x1F517;</div>
+                        <h3>8 C&rsquo;s</h3>
+                        <p>Care &bull; Cultivation &bull; Customization sterk</p>
+                        <p style="margin-top:6px; color:var(--orange); font-weight:600; font-size:clamp(10px,1vw,13px);">Min: Community onderbenut</p>
+                    </div>
+                    <div class="kw green" style="flex:1;">
+                        <div class="icon">&#x1F504;</div>
+                        <h3>BAIA</h3>
+                        <p>Retentie in Interactie &amp; Actie fase</p>
+                        <p style="margin-top:6px; color:var(--green); font-weight:600; font-size:clamp(10px,1vw,13px);">Verweven door hele funnel</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 5: STERKTES & ZWAKTES -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="section-label"><span class="dot"></span>Analyse</div>
+                <h1>Sterk vs. te verbeteren</h1>
+
+                <div class="keywords" style="max-width:900px;">
+                    <div class="kw green" style="flex:1; text-align:left; padding:clamp(20px,2.5vw,36px);">
+                        <h3 style="color:var(--green); font-size:clamp(18px,2vw,24px); margin-bottom:12px;">&#x2705; Sterk</h3>
+                        <p style="font-size:clamp(14px,1.4vw,18px); line-height:1.8; color:var(--text);">
+                            HEMA Pas<br>
+                            Omnichannel (700+ winkels + online)<br>
+                            Wederkerigheid (Cialdini)<br>
+                            Seizoenscampagnes<br>
+                            E-mailmarketing<br>
+                            Retourbeleid
+                        </p>
+                    </div>
+                    <div class="kw orange" style="flex:1; text-align:left; padding:clamp(20px,2.5vw,36px);">
+                        <h3 style="color:var(--orange); font-size:clamp(18px,2vw,24px); margin-bottom:12px;">&#x26A0;&#xFE0F; Te verbeteren</h3>
+                        <p style="font-size:clamp(14px,1.4vw,18px); line-height:1.8; color:var(--text);">
+                            Geen loyaliteitsniveaus<br>
+                            Community &amp; UGC zwak<br>
+                            Reviews weinig zichtbaar<br>
+                            Personalisatie te basis<br>
+                            Geen marketing automation<br>
+                            Geen blog of exclusieve content
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 6: BENCHMARK -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="section-label"><span class="dot"></span>Benchmark</div>
+                <h1>HEMA vs. concurrentie</h1>
+                <p class="subtitle">Retentiemarketing vergeleken</p>
+
+                <div class="bench-row">
+                    <div class="bench-item" style="background:#fce8ec;">
+                        <div class="score" style="color:var(--hema-red);">7</div>
+                        <h3>HEMA</h3>
+                        <p>Sterke Pas, maar personalisatie &amp; community missen diepgang</p>
+                    </div>
+                    <div class="bench-item" style="background:#f5f5f7;">
+                        <div class="score" style="color:var(--orange);">3</div>
+                        <h3>Action</h3>
+                        <p>Geen loyaliteitsprogramma, minimale online retentie</p>
+                    </div>
+                    <div class="bench-item" style="background:#e8f5e9;">
+                        <div class="score" style="color:var(--green);">9</div>
+                        <h3>IKEA</h3>
+                        <p>IKEA Family, AI-personalisatie, community, inspiratiecontent</p>
+                    </div>
+                </div>
+
+                <div class="stat-banner">
+                    <p>HEMA kan leren van IKEA&rsquo;s personalisatie, community en contentaanpak</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 7: TOTAALOORDEEL -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="section-label"><span class="dot"></span>Beoordeling</div>
+                <h1>Totaaloordeel</h1>
+
+                <div class="score-circle">
+                    <span class="number">7</span>
+                    <span class="label">uit 10</span>
+                </div>
+
+                <p class="subtitle"><span class="highlight" style="font-size:clamp(20px,2.5vw,32px);">Voldoende+</span><br>Sterke basis, ruimte voor groei</p>
+
+                <div class="keywords" style="max-width:800px;">
+                    <div class="kw green">
+                        <h3>Wat werkt</h3>
+                        <p>HEMA Pas &bull; omnichannel &bull; seizoenscampagnes</p>
+                    </div>
+                    <div class="kw orange">
+                        <h3>Wat mist</h3>
+                        <p>Niveaus &bull; community &bull; automation &bull; personalisatie</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 8: ADVIEZEN -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="section-label"><span class="dot"></span>Aanbevelingen</div>
+                <h1>5 verbeteradviezen</h1>
+
+                <div class="keywords">
+                    <div class="kw accent">
+                        <div class="stat">1</div>
+                        <h3>HEMA Pas Premium</h3>
+                        <p>Bronze / Silver / Gold niveaus</p>
+                    </div>
+                    <div class="kw accent">
+                        <div class="stat">2</div>
+                        <h3>Marketing automation</h3>
+                        <p>Lifecycle &bull; win-back &bull; nurturing</p>
+                    </div>
+                    <div class="kw accent">
+                        <div class="stat">3</div>
+                        <h3>HEMA Community</h3>
+                        <p>#MijnHEMA &bull; UGC &bull; winacties</p>
+                    </div>
+                    <div class="kw accent">
+                        <div class="stat">4</div>
+                        <h3>AI-personalisatie</h3>
+                        <p>Slimmere aanbevelingen per klant</p>
+                    </div>
+                    <div class="kw accent">
+                        <div class="stat">5</div>
+                        <h3>Exclusieve content</h3>
+                        <p>Blog &bull; inspiratie &bull; Pas-exclusief</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 9: CONCLUSIE -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="hema-logo" style="font-size:clamp(44px,8vw,90px); margin-bottom:clamp(16px,2.5vh,32px);">HEMA</div>
+                <h1>Sterke basis, klaar voor de volgende stap</h1>
+                <p class="subtitle">Met 5 gerichte verbeteringen kan HEMA van een <span class="highlight">7 naar een 9</span> groeien op retentiemarketing</p>
+
+                <p style="font-size:clamp(22px,3vw,36px); font-weight:700; color:var(--hema-red); margin-top:clamp(20px,3vh,40px);">Vragen?</p>
+                <p class="meta-info" style="margin-top:12px;">Stan &bull; Niels &bull; Mees &bull; Levi &bull; Tom</p>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="slide-indicator" id="slide-indicator">1 / 9</div>
+    <button class="fullscreen-btn" id="fs-btn" onclick="toggleFullscreen()" title="Fullscreen">
+        <svg id="fs-icon-enter" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>
+        <svg id="fs-icon-exit" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><path d="M8 3v3a2 2 0 01-2 2H3m18 0h-3a2 2 0 01-2-2V3m0 18v-3a2 2 0 012-2h3M3 16h3a2 2 0 012 2v3"/></svg>
+    </button>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        let current = 0;
+        const total = slides.length;
+        function updateUI() {
+            document.getElementById('slide-indicator').textContent = `${current + 1} / ${total}`;
+            document.getElementById('progress-bar').style.width = `${((current + 1) / total) * 100}%`;
+        }
+        function goToSlide(index, direction) {
+            if (index < 0 || index >= total || index === current) return;
+            const prev = slides[current], next = slides[index];
+            prev.classList.remove('active');
+            prev.classList.add(direction === 'next' ? 'exit-left' : 'exit-right');
+            next.classList.remove('exit-left', 'exit-right');
+            void next.offsetWidth;
+            next.classList.add('active');
+            current = index;
+            updateUI();
+            setTimeout(() => { prev.classList.remove('exit-left', 'exit-right'); }, 1000);
+        }
+        function nextSlide() { goToSlide(current + 1, 'next'); }
+        function prevSlide() { goToSlide(current - 1, 'prev'); }
+        document.addEventListener('keydown', e => {
+            if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+            else if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+        });
+        document.addEventListener('click', e => {
+            if (e.target.closest('.fullscreen-btn')) return;
+            if (e.clientX > window.innerWidth * 0.5) nextSlide(); else prevSlide();
+        });
+        let touchStartX = 0;
+        document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
+        document.addEventListener('touchend', e => {
+            const diff = e.changedTouches[0].clientX - touchStartX;
+            if (diff > 50) prevSlide(); else if (diff < -50) nextSlide();
+        });
+        function toggleFullscreen() {
+            const el = document.documentElement;
+            const isFs = document.fullscreenElement || document.webkitFullscreenElement || document.webkitIsFullScreen;
+            if (!isFs) { if (el.requestFullscreen) el.requestFullscreen().catch(() => {}); else if (el.webkitRequestFullScreen) el.webkitRequestFullScreen(); }
+            else { if (document.exitFullscreen) document.exitFullscreen().catch(() => {}); else if (document.webkitCancelFullScreen) document.webkitCancelFullScreen(); }
+        }
+        function updateFsIcon() {
+            const isFs = document.fullscreenElement || document.webkitFullscreenElement || document.webkitIsFullScreen;
+            document.getElementById('fs-icon-enter').style.display = isFs ? 'none' : '';
+            document.getElementById('fs-icon-exit').style.display = isFs ? '' : 'none';
+        }
+        document.addEventListener('fullscreenchange', updateFsIcon);
+        document.addEventListener('webkitfullscreenchange', updateFsIcon);
+        updateUI();
+    </script>
+</body>
+</html>
