@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eindpitch &mdash; Retentiemarketing HEMA</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&display=swap');
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --hema-red: #E4002B; --hema-dark: #C50025; --text: #1d1d1f;
+            --subtext: #86868b; --card-bg: #f5f5f7; --card-hover: #ededf0;
+            --accent: #E4002B; --white: #FFFFFF; --green: #34C759; --orange: #FF9500;
+            --transition-duration: 0.9s; --transition-ease: cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+            background: var(--white); color: var(--text); line-height: 1.1;
+            overflow: hidden; -webkit-font-smoothing: antialiased; perspective: 1200px;
+        }
+        .presentation { width: 100vw; height: 100vh; position: relative; transform-style: preserve-3d; }
+        .slide {
+            width: 100%; height: 100%; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; position: absolute; top: 0; left: 0;
+            padding: clamp(30px, 4vh, 60px) clamp(30px, 5vw, 80px);
+            text-align: center; opacity: 0; pointer-events: none;
+            transform: translateX(100%) rotateY(8deg) scale(0.85); filter: blur(8px);
+            transition: opacity var(--transition-duration) var(--transition-ease),
+                        transform var(--transition-duration) var(--transition-ease),
+                        filter var(--transition-duration) var(--transition-ease);
+            will-change: opacity, transform, filter; transform-style: preserve-3d;
+        }
+        .slide.active { opacity: 1; pointer-events: auto; transform: translateX(0) rotateY(0deg) scale(1); filter: blur(0px); }
+        .slide.exit-left { opacity: 0; pointer-events: none; transform: translateX(-100%) rotateY(-8deg) scale(0.85); filter: blur(8px); }
+        .slide.exit-right { opacity: 0; pointer-events: none; transform: translateX(100%) rotateY(8deg) scale(0.85); filter: blur(8px); }
+        .slide-content {
+            max-width: 1100px; width: 100%; margin: 0 auto;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+        .slide.active .slide-content > * { animation: elementReveal 0.8s var(--transition-ease) both; }
+        .slide.active .slide-content > *:nth-child(1) { animation-delay: 0.15s; }
+        .slide.active .slide-content > *:nth-child(2) { animation-delay: 0.3s; }
+        .slide.active .slide-content > *:nth-child(3) { animation-delay: 0.45s; }
+        .slide.active .slide-content > *:nth-child(4) { animation-delay: 0.6s; }
+        .slide.active .slide-content > *:nth-child(5) { animation-delay: 0.75s; }
+        @keyframes elementReveal {
+            from { opacity: 0; transform: translateY(40px) scale(0.92); filter: blur(6px); }
+            to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0px); }
+        }
+        .hema-logo {
+            font-size: clamp(60px, 10vw, 120px); font-weight: 900; color: var(--white);
+            background: var(--hema-red); padding: 12px clamp(24px, 4vw, 50px);
+            letter-spacing: 0.08em; line-height: 1; margin-bottom: clamp(20px, 3vh, 40px); display: inline-block;
+        }
+        .slide.active .hema-logo { animation: logoReveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both; }
+        @keyframes logoReveal {
+            0% { opacity: 0; transform: scale(0.3) rotateX(20deg); filter: blur(20px); }
+            50% { opacity: 1; filter: blur(0px); }
+            70% { transform: scale(1.05) rotateX(0deg); }
+            100% { opacity: 1; transform: scale(1) rotateX(0deg); filter: blur(0px); }
+        }
+        .hema-logo-small {
+            font-size: clamp(18px, 2.5vw, 28px); font-weight: 900; color: var(--white);
+            background: var(--hema-red); padding: 5px clamp(10px, 1.5vw, 18px);
+            letter-spacing: 0.08em; line-height: 1; display: inline-block; margin-bottom: 20px;
+        }
+        h1 { font-size: clamp(32px, 4.5vw, 56px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.05; margin-bottom: clamp(10px, 1.5vh, 20px); }
+        h1.hero { font-size: clamp(38px, 5.5vw, 68px); font-weight: 800; line-height: 1.0; }
+        .subtitle { font-size: clamp(15px, 1.8vw, 22px); font-weight: 400; color: var(--subtext); margin-bottom: clamp(12px, 2vh, 24px); line-height: 1.3; max-width: 700px; }
+        .meta-info { font-size: clamp(13px, 1.4vw, 16px); color: var(--subtext); font-weight: 400; line-height: 1.5; margin-top: 8px; }
+        .highlight { color: var(--accent); font-weight: 600; }
+        .section-label {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: var(--card-bg); color: var(--subtext);
+            padding: 6px 16px; border-radius: 50px;
+            font-size: clamp(11px, 1.2vw, 14px); font-weight: 500; margin-bottom: 16px;
+        }
+        .section-label .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--hema-red); }
+
+        .cards-container {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: clamp(10px, 1.5vw, 20px); margin-top: clamp(12px, 2vh, 24px);
+            max-width: 1100px; width: 100%;
+        }
+        .card {
+            background: var(--card-bg); border-radius: 14px;
+            padding: clamp(14px, 1.8vw, 24px); text-align: left;
+            opacity: 0; transform: translateY(60px) scale(0.9) rotateX(8deg); filter: blur(4px);
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+        .slide.active .card { animation: cardDrop 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; }
+        .slide.active .card:nth-child(1) { animation-delay: 0.35s; }
+        .slide.active .card:nth-child(2) { animation-delay: 0.45s; }
+        .slide.active .card:nth-child(3) { animation-delay: 0.55s; }
+        .slide.active .card:nth-child(4) { animation-delay: 0.65s; }
+        .slide.active .card:nth-child(5) { animation-delay: 0.75s; }
+        .slide.active .card:nth-child(6) { animation-delay: 0.85s; }
+        @keyframes cardDrop {
+            0% { opacity: 0; transform: translateY(60px) scale(0.9) rotateX(8deg); filter: blur(4px); }
+            60% { opacity: 1; filter: blur(0px); }
+            80% { transform: translateY(-8px) scale(1.02) rotateX(0deg); }
+            100% { opacity: 1; transform: translateY(0) scale(1) rotateX(0deg); filter: blur(0px); }
+        }
+        .card:hover { background: var(--card-hover); box-shadow: 0 12px 40px rgba(228,0,43,0.08), 0 4px 12px rgba(0,0,0,0.04); }
+        .card h3 { font-size: clamp(13px, 1.5vw, 17px); font-weight: 600; margin-bottom: 5px; color: var(--text); }
+        .card p, .card li { font-size: clamp(11px, 1.2vw, 14px); color: var(--subtext); line-height: 1.4; }
+        .card ul { list-style: none; padding: 0; }
+        .card ul li { padding: 2px 0; padding-left: 12px; position: relative; }
+        .card ul li::before { content: ''; position: absolute; left: 0; top: 9px; width: 4px; height: 4px; border-radius: 50%; background: var(--hema-red); }
+        .card .stat { font-size: clamp(24px, 3.5vw, 38px); font-weight: 800; color: var(--hema-red); margin-bottom: 4px; }
+        .card .icon { font-size: clamp(22px, 2.5vw, 30px); margin-bottom: 5px; }
+
+        .pillars { display: flex; gap: clamp(10px, 1.5vw, 20px); max-width: 1100px; margin: clamp(12px, 2vh, 24px) auto 0; width: 100%; }
+        .pillar {
+            flex: 1; background: var(--card-bg); border-radius: 14px;
+            padding: clamp(14px, 1.8vw, 22px); text-align: left;
+            opacity: 0; transform: translateX(-80px) scale(0.85); filter: blur(6px);
+        }
+        .slide.active .pillar { animation: pillarSlide 0.9s cubic-bezier(0.16, 1, 0.3, 1) both; }
+        .slide.active .pillar:nth-child(1) { animation-delay: 0.4s; }
+        .slide.active .pillar:nth-child(2) { animation-delay: 0.6s; transform: translateY(60px) scale(0.85); }
+        .slide.active .pillar:nth-child(3) { animation-delay: 0.8s; transform: translateX(80px) scale(0.85); }
+        @keyframes pillarSlide {
+            0% { opacity: 0; filter: blur(6px); }
+            100% { opacity: 1; transform: translateX(0) translateY(0) scale(1); filter: blur(0px); }
+        }
+        .pillar .icon { font-size: clamp(22px, 2.8vw, 32px); margin-bottom: 6px; }
+        .pillar h3 { font-size: clamp(13px, 1.4vw, 16px); font-weight: 700; color: var(--text); margin-bottom: 4px; }
+        .pillar p, .pillar li { font-size: clamp(10.5px, 1.15vw, 13px); color: var(--subtext); line-height: 1.4; }
+        .pillar ul { list-style: none; padding: 0; }
+        .pillar ul li { padding: 2px 0; padding-left: 12px; position: relative; }
+        .pillar ul li::before { content: ''; position: absolute; left: 0; top: 8px; width: 4px; height: 4px; border-radius: 50%; background: var(--hema-red); }
+        .pillar .micro-type {
+            display: inline-block; background: #fce8ec; color: var(--hema-red);
+            padding: 3px 10px; border-radius: 50px; font-size: clamp(9px, 0.9vw, 11px); font-weight: 600; margin-bottom: 6px;
+        }
+
+        /* BENCHMARK TABLE */
+        .bench-table {
+            width: 100%; max-width: 1100px; border-collapse: separate;
+            border-spacing: 0; margin-top: clamp(12px, 2vh, 20px);
+            font-size: clamp(10.5px, 1.15vw, 13px);
+        }
+        .bench-table thead th {
+            background: var(--card-bg); color: var(--subtext); font-weight: 600;
+            padding: 10px 12px; text-align: center; font-size: clamp(10px, 1vw, 12px);
+            text-transform: uppercase; letter-spacing: 0.03em;
+        }
+        .bench-table thead th:first-child { text-align: left; border-radius: 10px 0 0 0; }
+        .bench-table thead th:last-child { border-radius: 0 10px 0 0; }
+        .bench-table thead th.hema-col { background: #fce8ec; color: var(--hema-red); }
+        .bench-table tbody tr { opacity: 0; }
+        .slide.active .bench-table tbody tr { animation: rowReveal 0.6s var(--transition-ease) both; }
+        .slide.active .bench-table tbody tr:nth-child(1) { animation-delay: 0.3s; }
+        .slide.active .bench-table tbody tr:nth-child(2) { animation-delay: 0.4s; }
+        .slide.active .bench-table tbody tr:nth-child(3) { animation-delay: 0.5s; }
+        .slide.active .bench-table tbody tr:nth-child(4) { animation-delay: 0.6s; }
+        .slide.active .bench-table tbody tr:nth-child(5) { animation-delay: 0.7s; }
+        .slide.active .bench-table tbody tr:nth-child(6) { animation-delay: 0.8s; }
+        @keyframes rowReveal {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        .bench-table tbody td {
+            padding: 8px 12px; border-bottom: 1px solid #f0f0f2;
+            color: var(--text); text-align: center; vertical-align: top;
+        }
+        .bench-table tbody td:first-child { font-weight: 600; color: var(--hema-red); text-align: left; }
+        .bench-table tbody tr:last-child td { border-bottom: none; }
+        .grade { font-weight: 800; font-size: clamp(14px, 1.5vw, 18px); }
+        .grade-high { color: #34C759; }
+        .grade-mid { color: #FF9500; }
+        .grade-low { color: var(--hema-red); }
+
+        /* Score circle */
+        .score-circle {
+            width: clamp(100px, 14vw, 160px); height: clamp(100px, 14vw, 160px);
+            border-radius: 50%; background: var(--hema-red); display: flex;
+            flex-direction: column; align-items: center; justify-content: center;
+            margin-bottom: clamp(12px, 2vh, 24px);
+        }
+        .score-circle .number { font-size: clamp(44px, 7vw, 72px); font-weight: 900; color: white; line-height: 1; }
+        .score-circle .label { font-size: clamp(13px, 1.5vw, 18px); font-weight: 400; color: rgba(255,255,255,0.8); }
+        .slide.active .score-circle { animation: scoreReveal 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both; }
+        @keyframes scoreReveal {
+            0% { opacity: 0; transform: scale(0.3) rotateZ(-20deg); filter: blur(12px); }
+            60% { opacity: 1; filter: blur(0); }
+            80% { transform: scale(1.08) rotateZ(2deg); }
+            100% { transform: scale(1) rotateZ(0deg); }
+        }
+
+        /* Advice flow */
+        .advice-cards { display: flex; gap: clamp(8px, 1vw, 14px); max-width: 1100px; width: 100%; margin-top: clamp(10px, 1.5vh, 20px); }
+        .advice-card {
+            flex: 1; background: var(--card-bg); border-radius: 14px;
+            padding: clamp(12px, 1.5vw, 20px); text-align: left;
+            opacity: 0; transform: translateY(60px) scale(0.9); filter: blur(4px);
+            border-top: 3px solid var(--hema-red);
+        }
+        .slide.active .advice-card { animation: cardDrop 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; }
+        .slide.active .advice-card:nth-child(1) { animation-delay: 0.3s; }
+        .slide.active .advice-card:nth-child(2) { animation-delay: 0.45s; }
+        .slide.active .advice-card:nth-child(3) { animation-delay: 0.6s; }
+        .slide.active .advice-card:nth-child(4) { animation-delay: 0.75s; }
+        .slide.active .advice-card:nth-child(5) { animation-delay: 0.9s; }
+        .advice-card .num {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 26px; height: 26px; border-radius: 50%; background: var(--hema-red);
+            color: white; font-weight: 700; font-size: 13px; margin-bottom: 6px;
+        }
+        .advice-card h3 { font-size: clamp(12px, 1.3vw, 15px); font-weight: 700; margin-bottom: 3px; }
+        .advice-card .tag {
+            display: inline-block; background: #fce8ec; color: var(--hema-red);
+            padding: 2px 8px; border-radius: 50px; font-size: clamp(8px, 0.8vw, 10px);
+            font-weight: 600; margin-bottom: 6px;
+        }
+        .advice-card p { font-size: clamp(10px, 1vw, 12px); color: var(--subtext); line-height: 1.35; }
+        .advice-card .impact {
+            margin-top: 8px; padding: 4px 8px; border-radius: 8px;
+            background: rgba(52,199,89,0.1); color: var(--green);
+            font-size: clamp(8px, 0.85vw, 10px); font-weight: 600; text-align: center;
+        }
+
+        /* Stat banner */
+        .stat-banner {
+            background: #fce8ec; border-radius: 12px; padding: 10px 24px;
+            margin-top: clamp(10px, 1.5vh, 18px); max-width: 800px;
+        }
+        .stat-banner p { color: var(--hema-red); font-weight: 500; font-size: clamp(11px, 1.2vw, 14px); }
+
+        .references-list { text-align: left; max-width: 900px; margin: clamp(12px, 2vh, 20px) auto 0; width: 100%; }
+        .reference-item {
+            font-size: clamp(10.5px, 1.1vw, 12px); color: #6e6e73; line-height: 1.5;
+            padding: 7px 0; border-bottom: 1px solid #f0f0f2;
+            padding-left: 28px; text-indent: -28px; opacity: 0;
+        }
+        .slide.active .reference-item { animation: elementReveal 0.6s var(--transition-ease) both; }
+        .slide.active .reference-item:nth-child(1) { animation-delay: 0.4s; }
+        .slide.active .reference-item:nth-child(2) { animation-delay: 0.45s; }
+        .slide.active .reference-item:nth-child(3) { animation-delay: 0.5s; }
+        .slide.active .reference-item:nth-child(4) { animation-delay: 0.55s; }
+        .slide.active .reference-item:nth-child(5) { animation-delay: 0.6s; }
+        .slide.active .reference-item:nth-child(6) { animation-delay: 0.65s; }
+        .slide.active .reference-item:nth-child(7) { animation-delay: 0.7s; }
+        .slide.active .reference-item:nth-child(8) { animation-delay: 0.75s; }
+        .slide.active .reference-item:nth-child(9) { animation-delay: 0.8s; }
+        .reference-item:last-child { border-bottom: none; }
+
+        .progress-bar { position: fixed; top: 0; left: 0; height: 3px; background: var(--hema-red); transition: width 0.7s var(--transition-ease); z-index: 200; box-shadow: 0 0 10px rgba(228,0,43,0.4); }
+        .slide-indicator { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); font-size: 13px; color: #c7c7cc; font-weight: 400; z-index: 100; }
+        .fullscreen-btn {
+            position: fixed; bottom: 20px; right: 24px; width: 40px; height: 40px;
+            border-radius: 10px; border: none; background: var(--card-bg);
+            color: var(--subtext); cursor: pointer; display: flex;
+            align-items: center; justify-content: center; z-index: 200; transition: all 0.3s ease;
+        }
+        .fullscreen-btn:hover { background: var(--hema-red); color: white; transform: scale(1.1); }
+        body:fullscreen, body:-webkit-full-screen { background: #FFFFFF !important; }
+        ::backdrop { background: #FFFFFF !important; }
+
+        @media (max-width: 768px) {
+            .cards-container { grid-template-columns: 1fr !important; }
+            .pillars, .advice-cards { flex-direction: column; }
+            .bench-table { font-size: 10px; }
+        }
+        @media (max-height: 700px) {
+            .slide { padding: clamp(16px, 2.5vh, 30px) clamp(20px, 3vw, 50px); }
+            h1 { font-size: clamp(26px, 3.5vw, 44px); margin-bottom: 8px; }
+            .subtitle { font-size: clamp(13px, 1.4vw, 18px); margin-bottom: 10px; }
+            .cards-container { margin-top: 10px; gap: 8px; }
+            .card { padding: 12px; }
+            .hema-logo { font-size: clamp(40px, 8vw, 80px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar" id="progress-bar"></div>
+    <div class="presentation">
+
+        <!-- SLIDE 1: TITLE -->
+        <div class="slide active">
+            <div class="slide-content">
+                <div class="hema-logo">HEMA</div>
+                <h1 class="hero">Eindpitch Online Marketing</h1>
+                <p class="subtitle">Retentiemarketing &mdash; Hoe goed bindt HEMA bestaande klanten?</p>
+                <p class="meta-info">Stan van Dijk &bull; Niels Gunst &bull; Mees Egberts &bull; Levi de Jong &bull; Tom Koenraads<br>CEV1C &mdash; Groep 5 &mdash; Online Marketing &mdash; Blok 3 &mdash; 2026</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 2: POSITIONERING & BELANG RETENTIE -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="section-label"><span class="dot"></span>Positionering</div>
+                <h1>HEMA &amp; het belang van retentiemarketing</h1>
+                <p class="subtitle">Nederlands retailmerk met 700+ winkels, een webshop en een sterke emotionele band met de consument</p>
+
+                <div class="cards-container" style="grid-template-columns: repeat(3, 1fr);">
+                    <div class="card">
+                        <div class="icon">&#x1F3E0;</div>
+                        <h3>Wat is HEMA?</h3>
+                        <ul>
+                            <li>Nederlands retailmerk, opgericht in 1926</li>
+                            <li>700+ fysieke winkels + webshop hema.nl</li>
+                            <li>Breed assortiment: huishouden, kleding, food</li>
+                            <li>Kernwaarde: betaalbaar design voor iedereen</li>
+                            <li>Sterk omnichannel: online + offline + app</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <div class="icon">&#x1F465;</div>
+                        <h3>Drie klantsegmenten</h3>
+                        <ul>
+                            <li><strong>Budgetbewuste gezinnen</strong> (30&ndash;45 jr)</li>
+                            <li><strong>Jonge stedelijke starters</strong> (20&ndash;30 jr)</li>
+                            <li><strong>Loyale 50-plussers</strong> (50&ndash;70 jr)</li>
+                            <li>Breed: &ldquo;de winkel voor iedereen&rdquo;</li>
+                            <li>Hoge merkherkenning, generaties lang</li>
+                        </ul>
+                    </div>
+                    <div class="card" style="border-top: 3px solid var(--hema-red);">
+                        <div class="icon">&#x1F504;</div>
+                        <h3>Waarom retentiemarketing?</h3>
+                        <ul>
+                            <li>Bestaande klant behouden = <strong>5&ndash;7&times; goedkoper</strong></li>
+                            <li>HEMA leeft van herhaalaankopen</li>
+                            <li>Hoge concurrentie: Action, IKEA, Flying Tiger</li>
+                            <li>Jongere doelgroep: lagere merktrouw</li>
+                            <li>Customer lifetime value verhogen = groei</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="stat-banner">
+                    <p>Een bestaande klant heeft <strong>60&ndash;70%</strong> kans op herhaalaankoop vs. <strong>5&ndash;20%</strong> voor een nieuwe klant (Bain &amp; Company)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 3: HUIDIGE RETENTIESTRATEGIEEN -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="section-label"><span class="dot"></span>Analyse huidige retentie</div>
+                <h1>Welke retentiestrategie&euml;n zet HEMA al in?</h1>
+                <p class="subtitle">Op basis van het Frankwatching-artikel en onze weekopdrachten</p>
+
+                <div class="cards-container" style="grid-template-columns: repeat(5, 1fr);">
+                    <div class="card" style="border-top: 3px solid var(--hema-red);">
+                        <div class="icon">&#x1F3AF;</div>
+                        <h3>Loyaliteitsprogramma</h3>
+                        <p style="font-weight:600; color:var(--hema-red); margin-bottom:4px;">HEMA Pas</p>
+                        <ul>
+                            <li>Spaarpunten bij elke aankoop</li>
+                            <li>Gratis tompouce op verjaardag</li>
+                            <li>Gratis koffie/thee in winkel</li>
+                            <li>Persoonlijke aanbiedingen</li>
+                            <li>25 bonuspunten bij registratie</li>
+                        </ul>
+                    </div>
+                    <div class="card" style="border-top: 3px solid var(--hema-red);">
+                        <div class="icon">&#x1F4E7;</div>
+                        <h3>E-mail &amp; timing</h3>
+                        <p style="font-weight:600; color:var(--hema-red); margin-bottom:4px;">Contactmomenten</p>
+                        <ul>
+                            <li>Nieuwsbrief met acties</li>
+                            <li>Abandoned cart e-mails</li>
+                            <li>Seizoenscampagnes</li>
+                            <li>10% welkomstkorting</li>
+                            <li>Orderbevestiging &amp; nazorg</li>
+                        </ul>
+                    </div>
+                    <div class="card" style="border-top: 3px solid var(--hema-red);">
+                        <div class="icon">&#x1F6D2;</div>
+                        <h3>Cross- &amp; upselling</h3>
+                        <p style="font-weight:600; color:var(--hema-red); margin-bottom:4px;">Meer waarde per klant</p>
+                        <ul>
+                            <li>&ldquo;Shop de set&rdquo; combinaties</li>
+                            <li>&ldquo;Klanten kochten ook&rdquo;</li>
+                            <li>Thema-carousels</li>
+                            <li>Bundelprijzen &amp; stapelkorting</li>
+                            <li>Recent bekeken producten</li>
+                        </ul>
+                    </div>
+                    <div class="card" style="border-top: 3px solid var(--hema-red);">
+                        <div class="icon">&#x1F4F1;</div>
+                        <h3>Personalisatie</h3>
+                        <p style="font-weight:600; color:var(--hema-red); margin-bottom:4px;">Op maat voor de klant</p>
+                        <ul>
+                            <li>Aanbevelingen o.b.v. koopgedrag</li>
+                            <li>Persoonlijke Pas-aanbiedingen</li>
+                            <li>Recent bekeken producten</li>
+                            <li>Gepersonaliseerde e-mail</li>
+                            <li>Account met bestelhistorie</li>
+                        </ul>
+                    </div>
+                    <div class="card" style="border-top: 3px solid var(--hema-red);">
+                        <div class="icon">&#x1F465;</div>
+                        <h3>Content &amp; community</h3>
+                        <p style="font-weight:600; color:var(--hema-red); margin-bottom:4px;">Klantrelatie</p>
+                        <ul>
+                            <li>Social media (8 platforms)</li>
+                            <li>Seizoenscampagnes</li>
+                            <li>App pushnotificaties</li>
+                            <li>Live chat klantenservice</li>
+                            <li>30 dagen retourbeleid</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 4: KOPPELING AAN MODELLEN -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="section-label"><span class="dot"></span>Theoretische onderbouwing</div>
+                <h1>Retentie in de modellen: 6B, 8 C&rsquo;s &amp; BAIA</h1>
+
+                <div class="pillars">
+                    <div class="pillar" style="border-top: 4px solid var(--hema-red);">
+                        <div class="micro-type">6B-MODEL</div>
+                        <h3>Focus: fase &lsquo;Binden&rsquo; <span class="highlight">(8/10)</span></h3>
+                        <ul>
+                            <li><strong>KSF:</strong> loyaliteit &amp; retentie</li>
+                            <li>HEMA Pas met spaarpunten</li>
+                            <li>30 dagen retourbeleid</li>
+                            <li>Persoonlijke e-mailaanbiedingen</li>
+                            <li>App met pushnotificaties</li>
+                            <li><strong>Min:</strong> geen exclusief loyaliteitsniveau</li>
+                        </ul>
+                    </div>
+                    <div class="pillar" style="border-top: 4px solid var(--orange);">
+                        <div class="micro-type">8 C&rsquo;S E-LOYALITEIT</div>
+                        <h3>Retentie-relevante C&rsquo;s</h3>
+                        <ul>
+                            <li><strong>Care:</strong> klantenservice, retour, nazorg</li>
+                            <li><strong>Cultivation:</strong> nieuwsbrief, Pas-acties</li>
+                            <li><strong>Customization:</strong> personalisatie, aanbevelingen</li>
+                            <li><strong>Community:</strong> social media, maar beperkt UGC</li>
+                            <li><strong>Convenience:</strong> omnichannel, Click &amp; Collect</li>
+                            <li>Sterke basis, maar community kan beter</li>
+                        </ul>
+                    </div>
+                    <div class="pillar" style="border-top: 4px solid var(--green);">
+                        <div class="micro-type">BAIA-MODEL</div>
+                        <h3>Retentie in Interactie &amp; Actie</h3>
+                        <ul>
+                            <li><strong>Interactie:</strong> personalisatie via account</li>
+                            <li><strong>Interactie:</strong> HEMA Pas spaarpunten</li>
+                            <li><strong>Interactie:</strong> live chat klantenservice</li>
+                            <li><strong>Actie:</strong> abandoned cart e-mails</li>
+                            <li><strong>Actie:</strong> kortingscodes &amp; acties</li>
+                            <li>Retentie zit verweven in meerdere fases</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 5: STERKE & ZWAKKE PUNTEN -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="section-label"><span class="dot"></span>Sterkte-zwakte analyse</div>
+                <h1>Retentiemarketing: wat gaat goed, wat kan beter?</h1>
+
+                <div class="cards-container" style="grid-template-columns: repeat(2, 1fr);">
+                    <div class="card" style="border-left: 4px solid var(--green);">
+                        <h3 style="color: var(--green);">&#x2705; Sterke punten</h3>
+                        <ul>
+                            <li><strong>HEMA Pas:</strong> effectief loyaliteitsprogramma met spaarpunten, gratis voordelen en persoonlijke acties</li>
+                            <li><strong>Omnichannel:</strong> online, app en 700+ winkels versterken elkaar (Click &amp; Collect)</li>
+                            <li><strong>Wederkerigheid (Cialdini):</strong> gratis tompouce, koffie/thee, welkomstkorting</li>
+                            <li><strong>Seizoenscampagnes:</strong> Pasen, Sint, Back to School &mdash; houdt merk top-of-mind</li>
+                            <li><strong>Retourbeleid:</strong> 30 dagen via winkel &eacute;n post &mdash; bouwt vertrouwen</li>
+                            <li><strong>E-mailmarketing:</strong> abandoned cart, persoonlijke aanbiedingen, seizoenscontent</li>
+                        </ul>
+                    </div>
+                    <div class="card" style="border-left: 4px solid var(--orange);">
+                        <h3 style="color: var(--orange);">&#x26A0;&#xFE0F; Verbeterpunten</h3>
+                        <ul>
+                            <li><strong>Geen loyaliteitsniveaus:</strong> alle pashouders zijn gelijk &mdash; geen differentiatie voor topklanten</li>
+                            <li><strong>Community zwak:</strong> geen actieve klantcommunity, weinig UGC-strategie</li>
+                            <li><strong>Reviews weinig zichtbaar:</strong> sterren niet op overzichtspagina&rsquo;s &mdash; sociale bewijskracht onderbenut</li>
+                            <li><strong>Personalisatie is basis:</strong> geen AI-driven content of geavanceerde segmentatie</li>
+                            <li><strong>Geen marketing automation:</strong> geen win-back, geen lifecycle e-mails</li>
+                            <li><strong>Geen content voor klanten:</strong> geen blog, geen inspiratieartikelen, geen exclusieve content</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 6: BENCHMARK -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="section-label"><span class="dot"></span>Benchmark retentie</div>
+                <h1>HEMA vs Action vs IKEA</h1>
+                <p class="subtitle">Vergelijking van retentiemarketing in dezelfde branche</p>
+
+                <table class="bench-table">
+                    <thead>
+                        <tr>
+                            <th>Retentie-aspect</th>
+                            <th class="hema-col">HEMA</th>
+                            <th>Action</th>
+                            <th>IKEA</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Loyaliteitsprogramma</td>
+                            <td>HEMA Pas: spaarpunten, persoonlijke acties</td>
+                            <td>Geen loyaliteitsprogramma</td>
+                            <td>IKEA Family: gratis, workshops, verzekering</td>
+                        </tr>
+                        <tr>
+                            <td>E-mailretentie</td>
+                            <td>Nieuwsbrief, abandoned cart, acties</td>
+                            <td>Minimale e-mailinspanning</td>
+                            <td>Sterk: gepersonaliseerd, lifecycle e-mails</td>
+                        </tr>
+                        <tr>
+                            <td>Personalisatie</td>
+                            <td>Basis: recent bekeken, aanbevelingen</td>
+                            <td>Nauwelijks aanwezig</td>
+                            <td>Geavanceerd: AI-driven, roomplanners</td>
+                        </tr>
+                        <tr>
+                            <td>Community &amp; UGC</td>
+                            <td>8 platforms, maar weinig UGC</td>
+                            <td>Geen community-strategie</td>
+                            <td>Sterk: Family events, UGC, workshops</td>
+                        </tr>
+                        <tr>
+                            <td>Content bestaande klant</td>
+                            <td>Seizoenscampagnes, geen blog</td>
+                            <td>Geen contentstrategie</td>
+                            <td>Inspiratieblog, 3D-planners, video</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight:800;">Totaaloordeel</td>
+                            <td><span class="grade grade-high">7/10</span><br>Voldoende+</td>
+                            <td><span class="grade grade-low">3/10</span><br>Zwak</td>
+                            <td><span class="grade grade-high">9/10</span><br>Uitstekend</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="stat-banner">
+                    <p>HEMA scoort voldoende op retentie, maar kan leren van IKEA&rsquo;s geavanceerde personalisatie, community en contentaanpak</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 7: TOTAALOORDEEL -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="section-label"><span class="dot"></span>Beoordeling</div>
+                <h1>Totaaloordeel retentiemarketing HEMA</h1>
+
+                <div class="score-circle">
+                    <span class="number">7</span>
+                    <span class="label">uit 10</span>
+                </div>
+
+                <p class="subtitle" style="margin-bottom: 8px;"><strong style="color:var(--hema-red);">Voldoende+</strong> &mdash; Sterke basis, ruimte voor groei</p>
+
+                <div class="pillars">
+                    <div class="pillar" style="border-top: 4px solid var(--green);">
+                        <div class="icon">&#x2705;</div>
+                        <h3>Wat werkt</h3>
+                        <ul>
+                            <li>HEMA Pas is effectief retentie-instrument</li>
+                            <li>Omnichannel versterkt klantbinding</li>
+                            <li>Seizoenscampagnes houden merk relevant</li>
+                            <li>Wederkerigheid via gratis voordelen</li>
+                        </ul>
+                    </div>
+                    <div class="pillar" style="border-top: 4px solid var(--orange);">
+                        <div class="icon">&#x26A0;&#xFE0F;</div>
+                        <h3>Wat mist</h3>
+                        <ul>
+                            <li>Geen loyaliteitsniveaus (goud/zilver)</li>
+                            <li>Community &amp; UGC onderontwikkeld</li>
+                            <li>Personalisatie blijft oppervlakkig</li>
+                            <li>Geen marketing automation / lifecycle</li>
+                        </ul>
+                    </div>
+                    <div class="pillar" style="border-top: 4px solid #007AFF;">
+                        <div class="icon">&#x1F4CA;</div>
+                        <h3>Vs. benchmark</h3>
+                        <ul>
+                            <li>Ruim boven Action (3/10)</li>
+                            <li>Onder IKEA (9/10) op personalisatie</li>
+                            <li>Onder IKEA op community &amp; content</li>
+                            <li>Retentiefundament is aanwezig</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 8: VERBETERADVIEZEN -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="section-label"><span class="dot"></span>Aanbevelingen</div>
+                <h1>5 concrete verbeteradviezen</h1>
+                <p class="subtitle">Gericht op klantloyaliteit, herhaalaankopen en customer lifetime value</p>
+
+                <div class="advice-cards">
+                    <div class="advice-card">
+                        <div class="num">1</div>
+                        <h3>HEMA Pas Premium</h3>
+                        <div class="tag">Loyaliteitsniveaus</div>
+                        <p>Introduceer Bronze/Silver/Gold niveaus op basis van jaaromzet. Gold-leden krijgen early access, dubbele punten en exclusieve producten. Stimuleert commitment (Cialdini).</p>
+                        <div class="impact">+15&ndash;20% herhaalaankopen topklanten</div>
+                    </div>
+                    <div class="advice-card">
+                        <div class="num">2</div>
+                        <h3>Marketing automation</h3>
+                        <div class="tag">Lifecycle e-mails</div>
+                        <p>Welkomstserie (5 mails), win-back na 60 dagen inactiviteit, verjaardag&shy;campagnes en post-purchase nurturing met gerelateerde producten.</p>
+                        <div class="impact">+25% e-mail conversie</div>
+                    </div>
+                    <div class="advice-card">
+                        <div class="num">3</div>
+                        <h3>HEMA Community</h3>
+                        <div class="tag">UGC &amp; betrokkenheid</div>
+                        <p>Lanceer #MijnHEMA: klanten delen foto&rsquo;s van producten in gebruik. Beste content op webshop &amp; socials. Maandelijkse winactie als incentive.</p>
+                        <div class="impact">Authentieke content + 3&times; engagement</div>
+                    </div>
+                    <div class="advice-card">
+                        <div class="num">4</div>
+                        <h3>AI-personalisatie</h3>
+                        <div class="tag">Slimmer aanbevelen</div>
+                        <p>AI-driven aanbevelingen op basis van koophistorie en browse-gedrag. Personaliseer homepage per klant. &ldquo;Speciaal voor jou&rdquo; e-mails.</p>
+                        <div class="impact">+10&ndash;30% conversie</div>
+                    </div>
+                    <div class="advice-card">
+                        <div class="num">5</div>
+                        <h3>Exclusieve content</h3>
+                        <div class="tag">Blog &amp; inspiratie</div>
+                        <p>Inspiratieblog met seizoenstips, recepten, DIY en stylingtips. Exclusieve content voor Pas-leden. Video&rsquo;s voor TikTok/Instagram.</p>
+                        <div class="impact">+40% websitebezoek</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 9: CONCLUSIE -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="hema-logo" style="font-size: clamp(40px,7vw,80px); margin-bottom: clamp(14px,2vh,28px);">HEMA</div>
+                <h1>HEMA heeft een sterke basis voor retentiemarketing</h1>
+                <p class="subtitle">Door te investeren in loyaliteitsniveaus, marketing automation, community, personalisatie en exclusieve content kan HEMA van een <strong style="color:var(--hema-red);">7 naar een 9</strong> groeien.</p>
+
+                <div class="card" style="max-width:800px; border-left: 4px solid var(--hema-red); opacity:1; transform:none; filter:none; text-align:left; margin-top:10px;">
+                    <h3 style="color:var(--hema-red); margin-bottom:8px;">Antwoord op de centrale pitchvraag</h3>
+                    <p style="font-size:clamp(12px,1.3vw,15px); line-height:1.5; color:var(--text);">
+                        &ldquo;HEMA zet retentiemarketing op een voldoende niveau in. Het loyaliteitsprogramma, de omnichannel-aanpak en seizoenscampagnes vormen een sterk fundament. Echter, vergeleken met de benchmark (IKEA) ontbreekt diepgang in personalisatie, community-building en geautomatiseerde klantcommunicatie. Met onze vijf aanbevelingen kan HEMA bestaande klanten significant beter binden en de customer lifetime value verhogen.&rdquo;
+                    </p>
+                </div>
+
+                <p style="font-size:clamp(18px,2.5vw,28px); font-weight:700; color:var(--hema-red); margin-top:clamp(16px,2.5vh,32px);">Bedankt voor jullie aandacht &mdash; Zijn er vragen?</p>
+                <p class="meta-info">Stan &bull; Niels &bull; Mees &bull; Levi &bull; Tom</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 10: BRONNEN -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="hema-logo-small">HEMA</div>
+                <h1>Bronnen</h1>
+
+                <div class="references-list">
+                    <div class="reference-item">[1] Frankwatching. (z.d.). <em>Retentiemarketing: 4 strategie&euml;n waarmee klanten terugkomen.</em> Geraadpleegd op frankwatching.com</div>
+                    <div class="reference-item">[2] Visser, M. &amp; Sikkenga, B. (2021). <em>Basisboek Online Marketing</em> (4e editie). Noordhoff Uitgevers. Paragraaf 3.3: 6B-model.</div>
+                    <div class="reference-item">[3] Cialdini, R.B. (2021). <em>Invloed: De zes geheimen van het overtuigen.</em> Uitgeverij Business Contact.</div>
+                    <div class="reference-item">[4] Srinivasan, S.S., Anderson, R. &amp; Ponnavolu, K. (2002). Customer loyalty in e-commerce. <em>Journal of Retailing</em>, 78(1), 41&ndash;50.</div>
+                    <div class="reference-item">[5] Hasan, L. &amp; Abuelrub, E. (2011). Assessing the quality of web sites. <em>Applied Computing and Informatics</em>, 9(1), 11&ndash;29.</div>
+                    <div class="reference-item">[6] HEMA. (2026). hema.nl &mdash; Webshop analyse uitgevoerd in maart 2026.</div>
+                    <div class="reference-item">[7] Meta. (2026). Advertentiebibliotheek. Geraadpleegd op facebook.com/ads/library</div>
+                    <div class="reference-item">[8] Bain &amp; Company. (z.d.). <em>The Economics of Loyalty.</em> Geraadpleegd op bain.com</div>
+                    <div class="reference-item">[9] Google. (2026). Google Ads Keyword Planner &amp; Google Trends. Geraadpleegd op ads.google.com</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="slide-indicator" id="slide-indicator">1 / 10</div>
+    <button class="fullscreen-btn" id="fs-btn" onclick="toggleFullscreen()" title="Fullscreen">
+        <svg id="fs-icon-enter" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>
+        <svg id="fs-icon-exit" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><path d="M8 3v3a2 2 0 01-2 2H3m18 0h-3a2 2 0 01-2-2V3m0 18v-3a2 2 0 012-2h3M3 16h3a2 2 0 012 2v3"/></svg>
+    </button>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        let current = 0;
+        const total = slides.length;
+        function updateUI() {
+            document.getElementById('slide-indicator').textContent = `${current + 1} / ${total}`;
+            document.getElementById('progress-bar').style.width = `${((current + 1) / total) * 100}%`;
+        }
+        function goToSlide(index, direction) {
+            if (index < 0 || index >= total || index === current) return;
+            const prev = slides[current], next = slides[index];
+            prev.classList.remove('active');
+            prev.classList.add(direction === 'next' ? 'exit-left' : 'exit-right');
+            next.classList.remove('exit-left', 'exit-right');
+            void next.offsetWidth;
+            next.classList.add('active');
+            current = index;
+            updateUI();
+            setTimeout(() => { prev.classList.remove('exit-left', 'exit-right'); }, 1000);
+        }
+        function nextSlide() { goToSlide(current + 1, 'next'); }
+        function prevSlide() { goToSlide(current - 1, 'prev'); }
+        document.addEventListener('keydown', e => {
+            if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+            else if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+        });
+        document.addEventListener('click', e => {
+            if (e.target.closest('.fullscreen-btn')) return;
+            if (e.clientX > window.innerWidth * 0.5) nextSlide(); else prevSlide();
+        });
+        let touchStartX = 0;
+        document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
+        document.addEventListener('touchend', e => {
+            const diff = e.changedTouches[0].clientX - touchStartX;
+            if (diff > 50) prevSlide(); else if (diff < -50) nextSlide();
+        });
+        function toggleFullscreen() {
+            const el = document.documentElement;
+            const isFs = document.fullscreenElement || document.webkitFullscreenElement || document.webkitIsFullScreen;
+            if (!isFs) { if (el.requestFullscreen) el.requestFullscreen().catch(() => {}); else if (el.webkitRequestFullScreen) el.webkitRequestFullScreen(); }
+            else { if (document.exitFullscreen) document.exitFullscreen().catch(() => {}); else if (document.webkitCancelFullScreen) document.webkitCancelFullScreen(); }
+        }
+        function updateFsIcon() {
+            const isFs = document.fullscreenElement || document.webkitFullscreenElement || document.webkitIsFullScreen;
+            document.getElementById('fs-icon-enter').style.display = isFs ? 'none' : '';
+            document.getElementById('fs-icon-exit').style.display = isFs ? '' : 'none';
+        }
+        document.addEventListener('fullscreenchange', updateFsIcon);
+        document.addEventListener('webkitfullscreenchange', updateFsIcon);
+        updateUI();
+    </script>
+</body>
+</html>
